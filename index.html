@@ -40,8 +40,8 @@
     h1 em { font-style: italic; color: var(--rust); }
     .about-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 4rem; align-items: start; }
     .avatar-block { display: flex; flex-direction: column; gap: 1.5rem; }
-    .avatar { width: 100%; aspect-ratio: 3/4; border: 1px solid var(--sand); background: var(--sand); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-    .avatar-placeholder { font-family: 'Playfair Display', serif; font-size: 4rem; color: var(--muted); opacity: 0.4; user-select: none; }
+    .avatar { width: 100%; aspect-ratio: 3/4; border: 1px solid var(--sand); background: var(--sand); position: relative; overflow: hidden; }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
     .avatar-label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-align: center; }
     .fact-list { display: flex; flex-direction: column; gap: 0; }
     .fact-item { padding: 1rem 0; border-bottom: 1px solid var(--sand); animation: fadeUp 0.5s ease both; }
@@ -126,9 +126,8 @@
 
       <div class="avatar-block">
         <div class="avatar">
-          <span class="avatar-placeholder">:)</span>
+          <img src="photo.png" alt="Justin Han" />
         </div>
-        <p class="avatar-label">Photo Coming Soon</p>
         <div class="fact-list">
           <div class="fact-item">
             <div class="fact-label">Based In</div>
@@ -150,6 +149,10 @@
             <div class="fact-label">Year</div>
             <div class="fact-value">Junior</div>
           </div>
+          <div class="fact-item">
+            <div class="fact-label">Contact</div>
+            <div class="fact-value"><a href="/cdn-cgi/l/email-protection#9ef4ebedeaf7f0f4f6fff0aeaadef9f3fff7f2b0fdf1f3"><span class="__cf_email__" data-cfemail="365c4345425f585c5e5758060276515b575f5a1855595b">[email&#160;protected]</span></a></div>
+          </div>
         </div>
       </div>
     </div>
@@ -157,8 +160,3 @@
 
   <footer>
     <span>Justin Han · Portfolio</span>
-    <span id="yr"></span>
-  </footer>
-  <script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
-</body>
-</html>

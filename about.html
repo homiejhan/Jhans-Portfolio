@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Me — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #F5F0E8;
+      --ink: #1A1A18;
+      --rust: #C0521F;
+      --sage: #4A6741;
+      --sand: #D9C9A8;
+      --muted: #7A7368;
+    }
+    html, body { background: var(--cream); color: var(--ink); font-family: 'DM Mono', monospace; }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 999; opacity: 0.5;
+    }
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 2rem 3rem; border-bottom: 1px solid var(--sand);
+      position: sticky; top: 0; background: var(--cream); z-index: 100;
+    }
+    .logo { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
+    nav { display: flex; gap: 0; border: 1px solid var(--sand); }
+    nav a {
+      text-decoration: none; font-family: 'DM Mono', monospace; font-size: 0.72rem;
+      font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); padding: 0.65rem 1.4rem; border-right: 1px solid var(--sand);
+      transition: background 0.2s, color 0.2s;
+    }
+    nav a:last-child { border-right: none; }
+    nav a:hover { background: var(--ink); color: var(--cream); }
+    nav a.active { background: var(--ink); color: var(--cream); }
+
+    /* PAGE LAYOUT */
+    .page-wrap { max-width: 960px; margin: 0 auto; padding: 5rem 3rem 6rem; }
+
+    .page-eyebrow {
+      font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--rust); margin-bottom: 1rem;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 5vw, 4rem);
+      line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 3rem;
+    }
+    h1 em { font-style: italic; color: var(--rust); }
+
+    .about-grid {
+      display: grid; grid-template-columns: 2fr 1fr; gap: 4rem; align-items: start;
+    }
+
+    /* Avatar placeholder */
+    .avatar-block {
+      display: flex; flex-direction: column; gap: 1.5rem;
+    }
+    .avatar {
+      width: 100%; aspect-ratio: 3/4;
+      border: 1px solid var(--sand);
+      background: var(--sand);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .avatar-placeholder {
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem; color: var(--muted); opacity: 0.4; user-select: none;
+    }
+    .avatar-label {
+      font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); text-align: center;
+    }
+
+    /* Sidebar facts */
+    .fact-list { display: flex; flex-direction: column; gap: 0; }
+    .fact-item {
+      padding: 1rem 0; border-bottom: 1px solid var(--sand);
+      animation: fadeUp 0.5s ease both;
+    }
+    .fact-item:first-child { border-top: 1px solid var(--sand); }
+    .fact-label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust); margin-bottom: 0.3rem; }
+    .fact-value { font-size: 0.85rem; color: var(--ink); }
+
+    /* Bio text */
+    .bio-section { display: flex; flex-direction: column; gap: 2rem; }
+    .bio-block {}
+    .section-label {
+      font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.75rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--sand); }
+    p {
+      font-size: 0.9rem; line-height: 1.9; color: #3A3830;
+    }
+
+    /* Skills */
+    .skills-wrap { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+    .skill-tag {
+      font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0.35rem 0.85rem; border: 1px solid var(--sand); color: var(--muted);
+      transition: all 0.2s;
+    }
+    .skill-tag:hover { border-color: var(--ink); color: var(--ink); }
+
+    footer {
+      padding: 1.5rem 3rem; border-top: 1px solid var(--sand);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.7rem; color: var(--muted); letter-spacing: 0.05em;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .bio-section { animation: fadeUp 0.5s ease both; }
+
+    @media (max-width: 768px) {
+      header { padding: 1.25rem; flex-wrap: wrap; gap: 1rem; }
+      .page-wrap { padding: 3rem 1.25rem 4rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      nav a { padding: 0.55rem 0.9rem; font-size: 0.65rem; }
+      footer { flex-direction: column; gap: 0.5rem; padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="logo" href="index.html">Portfolio</a>
+    <nav>
+      <a href="about.html" class="active">About Me</a>
+      <a href="coursework.html">Coursework</a>
+      <a href="outside-projects.html">Outside Projects</a>
+    </nav>
+  </header>
+
+  <main class="page-wrap">
+    <p class="page-eyebrow">— About Me</p>
+    <h1>Hello, I'm<br><em>Your Name.</em></h1>
+
+    <div class="about-grid">
+      <!-- Left: Bio -->
+      <div class="bio-section">
+        <div class="bio-block">
+          <p class="section-label">Introduction</p>
+          <p>
+            Welcome to my portfolio. I'm a student and builder passionate about
+            [your field]. I love turning ideas into tangible projects — whether
+            that's a piece of software, a research paper, or something in between.
+          </p>
+        </div>
+
+        <div class="bio-block">
+          <p class="section-label">Background</p>
+          <p>
+            I'm currently studying [your major] at [your school]. My academic
+            journey has taken me through [topics/areas], and I've developed a
+            strong interest in [specific focus]. Outside the classroom, I'm
+            constantly working on personal projects that push my skills further.
+          </p>
+        </div>
+
+        <div class="bio-block">
+          <p class="section-label">What Drives Me</p>
+          <p>
+            I believe in learning by doing. Every project on this site — from
+            course assignments to late-night side experiments — reflects a
+            genuine curiosity and a desire to grow. I'm always open to
+            collaboration, feedback, and new challenges.
+          </p>
+        </div>
+
+        <div class="bio-block">
+          <p class="section-label">Skills & Tools</p>
+          <div class="skills-wrap">
+            <span class="skill-tag">Skill One</span>
+            <span class="skill-tag">Skill Two</span>
+            <span class="skill-tag">Skill Three</span>
+            <span class="skill-tag">Tool A</span>
+            <span class="skill-tag">Tool B</span>
+            <span class="skill-tag">Tool C</span>
+            <span class="skill-tag">Language X</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Photo + facts -->
+      <div class="avatar-block">
+        <div class="avatar">
+          <span class="avatar-placeholder">:)</span>
+        </div>
+        <p class="avatar-label">Photo Coming Soon</p>
+
+        <div class="fact-list">
+          <div class="fact-item">
+            <div class="fact-label">Based In</div>
+            <div class="fact-value">Your City, State</div>
+          </div>
+          <div class="fact-item">
+            <div class="fact-label">School</div>
+            <div class="fact-value">Your University</div>
+          </div>
+          <div class="fact-item">
+            <div class="fact-label">Major</div>
+            <div class="fact-value">Your Major</div>
+          </div>
+          <div class="fact-item">
+            <div class="fact-label">Year</div>
+            <div class="fact-value">Sophomore / Junior / etc.</div>
+          </div>
+          <div class="fact-item">
+            <div class="fact-label">Contact</div>
+            <div class="fact-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2f56405a6f4a424e4643014c4042">[email&#160;protected]</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <span>Portfolio · Built with care</span>
+    <span id="yr"></span>
+ 

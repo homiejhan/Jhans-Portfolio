@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F5F0E8;
+      --ink: #1A1A18;
+      --rust: #C0521F;
+      --sage: #4A6741;
+      --sand: #D9C9A8;
+      --muted: #7A7368;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* Noise texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.5;
+    }
+
+    /* TOP BAR */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2rem 3rem;
+      border-bottom: 1px solid var(--sand);
+      position: sticky;
+      top: 0;
+      background: var(--cream);
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    nav {
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--sand);
+    }
+
+    nav a {
+      text-decoration: none;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0.65rem 1.4rem;
+      border-right: 1px solid var(--sand);
+      transition: background 0.2s, color 0.2s;
+      position: relative;
+    }
+
+    nav a:last-child { border-right: none; }
+
+    nav a:hover, nav a.active {
+      background: var(--ink);
+      color: var(--cream);
+    }
+
+    /* HERO */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: calc(100vh - 73px);
+    }
+
+    .hero-left {
+      padding: 5rem 3rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-right: 1px solid var(--sand);
+    }
+
+    .eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 5vw, 5.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      font-weight: 700;
+      margin-bottom: 2rem;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--rust);
+    }
+
+    .tagline {
+      font-size: 0.85rem;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 380px;
+      margin-bottom: 3rem;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.85rem 1.8rem;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--ink);
+      color: var(--cream);
+      border: 1px solid var(--ink);
+    }
+
+    .btn-primary:hover {
+      background: var(--rust);
+      border-color: var(--rust);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--sand);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--ink);
+    }
+
+    /* RIGHT COLUMN — decorative grid */
+    .hero-right {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      padding: 3rem;
+      gap: 1.5rem;
+      align-content: center;
+    }
+
+    .card-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .info-card {
+      border: 1px solid var(--sand);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: border-color 0.2s;
+      cursor: default;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .info-card:hover { border-color: var(--ink); }
+
+    .info-card .label {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--rust);
+    }
+
+    .info-card .value {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .info-card .desc {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .info-card.wide {
+      grid-column: span 2;
+    }
+
+    /* Decorative element */
+    .deco-line {
+      width: 2px;
+      height: 60px;
+      background: var(--rust);
+      margin: 2rem 0 1rem;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 1.5rem 3rem;
+      border-top: 1px solid var(--sand);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-left { animation: fadeUp 0.5s ease both; }
+    .info-card:nth-child(1) { animation-delay: 0.1s; }
+    .info-card:nth-child(2) { animation-delay: 0.2s; }
+    .info-card:nth-child(3) { animation-delay: 0.15s; }
+
+    @media (max-width: 768px) {
+      header { padding: 1.25rem 1.25rem; flex-wrap: wrap; gap: 1rem; }
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left { padding: 3rem 1.25rem 2rem; border-right: none; border-bottom: 1px solid var(--sand); }
+      .hero-right { padding: 2rem 1.25rem; }
+      nav a { padding: 0.55rem 0.9rem; font-size: 0.65rem; }
+      footer { flex-direction: column; gap: 0.5rem; padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="logo" href="index.html">Portfolio</a>
+    <nav>
+      <a href="about.html">About Me</a>
+      <a href="coursework.html">Coursework</a>
+      <a href="outside-projects.html">Outside Projects</a>
+    </nav>
+  </header>
+
+  <main class="hero">
+    <div class="hero-left">
+      <p class="eyebrow">— Welcome to my portfolio</p>
+      <h1>Work &<br><em>Ideas</em><br>Worth<br>Sharing.</h1>
+      <p class="tagline">A curated space for my academic work, personal experiments, and everything I've built along the way.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="coursework.html">View School Projects</a>
+        <a class="btn btn-outline" href="about.html">About Me</a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="card-row">
+        <div class="info-card">
+          <span class="label">Section</span>
+          <span class="value">About</span>
+          <span class="desc">Who I am, what I study, and what drives me.</span>
+        </div>
+        <div class="info-card">
+          <span class="label">Section</span>
+          <span class="value">School</span>
+          <span class="desc">Coursework, research, and academic projects.</span>
+        </div>
+      </div>
+      <div class="card-row">
+        <div class="info-card wide">
+          <span class="label">Section</span>
+          <span class="value">Outside Projects</span>
+          <span class="desc">Personal experiments, side projects, and things I build for fun — outside the classroom.</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <span>Portfolio · Built with care</span>
+    <span id="yr"></span>
+  </footer>
+
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

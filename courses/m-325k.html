@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>M 325K: Discrete Mathematics — Justin Han</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --cream: #F5F0E8; --ink: #1A1A18; --rust: #C0521F; --sand: #D9C9A8; --muted: #7A7368; }
+    html, body { background: var(--cream); color: var(--ink); font-family: 'DM Mono', monospace; min-height: 100vh; }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 999; opacity: 0.5;
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 2rem 3rem; border-bottom: 1px solid var(--sand);
+      position: sticky; top: 0; background: var(--cream); z-index: 100;
+    }
+    .logo { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
+    nav { display: flex; border: 1px solid var(--sand); }
+    nav a {
+      text-decoration: none; font-family: 'DM Mono', monospace; font-size: 0.72rem;
+      font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); padding: 0.65rem 1.4rem; border-right: 1px solid var(--sand);
+      transition: background 0.2s, color 0.2s;
+    }
+    nav a:last-child { border-right: none; }
+    nav a:hover, nav a.active { background: var(--ink); color: var(--cream); }
+
+    /* ── BREADCRUMB ── */
+    .breadcrumb {
+      max-width: 860px; margin: 0 auto;
+      padding: 1.5rem 3rem 0;
+      display: flex; align-items: center; gap: 0.6rem;
+      font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+    }
+    .breadcrumb a { color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--sand); transition: color 0.2s, border-color 0.2s; }
+    .breadcrumb a:hover { color: var(--ink); border-color: var(--ink); }
+    .breadcrumb span { color: var(--rust); }
+
+    /* ── PAGE WRAP ── */
+    .page-wrap { max-width: 860px; margin: 0 auto; padding: 3rem 3rem 6rem; }
+
+    /* ── COURSE HERO ── */
+    .course-hero { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--sand); }
+    .course-code {
+      font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--rust); margin-bottom: 0.75rem;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      line-height: 1.08; letter-spacing: -0.03em;
+      margin-bottom: 1.75rem; color: var(--ink);
+    }
+    h1 em { font-style: italic; color: var(--rust); }
+
+    .course-meta {
+      display: flex; flex-wrap: wrap; gap: 0;
+      border: 1px solid var(--sand);
+      width: fit-content;
+    }
+    .meta-item { padding: 0.65rem 1.25rem; border-right: 1px solid var(--sand); }
+    .meta-item:last-child { border-right: none; }
+    .meta-key { font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust); margin-bottom: 0.25rem; }
+    .meta-val { font-size: 0.78rem; color: var(--ink); }
+
+    /* ── ABSTRACT ── */
+    .abstract { margin-bottom: 3rem; }
+    .abstract p { font-size: 0.92rem; line-height: 1.95; color: #3A3830; }
+
+    /* ── CONTENT SECTIONS (Topics & Projects) ── */
+    .content-section {
+      border-top: 1px solid var(--sand);
+      padding: 2.5rem 0;
+    }
+    .content-section:last-child { border-bottom: 1px solid var(--sand); }
+
+    .section-eyebrow {
+      font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--rust); margin-bottom: 0.5rem;
+    }
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em;
+      color: var(--ink); margin-bottom: 1.25rem; line-height: 1.2;
+    }
+    .section-body { font-size: 0.88rem; line-height: 1.9; color: #3A3830; }
+    .section-body p { margin-bottom: 0.85rem; }
+    .section-body p:last-child { margin-bottom: 0; }
+
+    /* Bullet list inside section body */
+    .section-body ul { padding-left: 1.25rem; margin-bottom: 0.85rem; }
+    .section-body ul li { margin-bottom: 0.3rem; }
+
+    /* Tags row inside a section */
+    .section-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
+    .tag {
+      font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0.2rem 0.55rem; border: 1px solid var(--sand); color: var(--muted);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 1.5rem 3rem; border-top: 1px solid var(--sand);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.7rem; color: var(--muted); letter-spacing: 0.05em;
+    }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    .page-wrap { animation: fadeUp 0.45s ease both; }
+
+    @media (max-width: 768px) {
+      header { padding: 1.25rem; flex-wrap: wrap; gap: 1rem; }
+      .breadcrumb { padding: 1rem 1.25rem 0; }
+      .page-wrap { padding: 2rem 1.25rem 4rem; }
+      nav a { padding: 0.55rem 0.9rem; font-size: 0.65rem; }
+      footer { flex-direction: column; gap: 0.5rem; padding: 1.25rem; }
+      .course-meta { flex-direction: column; }
+      .meta-item { border-right: none; border-bottom: 1px solid var(--sand); }
+      .meta-item:last-child { border-bottom: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="logo" href="../index.html">Justin Han</a>
+    <nav>
+      <a href="../index.html">About Me</a>
+      <a href="../coursework.html" class="active">Coursework</a>
+    </nav>
+  </header>
+
+  <div class="breadcrumb">
+    <a href="../coursework.html">Coursework</a>
+    <span>›</span>
+    <span>M 325K</span>
+  </div>
+
+  <main class="page-wrap">
+
+    <!-- ══════════════════════════════════
+         HERO — update course name & code
+         ══════════════════════════════════ -->
+    <div class="course-hero">
+      <p class="course-code">M 325K</p>
+      <h1>Discrete<br><em>Mathematics.</em></h1>
+
+      <div class="course-meta">
+        <div class="meta-item">
+          <div class="meta-key">Semester</div>
+          <div class="meta-val">Fall 2024</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-key">Professor</div>
+          <div class="meta-val">Prof. Name Here</div>  <!-- UPDATE -->
+        </div>
+        <div class="meta-item">
+          <div class="meta-key">Textbook</div>
+          <div class="meta-val">None</div>  <!-- UPDATE -->
+        </div>
+        <div class="meta-item">
+          <div class="meta-key">Credits</div>
+          <div class="meta-val">3</div>  <!-- UPDATE -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         ABSTRACT
+         ══════════════════════════════════ -->
+    <div class="abstract">
+      <p>
+        Write a short abstract describing the course — what it covered, what the general goals were,
+        and what you took away from it overall. A few sentences to a paragraph is plenty.
+      </p>
+    </div>
+
+    <!-- ══════════════════════════════════
+         TOPICS — duplicate as needed
+         ══════════════════════════════════ -->
+    <div class="content-section">
+      <p class="section-eyebrow">Topic 1</p>
+      <h2>Topic Name Here</h2>
+      <div class="section-body">
+        <p>Describe what this topic covered, what you learned, and why it mattered. Add as many paragraphs as you need.</p>
+        <ul>
+          <li>Key concept or takeaway</li>
+          <li>Another key concept</li>
+        </ul>
+      </div>
+      <div class="section-tags">
+        <span class="tag">Tag A</span>
+        <span class="tag">Tag B</span>
+      </div>
+    </div>
+
+    <div class="content-section">
+      <p class="section-eyebrow">Topic 2</p>
+      <h2>Topic Name Here</h2>
+      <div class="section-body">
+        <p>Describe this topic here.</p>
+      </div>
+      <div class="section-tags">
+        <span class="tag">Tag A</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         PROJECTS — duplicate as needed
+         ══════════════════════════════════ -->
+    <div class="content-section">
+      <p class="section-eyebrow">Project 1</p>
+      <h2>Project Name Here</h2>
+      <div class="section-body">
+        <p>Describe the project — what you built, what problem it solved, how you approached it, and what you learned.</p>
+        <ul>
+          <li>Notable implementation detail</li>
+          <li>Tools or languages used</li>
+        </ul>
+      </div>
+      <div class="section-tags">
+        <span class="tag">Tag A</span>
+        <span class="tag">Tag B</span>
+        <span class="tag">Tag C</span>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <span>Justin Han · Portfolio</span>
+    <span id="yr"></span>
+  </footer>
+  <script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+</body>
+</html>

@@ -35,8 +35,7 @@
 
     /* ── BREADCRUMB ── */
     .breadcrumb {
-      max-width: 860px; margin: 0 auto;
-      padding: 1.5rem 3rem 0;
+      max-width: 860px; margin: 0 auto; padding: 1.5rem 3rem 0;
       display: flex; align-items: center; gap: 0.6rem;
       font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
     }
@@ -45,27 +44,15 @@
     .breadcrumb span { color: var(--rust); }
 
     /* ── PAGE WRAP ── */
-    .page-wrap { max-width: 860px; margin: 0 auto; padding: 3rem 3rem 6rem; }
+    .page-wrap { max-width: 860px; margin: 0 auto; padding: 3rem 3rem 6rem; animation: fadeUp 0.45s ease both; }
 
     /* ── COURSE HERO ── */
     .course-hero { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--sand); }
-    .course-code {
-      font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--rust); margin-bottom: 0.75rem;
-    }
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.2rem, 5vw, 3.8rem);
-      line-height: 1.08; letter-spacing: -0.03em;
-      margin-bottom: 1.75rem; color: var(--ink);
-    }
+    .course-code { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--rust); margin-bottom: 0.75rem; }
+    h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 5vw, 3.8rem); line-height: 1.08; letter-spacing: -0.03em; margin-bottom: 1.75rem; color: var(--ink); }
     h1 em { font-style: italic; color: var(--rust); }
 
-    .course-meta {
-      display: flex; flex-wrap: wrap; gap: 0;
-      border: 1px solid var(--sand);
-      width: fit-content;
-    }
+    .course-meta { display: flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--sand); width: fit-content; }
     .meta-item { padding: 0.65rem 1.25rem; border-right: 1px solid var(--sand); }
     .meta-item:last-child { border-right: none; }
     .meta-key { font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust); margin-bottom: 0.25rem; }
@@ -75,56 +62,85 @@
     .abstract { margin-bottom: 3rem; }
     .abstract p { font-size: 0.92rem; line-height: 1.95; color: #3A3830; }
 
-    /* ── CONTENT SECTIONS (Topics & Projects) ── */
-    .content-section {
-      border-top: 1px solid var(--sand);
-      padding: 2.5rem 0;
+    /* ── EXPAND/COLLAPSE CONTROLS ── */
+    .section-controls {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 1.5rem;
     }
-    .content-section:last-child { border-bottom: 1px solid var(--sand); }
+    .ctrl-btn {
+      font-family: 'DM Mono', monospace; font-size: 0.62rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); background: var(--cream);
+      border: 1px solid var(--sand); padding: 0.4rem 0.9rem;
+      cursor: pointer; transition: background 0.2s, color 0.2s;
+    }
+    .ctrl-btn:hover { background: var(--ink); color: var(--cream); border-color: var(--ink); }
 
-    .section-eyebrow {
-      font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--rust); margin-bottom: 0.5rem;
-    }
-    h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em;
-      color: var(--ink); margin-bottom: 1.25rem; line-height: 1.2;
-    }
-    .section-body { font-size: 0.88rem; line-height: 1.9; color: #3A3830; }
-    .section-body p { margin-bottom: 0.85rem; }
-    .section-body p:last-child { margin-bottom: 0; }
+    /* ── TOPIC / PROJECT BLOCK ── */
+    .entry-block { border-top: 1px solid var(--sand); }
+    .entry-block:last-child { border-bottom: 1px solid var(--sand); }
 
-    /* Bullet list inside section body */
-    .section-body ul { padding-left: 1.25rem; margin-bottom: 0.85rem; }
-    .section-body ul li { margin-bottom: 0.3rem; }
-
-    /* Tags row inside a section */
-    .section-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
-    .tag {
-      font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase;
-      padding: 0.2rem 0.55rem; border: 1px solid var(--sand); color: var(--muted);
+    /* Clickable header row */
+    .entry-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 0; cursor: pointer; gap: 1rem;
+      user-select: none;
     }
+    .entry-header:hover .entry-title { color: var(--rust); }
+
+    .entry-left { display: flex; align-items: baseline; gap: 1rem; }
+    .entry-eyebrow { font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rust); flex-shrink: 0; min-width: 4.5rem; }
+    .entry-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--ink); line-height: 1.2; transition: color 0.2s; }
+
+    .entry-chevron {
+      font-size: 0.75rem; color: var(--muted); flex-shrink: 0;
+      transition: transform 0.25s ease; display: inline-block;
+    }
+    .entry-block.open .entry-chevron { transform: rotate(90deg); }
+
+    /* Collapsible body */
+    .entry-body {
+      display: grid; grid-template-rows: 0fr;
+      transition: grid-template-rows 0.3s ease;
+    }
+    .entry-block.open .entry-body { grid-template-rows: 1fr; }
+    .entry-body-inner { overflow: hidden; }
+    .entry-body-content { padding-bottom: 2rem; }
+
+    /* ── SUBSECTIONS (Concepts / Takeaways / Applications) ── */
+    .subsection { margin-bottom: 1.5rem; }
+    .subsection:last-child { margin-bottom: 0; }
+    .subsection-label {
+      font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.6rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .subsection-label::after { content: ''; flex: 1; height: 1px; background: var(--sand); }
+
+    .subsection-body { font-size: 0.86rem; line-height: 1.9; color: #3A3830; }
+    .subsection-body p { margin-bottom: 0.75rem; }
+    .subsection-body p:last-child { margin-bottom: 0; }
+    .subsection-body ul { padding-left: 1.2rem; }
+    .subsection-body ul li { margin-bottom: 0.3rem; }
+
+    /* Tags */
+    .entry-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.25rem; }
+    .tag { font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.2rem 0.55rem; border: 1px solid var(--sand); color: var(--muted); }
 
     /* ── FOOTER ── */
-    footer {
-      padding: 1.5rem 3rem; border-top: 1px solid var(--sand);
-      display: flex; justify-content: space-between; align-items: center;
-      font-size: 0.7rem; color: var(--muted); letter-spacing: 0.05em;
-    }
+    footer { padding: 1.5rem 3rem; border-top: 1px solid var(--sand); display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: var(--muted); letter-spacing: 0.05em; }
 
     @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
-    .page-wrap { animation: fadeUp 0.45s ease both; }
 
     @media (max-width: 768px) {
       header { padding: 1.25rem; flex-wrap: wrap; gap: 1rem; }
       .breadcrumb { padding: 1rem 1.25rem 0; }
       .page-wrap { padding: 2rem 1.25rem 4rem; }
       nav a { padding: 0.55rem 0.9rem; font-size: 0.65rem; }
-      footer { flex-direction: column; gap: 0.5rem; padding: 1.25rem; }
       .course-meta { flex-direction: column; }
       .meta-item { border-right: none; border-bottom: 1px solid var(--sand); }
       .meta-item:last-child { border-bottom: none; }
+      footer { flex-direction: column; gap: 0.5rem; padding: 1.25rem; }
     }
   </style>
 </head>
@@ -140,7 +156,7 @@
   <div class="breadcrumb">
     <a href="../coursework.html">Coursework</a>
     <span>›</span>
-    <span>ECE 302</span>  <!-- UPDATE: course code -->
+    <span>ECE 302</span> <!-- UPDATE: course code -->
   </div>
 
   <main class="page-wrap">
@@ -149,25 +165,24 @@
          HERO — update course name & code
          ══════════════════════════════════ -->
     <div class="course-hero">
-      <p class="course-code">ECE 302</p>  <!-- UPDATE -->
-      <h1>Intro to<br><em>Electrical Engineering.</em></h1>  <!-- UPDATE -->
-
+      <p class="course-code">ECE 302</p> <!-- UPDATE -->
+      <h1>Intro to<br><em>Electrical Engineering.</em></h1> <!-- UPDATE -->
       <div class="course-meta">
         <div class="meta-item">
           <div class="meta-key">Semester</div>
-          <div class="meta-val">Fall 2023</div>  <!-- UPDATE -->
+          <div class="meta-val">Fall 2023</div> <!-- UPDATE -->
         </div>
         <div class="meta-item">
           <div class="meta-key">Professor</div>
-          <div class="meta-val">Prof. Name Here</div>  <!-- UPDATE -->
+          <div class="meta-val">Prof. Name Here</div> <!-- UPDATE -->
         </div>
         <div class="meta-item">
           <div class="meta-key">Textbook</div>
-          <div class="meta-val">None</div>  <!-- UPDATE -->
+          <div class="meta-val">None</div> <!-- UPDATE -->
         </div>
         <div class="meta-item">
           <div class="meta-key">Credits</div>
-          <div class="meta-val">3</div>  <!-- UPDATE -->
+          <div class="meta-val">3</div> <!-- UPDATE -->
         </div>
       </div>
     </div>
@@ -177,58 +192,169 @@
          ══════════════════════════════════ -->
     <div class="abstract">
       <p>
-        Write a short abstract describing the course — what it covered, what the general goals were,
-        and what you took away from it overall. A few sentences to a paragraph is plenty.
+        Write a short abstract describing the course — what it covered, what the
+        general goals were, and what you took away from it overall.
       </p>
     </div>
 
     <!-- ══════════════════════════════════
-         TOPICS — duplicate as needed
+         EXPAND / COLLAPSE ALL CONTROLS
          ══════════════════════════════════ -->
-    <div class="content-section">
-      <p class="section-eyebrow">Topic 1</p>
-      <h2>Topic Name Here</h2>
-      <div class="section-body">
-        <p>Describe what this topic covered, what you learned, and why it mattered. Add as many paragraphs as you need.</p>
-        <ul>
-          <li>Key concept or takeaway</li>
-          <li>Another key concept</li>
-        </ul>
+    <div class="section-controls">
+      <button class="ctrl-btn" id="expand-all">Expand All</button>
+      <button class="ctrl-btn" id="collapse-all">Collapse All</button>
+    </div>
+
+    <!-- ══════════════════════════════════
+         TOPICS — duplicate block as needed
+         Label: "Topic N", "Project N", etc.
+         ══════════════════════════════════ -->
+
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Topic 1</span>
+          <span class="entry-title">Topic Name Here</span>
+        </div>
+        <span class="entry-chevron">›</span>
       </div>
-      <div class="section-tags">
-        <span class="tag">Tag A</span>
-        <span class="tag">Tag B</span>
+      <div class="entry-body">
+        <div class="entry-body-inner">
+          <div class="entry-body-content">
+
+            <div class="subsection">
+              <p class="subsection-label">Concepts</p>
+              <div class="subsection-body">
+                <p>Describe the core concepts covered in this topic.</p>
+                <ul>
+                  <li>Key concept or definition</li>
+                  <li>Another concept</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="subsection">
+              <p class="subsection-label">Key Takeaways</p>
+              <div class="subsection-body">
+                <ul>
+                  <li>What you learned or understood more deeply</li>
+                  <li>Any surprising or important insight</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="subsection">
+              <p class="subsection-label">Applications</p>
+              <div class="subsection-body">
+                <p>Where this topic shows up in the real world or connects to other courses.</p>
+              </div>
+            </div>
+
+            <div class="entry-tags">
+              <span class="tag">Tag A</span>
+              <span class="tag">Tag B</span>
+            </div>
+
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="content-section">
-      <p class="section-eyebrow">Topic 2</p>
-      <h2>Topic Name Here</h2>
-      <div class="section-body">
-        <p>Describe this topic here.</p>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Topic 2</span>
+          <span class="entry-title">Topic Name Here</span>
+        </div>
+        <span class="entry-chevron">›</span>
       </div>
-      <div class="section-tags">
-        <span class="tag">Tag A</span>
+      <div class="entry-body">
+        <div class="entry-body-inner">
+          <div class="entry-body-content">
+
+            <div class="subsection">
+              <p class="subsection-label">Concepts</p>
+              <div class="subsection-body">
+                <p>Describe the core concepts covered in this topic.</p>
+              </div>
+            </div>
+
+            <div class="subsection">
+              <p class="subsection-label">Key Takeaways</p>
+              <div class="subsection-body">
+                <ul>
+                  <li>Takeaway one</li>
+                  <li>Takeaway two</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="subsection">
+              <p class="subsection-label">Applications</p>
+              <div class="subsection-body">
+                <p>Real-world or cross-course applications of this topic.</p>
+              </div>
+            </div>
+
+            <div class="entry-tags">
+              <span class="tag">Tag A</span>
+            </div>
+
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- ══════════════════════════════════
-         PROJECTS — duplicate as needed
+         PROJECTS — same collapsible structure,
+         just change eyebrow to "Project N"
+         and swap in the three subsections below
          ══════════════════════════════════ -->
-    <div class="content-section">
-      <p class="section-eyebrow">Project 1</p>
-      <h2>Project Name Here</h2>
-      <div class="section-body">
-        <p>Describe the project — what you built, what problem it solved, how you approached it, and what you learned.</p>
-        <ul>
-          <li>Notable implementation detail</li>
-          <li>Tools or languages used</li>
-        </ul>
+
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Project 1</span>
+          <span class="entry-title">Project Name Here</span>
+        </div>
+        <span class="entry-chevron">›</span>
       </div>
-      <div class="section-tags">
-        <span class="tag">Tag A</span>
-        <span class="tag">Tag B</span>
-        <span class="tag">Tag C</span>
+      <div class="entry-body">
+        <div class="entry-body-inner">
+          <div class="entry-body-content">
+
+            <div class="subsection">
+              <p class="subsection-label">Overview</p>
+              <div class="subsection-body">
+                <p>Describe what the project was and what problem it solved.</p>
+              </div>
+            </div>
+
+            <div class="subsection">
+              <p class="subsection-label">Implementation</p>
+              <div class="subsection-body">
+                <ul>
+                  <li>How you built it — tools, languages, approach</li>
+                  <li>Any notable design decisions</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="subsection">
+              <p class="subsection-label">Outcome & Lessons</p>
+              <div class="subsection-body">
+                <p>What was the result? What would you do differently?</p>
+              </div>
+            </div>
+
+            <div class="entry-tags">
+              <span class="tag">Tag A</span>
+              <span class="tag">Tag B</span>
+              <span class="tag">Tag C</span>
+            </div>
+
+          </div>
+        </div>
       </div>
     </div>
 
@@ -238,6 +364,24 @@
     <span>Justin Han · Portfolio</span>
     <span id="yr"></span>
   </footer>
-  <script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    // ── TOGGLE INDIVIDUAL ENTRIES ──
+    document.querySelectorAll('.entry-header').forEach(header => {
+      header.addEventListener('click', () => {
+        header.closest('.entry-block').classList.toggle('open');
+      });
+    });
+
+    // ── EXPAND / COLLAPSE ALL ──
+    document.getElementById('expand-all').addEventListener('click', () => {
+      document.querySelectorAll('.entry-block').forEach(b => b.classList.add('open'));
+    });
+    document.getElementById('collapse-all').addEventListener('click', () => {
+      document.querySelectorAll('.entry-block').forEach(b => b.classList.remove('open'));
+    });
+  </script>
 </body>
 </html>

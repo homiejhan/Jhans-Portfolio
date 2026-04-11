@@ -1659,16 +1659,33 @@ li .eq-block { margin-left: -1.2rem; }
   </footer>
 
   <script>
+    // ── Collapsible entry blocks ──
     document.querySelectorAll('.entry-header').forEach(h => {
       h.addEventListener('click', () => h.closest('.entry-block').classList.toggle('open'));
     });
-    document.getElementById('expand-all').addEventListener('click', () =>
-      document.querySelectorAll('.entry-block').forEach(b => b.classList.add('open')));
-    document.getElementById('collapse-all').addEventListener('click', () =>
-      document.querySelectorAll('.entry-block').forEach(b => b.classList.remove('open')));
-    document.querySelector('.footer-year').textContent = new Date().getFullYear();
+
+    // ── Expand / Collapse All (only affects active panel) ──
+    document.getElementById('expand-all').addEventListener('click', () => {
+      document.querySelector('.tab-panel.active')
+        .querySelectorAll('.entry-block').forEach(b => b.classList.add('open'));
+    });
+    document.getElementById('collapse-all').addEventListener('click', () => {
+      document.querySelector('.tab-panel.active')
+        .querySelectorAll('.entry-block').forEach(b => b.classList.remove('open'));
+    });
+
+    // ── Tab switching ──
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    document.getElementById('yr').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
-
 

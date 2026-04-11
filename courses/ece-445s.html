@@ -549,10 +549,6 @@ li .eq-block { margin-left: -1.2rem; }
 /* ============================================================
    RESPONSIVE
    ============================================================ */
-/* diagram tweaks */
-.diagram-wrap { position: relative; }
-.diagram-wrap svg { font-family: 'DM Mono', monospace; }
-
 @media (max-width: 768px) {
   header { padding: 1.25rem; flex-wrap: wrap; gap: 1rem; }
   footer { flex-direction: column; gap: 0.5rem; padding: 1.25rem; }
@@ -577,6 +573,34 @@ li .eq-block { margin-left: -1.2rem; }
   .vocab-item:last-child { border-bottom: none; grid-column: span 1; }
 }
 
+
+/* ── COURSE PAGE TABS ── */
+.tab-bar {
+  display: flex;
+  border-bottom: 1px solid var(--sand);
+  margin-bottom: 1.75rem;
+  gap: 0;
+}
+.tab-btn {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.65rem 1.4rem;
+  cursor: pointer;
+  margin-bottom: -1px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.tab-btn:hover { color: var(--ink); }
+.tab-btn.active { color: var(--rust); border-bottom-color: var(--rust); }
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
   </style>
   <!-- MathJax for LaTeX rendering -->
   <script>
@@ -648,16 +672,21 @@ li .eq-block { margin-left: -1.2rem; }
       </p>
     </div>
 
+    <!-- ── TAB BAR ── -->
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="topics">Topics</button>
+      <button class="tab-btn" data-tab="labs">Labs</button>
+    </div>
+
+    <!-- ── SHARED CONTROLS ── -->
     <div class="section-controls">
       <button class="ctrl-btn" id="expand-all">Expand All</button>
       <button class="ctrl-btn" id="collapse-all">Collapse All</button>
     </div>
 
-    <!-- ══════════════════════════════════════════════
-         LECTURE TOPICS
-         ══════════════════════════════════════════════ -->
-
-    <div class="entry-block">
+    <!-- ── TOPICS PANEL ── -->
+    <div class="tab-panel active" id="panel-topics">
+<div class="entry-block">
       <div class="entry-header">
         <div class="entry-left">
           <span class="entry-eyebrow">Topic 1</span>
@@ -679,98 +708,7 @@ li .eq-block { margin-left: -1.2rem; }
           judgment this course is designed to build.</p>
         </div>
 
-
-        <div class="diagram-wrap">
-          <svg viewBox="0 0 700 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
-            <defs><marker id="a1" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#7A7368"/></marker></defs>
-            <!-- LEFT: continuous cosine -->
-            <text x="168" y="18" font-size="10" fill="#7A7368" text-anchor="middle">Continuous-time signal</text>
-            <line x1="30" y1="100" x2="310" y2="100" stroke="#D9C9A8" stroke-width="1" marker-end="url(#a1)"/>
-            <line x1="40" y1="168" x2="40" y2="28" stroke="#D9C9A8" stroke-width="1" marker-end="url(#a1)"/>
-            <text x="315" y="103" font-size="9" fill="#7A7368">t</text>
-            <text x="36" y="26" font-size="9" fill="#7A7368">x</text>
-            <path d="M40,100 C67,35 93,35 120,100 C147,165 173,165 200,100 C227,35 253,35 280,100" fill="none" stroke="#C0521F" stroke-width="2.5"/>
-            <text x="165" y="190" font-size="9" fill="#7A7368" text-anchor="middle">x(t) = A cos(2πf₀t + φ)</text>
-            <!-- ARROW -->
-            <line x1="330" y1="100" x2="368" y2="100" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a1)"/>
-            <text x="349" y="91" font-size="8" fill="#7A7368" text-anchor="middle">sample</text>
-            <text x="349" y="112" font-size="8" fill="#7A7368" text-anchor="middle">at fₛ</text>
-            <!-- RIGHT: discrete stems (correct cosine values) -->
-            <text x="535" y="18" font-size="10" fill="#7A7368" text-anchor="middle">Discrete-time sequence</text>
-            <line x1="385" y1="100" x2="685" y2="100" stroke="#D9C9A8" stroke-width="1" marker-end="url(#a1)"/>
-            <line x1="395" y1="168" x2="395" y2="28" stroke="#D9C9A8" stroke-width="1" marker-end="url(#a1)"/>
-            <text x="688" y="103" font-size="9" fill="#7A7368">n</text>
-            <text x="391" y="26" font-size="9" fill="#7A7368">x</text>
-            <!-- n-axis labels -->
-            <text x="395" y="113" font-size="8" fill="#7A7368" text-anchor="middle">0</text>
-            <text x="422" y="113" font-size="8" fill="#7A7368" text-anchor="middle">1</text>
-            <text x="449" y="113" font-size="8" fill="#7A7368" text-anchor="middle">2</text>
-            <!-- stems following cos curve -->
-            <line x1="395" y1="100" x2="395" y2="45" stroke="#C0521F" stroke-width="2"/><circle cx="395" cy="45" r="3.5" fill="#C0521F"/>
-            <line x1="422" y1="100" x2="422" y2="61" stroke="#C0521F" stroke-width="2"/><circle cx="422" cy="61" r="3.5" fill="#C0521F"/>
-            <line x1="449" y1="100" x2="449" y2="100" stroke="#C0521F" stroke-width="2"/><circle cx="449" cy="100" r="3.5" fill="#C0521F"/>
-            <line x1="476" y1="100" x2="476" y2="139" stroke="#C0521F" stroke-width="2"/><circle cx="476" cy="139" r="3.5" fill="#C0521F"/>
-            <line x1="503" y1="100" x2="503" y2="155" stroke="#C0521F" stroke-width="2"/><circle cx="503" cy="155" r="3.5" fill="#C0521F"/>
-            <line x1="530" y1="100" x2="530" y2="139" stroke="#C0521F" stroke-width="2"/><circle cx="530" cy="139" r="3.5" fill="#C0521F"/>
-            <line x1="557" y1="100" x2="557" y2="100" stroke="#C0521F" stroke-width="2"/><circle cx="557" cy="100" r="3.5" fill="#C0521F"/>
-            <line x1="584" y1="100" x2="584" y2="61" stroke="#C0521F" stroke-width="2"/><circle cx="584" cy="61" r="3.5" fill="#C0521F"/>
-            <line x1="611" y1="100" x2="611" y2="45" stroke="#C0521F" stroke-width="2"/><circle cx="611" cy="45" r="3.5" fill="#C0521F"/>
-            <line x1="638" y1="100" x2="638" y2="61" stroke="#C0521F" stroke-width="2"/><circle cx="638" cy="61" r="3.5" fill="#C0521F"/>
-            <line x1="665" y1="100" x2="665" y2="100" stroke="#C0521F" stroke-width="2"/><circle cx="665" cy="100" r="3.5" fill="#C0521F"/>
-            <text x="535" y="190" font-size="9" fill="#7A7368" text-anchor="middle">x[n] = A cos(ω₀n + φ),  ω₀ = 2πf₀/fₛ</text>
-          </svg>
-          <p class="diagram-caption">Sampling a continuous-time cosine produces a discrete-time stem sequence that follows the same cosine values</p>
-        </div>
-        <div class="diagram-wrap">
-          <svg viewBox="0 0 700 170" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
-            <!-- Three method comparison table -->
-            <text x="350" y="18" font-size="10" fill="#7A7368" text-anchor="middle">Three algorithms for real-time cosine generation</text>
-            <!-- Headers -->
-            <rect x="10" y="28" width="215" height="24" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1"/>
-            <rect x="225" y="28" width="155" height="24" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1"/>
-            <rect x="380" y="28" width="155" height="24" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1"/>
-            <rect x="535" y="28" width="155" height="24" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1"/>
-            <text x="117" y="44" font-size="9" fill="#C0521F" text-anchor="middle" font-weight="500">Method</text>
-            <text x="302" y="44" font-size="9" fill="#C0521F" text-anchor="middle" font-weight="500">Speed</text>
-            <text x="457" y="44" font-size="9" fill="#C0521F" text-anchor="middle" font-weight="500">Accuracy</text>
-            <text x="612" y="44" font-size="9" fill="#C0521F" text-anchor="middle" font-weight="500">Stability</text>
-            <!-- Row 1: Direct -->
-            <rect x="10" y="52" width="215" height="32" fill="none" stroke="#D9C9A8" stroke-width="1"/>
-            <rect x="225" y="52" width="155" height="32" fill="none" stroke="#D9C9A8" stroke-width="1"/>
-            <rect x="380" y="52" width="155" height="32" fill="none" stroke="#D9C9A8" stroke-width="1"/>
-            <rect x="535" y="52" width="155" height="32" fill="none" stroke="#D9C9A8" stroke-width="1"/>
-            <text x="117" y="65" font-size="9" fill="#1A1A18" text-anchor="middle">Direct: cos(ω₀n)</text>
-            <text x="117" y="78" font-size="8" fill="#7A7368" text-anchor="middle">library call each sample</text>
-            <text x="302" y="71" font-size="9" fill="#C0521F" text-anchor="middle">Slow ✗</text>
-            <text x="457" y="71" font-size="9" fill="#4A6741" text-anchor="middle">Exact ✓</text>
-            <text x="612" y="71" font-size="9" fill="#4A6741" text-anchor="middle">Stable ✓</text>
-            <!-- Row 2: Recursive -->
-            <rect x="10" y="84" width="215" height="34" fill="none" stroke="#D9C9A8" stroke-width="1"/>
-            <rect x="225" y="84" width="155" height="34" fill="none" stroke="#D9C9A8" stroke-width="1"/>
-            <rect x="380" y="84" width="155" height="34" fill="none" stroke="#D9C9A8" stroke-width="1"/>
-            <rect x="535" y="84" width="155" height="34" fill="none" stroke="#D9C9A8" stroke-width="1"/>
-            <text x="117" y="97" font-size="9" fill="#1A1A18" text-anchor="middle">Recursive oscillator</text>
-            <text x="117" y="110" font-size="8" fill="#7A7368" text-anchor="middle">y[n] = 2cos(ω₀)y[n-1] − y[n-2]</text>
-            <text x="302" y="104" font-size="9" fill="#4A6741" text-anchor="middle">Fast ✓</text>
-            <text x="457" y="104" font-size="9" fill="#7A7368" text-anchor="middle">Drift over time</text>
-            <text x="612" y="104" font-size="9" fill="#C0521F" text-anchor="middle">BIBO unstable ✗</text>
-            <!-- Row 3: Lookup -->
-            <rect x="10" y="118" width="215" height="34" fill="none" stroke="#D9C9A8" stroke-width="1"/>
-            <rect x="225" y="118" width="155" height="34" fill="none" stroke="#D9C9A8" stroke-width="1"/>
-            <rect x="380" y="118" width="155" height="34" fill="none" stroke="#D9C9A8" stroke-width="1"/>
-            <rect x="535" y="118" width="155" height="34" fill="none" stroke="#D9C9A8" stroke-width="1"/>
-            <text x="117" y="131" font-size="9" fill="#1A1A18" text-anchor="middle">Lookup table</text>
-            <text x="117" y="144" font-size="8" fill="#7A7368" text-anchor="middle">precompute + phase accumulator</text>
-            <text x="302" y="138" font-size="9" fill="#4A6741" text-anchor="middle">Fast ✓</text>
-            <text x="457" y="138" font-size="9" fill="#4A6741" text-anchor="middle">Near-exact ✓</text>
-            <text x="612" y="138" font-size="9" fill="#4A6741" text-anchor="middle">Stable ✓</text>
-            <!-- Highlight best row -->
-            <rect x="10" y="118" width="680" height="34" fill="rgba(74,103,65,0.06)" stroke="none"/>
-            <text x="350" y="162" font-size="8" fill="#4A6741" text-anchor="middle">★ Lookup table: best practical tradeoff for real-time embedded systems</text>
-          </svg>
-          <p class="diagram-caption">Three methods for generating sinusoids — only the lookup table combines speed, accuracy, and stability</p>
-        </div>
-
+        
         <div class="subsection">
           <p class="subsection-label">Concepts</p>
           <div class="subsection-body">
@@ -839,72 +777,7 @@ li .eq-block { margin-left: -1.2rem; }
           When something in a lab goes wrong, the spectrogram tells you where the problem is in frequency and time.</p>
         </div>
 
-        <div class="diagram-wrap">
-          <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
-            <defs><marker id="a2" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#7A7368"/></marker></defs>
-            <text x="350" y="18" font-size="10" fill="#7A7368" text-anchor="middle">LTI system: time domain vs. frequency domain</text>
-            <!-- Time domain -->
-            <rect x="10" y="25" width="320" height="155" rx="3" fill="rgba(192,82,31,0.03)" stroke="#D9C9A8" stroke-width="1"/>
-            <text x="170" y="42" font-size="9" fill="#7A7368" text-anchor="middle">TIME DOMAIN</text>
-            <text x="50" y="90" font-size="12" fill="#C0521F" font-weight="500">x[n]</text>
-            <line x1="82" y1="86" x2="122" y2="86" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a2)"/>
-            <rect x="127" y="70" width="80" height="32" rx="2" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1.5"/>
-            <text x="167" y="88" font-size="10" fill="#1A1A18" text-anchor="middle">h[n]</text>
-            <line x1="207" y1="86" x2="247" y2="86" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a2)"/>
-            <text x="265" y="90" font-size="12" fill="#C0521F" font-weight="500">y[n]</text>
-            <text x="170" y="120" font-size="9" fill="#7A7368" text-anchor="middle">y[n] = x[n] * h[n]</text>
-            <text x="170" y="136" font-size="8" fill="#7A7368" text-anchor="middle">(convolution)</text>
-            <text x="170" y="164" font-size="8" fill="#7A7368" text-anchor="middle">★ LTI systems cannot create new frequencies</text>
-            <!-- Double arrow -->
-            <text x="350" y="92" font-size="14" fill="#D9C9A8" text-anchor="middle">⟺</text>
-            <text x="350" y="110" font-size="8" fill="#7A7368" text-anchor="middle">DTFT</text>
-            <!-- Freq domain -->
-            <rect x="380" y="25" width="310" height="155" rx="3" fill="rgba(74,103,65,0.03)" stroke="#D9C9A8" stroke-width="1"/>
-            <text x="535" y="42" font-size="9" fill="#7A7368" text-anchor="middle">FREQUENCY DOMAIN</text>
-            <text x="398" y="90" font-size="12" fill="#C0521F" font-weight="500">X(eʲω)</text>
-            <line x1="440" y1="86" x2="475" y2="86" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a2)"/>
-            <text x="493" y="90" font-size="13" fill="#4A6741" font-weight="500">×</text>
-            <line x1="507" y1="86" x2="542" y2="86" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a2)"/>
-            <text x="563" y="90" font-size="12" fill="#C0521F" font-weight="500">Y(eʲω)</text>
-            <text x="493" y="65" font-size="12" fill="#4A6741">H(eʲω)</text>
-            <line x1="500" y1="70" x2="500" y2="79" stroke="#4A6741" stroke-width="1.5" marker-end="url(#a2)"/>
-            <text x="535" y="120" font-size="9" fill="#7A7368" text-anchor="middle">Y(eʲω) = X(eʲω) · H(eʲω)</text>
-            <text x="535" y="136" font-size="8" fill="#7A7368" text-anchor="middle">(multiplication)</text>
-            <text x="535" y="160" font-size="8" fill="#4A6741" text-anchor="middle">|H(eʲω)| = magnitude response (how each freq is scaled)</text>
-          </svg>
-          <p class="diagram-caption">Convolution in time ↔ multiplication in frequency — the central theorem of LTI systems</p>
-        </div>
-
-        <div class="diagram-wrap">
-          <svg viewBox="0 0 700 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
-            <defs>
-              <marker id="arr2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-                <polygon points="0 0, 8 3, 0 6" fill="#7A7368"/>
-              </marker>
-            </defs>
-            <!-- x[n] box -->
-            <text x="30" y="88" font-size="13" fill="#C0521F" font-weight="500">x[n]</text>
-            <!-- Arrow in -->
-            <line x1="65" y1="85" x2="155" y2="85" stroke="#7A7368" stroke-width="1.5" marker-end="url(#arr2)"/>
-            <!-- H box -->
-            <rect x="160" y="60" width="120" height="50" rx="3" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1.5"/>
-            <text x="220" y="82" font-size="11" fill="#1A1A18" text-anchor="middle" font-weight="500">LTI System</text>
-            <text x="220" y="98" font-size="10" fill="#7A7368" text-anchor="middle">H(e^jω)</text>
-            <!-- Arrow out -->
-            <line x1="280" y1="85" x2="370" y2="85" stroke="#7A7368" stroke-width="1.5" marker-end="url(#arr2)"/>
-            <!-- y[n] -->
-            <text x="382" y="88" font-size="13" fill="#C0521F" font-weight="500">y[n]</text>
-            <!-- Freq domain -->
-            <text x="220" y="140" font-size="9" fill="#7A7368" text-anchor="middle">Time domain: y[n] = x[n] * h[n]</text>
-            <!-- = -->
-            <text x="465" y="65" font-size="11" fill="#7A7368" text-anchor="middle">Frequency domain:</text>
-            <text x="465" y="82" font-size="11" fill="#1A1A18" text-anchor="middle" font-weight="500">Y(e^jω) = X(e^jω) · H(e^jω)</text>
-            <text x="465" y="100" font-size="10" fill="#7A7368" text-anchor="middle">convolution → multiplication</text>
-            <rect x="415" y="52" width="200" height="62" rx="3" fill="none" stroke="#D9C9A8" stroke-width="1" stroke-dasharray="4,3"/>
-          </svg>
-          <p class="diagram-caption">LTI systems: convolution in time ↔ multiplication in frequency</p>
-        </div>
-
+        
         <div class="subsection">
           <p class="subsection-label">Concepts</p>
           <div class="subsection-body">
@@ -973,139 +846,7 @@ li .eq-block { margin-left: -1.2rem; }
           it is the prerequisite for everything that follows.</p>
         </div>
 
-        <div class="diagram-wrap">
-          <svg viewBox="0 0 700 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
-            <defs><marker id="a3" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#7A7368"/></marker></defs>
-            <text x="350" y="16" font-size="10" fill="#7A7368" text-anchor="middle">N-tap FIR filter: tapped delay line (direct form)</text>
-            <!-- Input arrow -->
-            <text x="16" y="72" font-size="11" fill="#C0521F" font-weight="500">x[n]</text>
-            <line x1="50" y1="68" x2="88" y2="68" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a3)"/>
-            <!-- Delay boxes -->
-            <rect x="93" y="52" width="58" height="32" rx="2" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1.5"/>
-            <text x="122" y="73" font-size="11" fill="#1A1A18" text-anchor="middle">z⁻¹</text>
-            <line x1="151" y1="68" x2="189" y2="68" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a3)"/>
-            <rect x="194" y="52" width="58" height="32" rx="2" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1.5"/>
-            <text x="223" y="73" font-size="11" fill="#1A1A18" text-anchor="middle">z⁻¹</text>
-            <line x1="252" y1="68" x2="290" y2="68" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a3)"/>
-            <text x="310" y="72" font-size="14" fill="#7A7368">···</text>
-            <line x1="335" y1="68" x2="373" y2="68" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a3)"/>
-            <rect x="378" y="52" width="58" height="32" rx="2" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1.5"/>
-            <text x="407" y="73" font-size="11" fill="#1A1A18" text-anchor="middle">z⁻¹</text>
-            <!-- Taps down from input and each delay -->
-            <line x1="70" y1="68" x2="70" y2="104" stroke="#D9C9A8" stroke-width="1"/>
-            <line x1="122" y1="84" x2="122" y2="104" stroke="#D9C9A8" stroke-width="1"/>
-            <line x1="223" y1="84" x2="223" y2="104" stroke="#D9C9A8" stroke-width="1"/>
-            <line x1="407" y1="84" x2="407" y2="104" stroke="#D9C9A8" stroke-width="1"/>
-            <!-- Multiplier circles -->
-            <circle cx="70" cy="116" r="13" fill="#FAF7F2" stroke="#C0521F" stroke-width="1.5"/>
-            <text x="70" y="120" font-size="9" fill="#C0521F" text-anchor="middle">h[0]</text>
-            <circle cx="122" cy="116" r="13" fill="#FAF7F2" stroke="#C0521F" stroke-width="1.5"/>
-            <text x="122" y="120" font-size="9" fill="#C0521F" text-anchor="middle">h[1]</text>
-            <circle cx="223" cy="116" r="13" fill="#FAF7F2" stroke="#C0521F" stroke-width="1.5"/>
-            <text x="223" y="120" font-size="9" fill="#C0521F" text-anchor="middle">h[2]</text>
-            <circle cx="407" cy="116" r="13" fill="#FAF7F2" stroke="#C0521F" stroke-width="1.5"/>
-            <text x="407" y="120" font-size="9" fill="#C0521F" text-anchor="middle">h[N−1]</text>
-            <!-- Lines to adder -->
-            <line x1="70" y1="129" x2="70" y2="155" stroke="#D9C9A8" stroke-width="1"/>
-            <line x1="122" y1="129" x2="122" y2="155" stroke="#D9C9A8" stroke-width="1"/>
-            <line x1="223" y1="129" x2="223" y2="155" stroke="#D9C9A8" stroke-width="1"/>
-            <line x1="407" y1="129" x2="407" y2="155" stroke="#D9C9A8" stroke-width="1"/>
-            <line x1="70" y1="155" x2="555" y2="155" stroke="#D9C9A8" stroke-width="1"/>
-            <circle cx="565" cy="155" r="13" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1.5"/>
-            <text x="565" y="160" font-size="14" fill="#1A1A18" text-anchor="middle">+</text>
-            <line x1="578" y1="155" x2="625" y2="155" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a3)"/>
-            <text x="643" y="159" font-size="11" fill="#C0521F" font-weight="500">y[n]</text>
-            <!-- Annotation -->
-            <text x="350" y="182" font-size="8" fill="#7A7368" text-anchor="middle">N multiplications + N−1 additions per output sample · Always BIBO stable · Symmetric h[n]⟹Linear phase</text>
-          </svg>
-          <p class="diagram-caption">FIR tapped delay line: N past inputs weighted by coefficients h[k] and summed</p>
-        </div>
         
-        <div class="diagram-wrap">
-          <svg viewBox="0 0 700 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
-            <defs><marker id="a3b" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#7A7368"/></marker></defs>
-            <text x="350" y="16" font-size="10" fill="#7A7368" text-anchor="middle">Linear phase vs. non-linear phase: effect on a pulse signal</text>
-            <!-- Left: linear phase -->
-            <text x="175" y="34" font-size="9" fill="#7A7368" text-anchor="middle">Linear phase filter (symmetric h[n])</text>
-            <line x1="20" y1="130" x2="330" y2="130" stroke="#D9C9A8" stroke-width="1" marker-end="url(#a3b)"/>
-            <line x1="30" y1="170" x2="30" y2="40" stroke="#D9C9A8" stroke-width="1" marker-end="url(#a3b)"/>
-            <!-- Input pulse (dashed) -->
-            <polyline points="60,130 60,65 140,65 140,130" fill="none" stroke="#D9C9A8" stroke-width="1.5" stroke-dasharray="5,3"/>
-            <!-- Output pulse (shifted, same shape) -->
-            <polyline points="110,130 110,65 190,65 190,130" fill="none" stroke="#C0521F" stroke-width="2.5"/>
-            <text x="100" y="58" font-size="8" fill="#D9C9A8" text-anchor="middle">input</text>
-            <text x="155" y="58" font-size="8" fill="#C0521F" text-anchor="middle">output</text>
-            <text x="175" y="155" font-size="8" fill="#7A7368" text-anchor="middle">Shape preserved — only delayed by τ = (N−1)/2</text>
-            <text x="175" y="168" font-size="8" fill="#4A6741" text-anchor="middle">✓ All frequencies delayed equally</text>
-            <!-- Right: non-linear phase -->
-            <text x="525" y="34" font-size="9" fill="#7A7368" text-anchor="middle">Non-linear phase filter</text>
-            <line x1="370" y1="130" x2="680" y2="130" stroke="#D9C9A8" stroke-width="1" marker-end="url(#a3b)"/>
-            <line x1="380" y1="170" x2="380" y2="40" stroke="#D9C9A8" stroke-width="1" marker-end="url(#a3b)"/>
-            <!-- Input pulse (dashed) -->
-            <polyline points="410,130 410,65 490,65 490,130" fill="none" stroke="#D9C9A8" stroke-width="1.5" stroke-dasharray="5,3"/>
-            <!-- Distorted output -->
-            <path d="M410,130 C415,110 425,70 440,62 C455,55 465,68 475,75 C485,82 500,95 510,110 C520,118 530,125 540,130" fill="none" stroke="#C0521F" stroke-width="2.5"/>
-            <text x="450" y="52" font-size="8" fill="#D9C9A8" text-anchor="middle">input</text>
-            <text x="490" y="85" font-size="8" fill="#C0521F" text-anchor="middle">output</text>
-            <text x="525" y="155" font-size="8" fill="#7A7368" text-anchor="middle">Shape distorted — different freqs delayed by different amounts</text>
-            <text x="525" y="168" font-size="8" fill="#C0521F" text-anchor="middle">✗ Waveform smeared in time</text>
-          </svg>
-          <p class="diagram-caption">Linear phase (symmetric FIR) preserves pulse shape — non-linear phase smears it in time</p>
-        </div>
-        
-        <div class="diagram-wrap">
-          <svg viewBox="0 0 700 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
-            <defs>
-              <marker id="arr3" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
-                <polygon points="0 0, 7 2.5, 0 5" fill="#7A7368"/>
-              </marker>
-            </defs>
-            <!-- Title -->
-            <text x="350" y="18" font-size="10" fill="#7A7368" text-anchor="middle">N-tap FIR tapped delay line (circular buffer)</text>
-            <!-- Input -->
-            <text x="18" y="72" font-size="11" fill="#C0521F" font-weight="500">x[n]</text>
-            <line x1="50" y1="68" x2="90" y2="68" stroke="#7A7368" stroke-width="1.5" marker-end="url(#arr3)"/>
-            <!-- Delay boxes -->
-            <g>
-              <rect x="95" y="52" width="60" height="32" rx="2" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1.5"/>
-              <text x="125" y="73" font-size="11" fill="#1A1A18" text-anchor="middle">z⁻¹</text>
-            </g>
-            <line x1="155" y1="68" x2="195" y2="68" stroke="#7A7368" stroke-width="1.5" marker-end="url(#arr3)"/>
-            <g>
-              <rect x="200" y="52" width="60" height="32" rx="2" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1.5"/>
-              <text x="230" y="73" font-size="11" fill="#1A1A18" text-anchor="middle">z⁻¹</text>
-            </g>
-            <line x1="260" y1="68" x2="300" y2="68" stroke="#7A7368" stroke-width="1.5" marker-end="url(#arr3)"/>
-            <text x="322" y="72" font-size="14" fill="#7A7368">···</text>
-            <line x1="345" y1="68" x2="385" y2="68" stroke="#7A7368" stroke-width="1.5" marker-end="url(#arr3)"/>
-            <g>
-              <rect x="390" y="52" width="60" height="32" rx="2" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1.5"/>
-              <text x="420" y="73" font-size="11" fill="#1A1A18" text-anchor="middle">z⁻¹</text>
-            </g>
-            <!-- Taps down -->
-            <line x1="125" y1="84" x2="125" y2="115" stroke="#D9C9A8" stroke-width="1"/>
-            <line x1="230" y1="84" x2="230" y2="115" stroke="#D9C9A8" stroke-width="1"/>
-            <line x1="420" y1="84" x2="420" y2="115" stroke="#D9C9A8" stroke-width="1"/>
-            <!-- Multipliers -->
-            <circle cx="125" cy="125" r="12" fill="#FAF7F2" stroke="#C0521F" stroke-width="1.5"/>
-            <text x="125" y="129" font-size="9" fill="#C0521F" text-anchor="middle">h[0]</text>
-            <circle cx="230" cy="125" r="12" fill="#FAF7F2" stroke="#C0521F" stroke-width="1.5"/>
-            <text x="230" y="129" font-size="9" fill="#C0521F" text-anchor="middle">h[1]</text>
-            <circle cx="420" cy="125" r="12" fill="#FAF7F2" stroke="#C0521F" stroke-width="1.5"/>
-            <text x="420" y="129" font-size="9" fill="#C0521F" text-anchor="middle">h[N-1]</text>
-            <!-- Sum -->
-            <line x1="125" y1="137" x2="125" y2="158" stroke="#D9C9A8" stroke-width="1"/>
-            <line x1="230" y1="137" x2="230" y2="158" stroke="#D9C9A8" stroke-width="1"/>
-            <line x1="420" y1="137" x2="420" y2="158" stroke="#D9C9A8" stroke-width="1"/>
-            <line x1="125" y1="158" x2="560" y2="158" stroke="#D9C9A8" stroke-width="1"/>
-            <circle cx="560" cy="158" r="14" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1.5"/>
-            <text x="560" y="163" font-size="14" fill="#1A1A18" text-anchor="middle">+</text>
-            <line x1="574" y1="158" x2="620" y2="158" stroke="#7A7368" stroke-width="1.5" marker-end="url(#arr3)"/>
-            <text x="635" y="162" font-size="11" fill="#C0521F" font-weight="500">y[n]</text>
-          </svg>
-          <p class="diagram-caption">FIR filter structure: tapped delay line with coefficient multipliers summed at output</p>
-        </div>
-
         <div class="subsection">
           <p class="subsection-label">Concepts</p>
           <div class="subsection-body">
@@ -1239,88 +980,6 @@ li .eq-block { margin-left: -1.2rem; }
           design you will ever work on. Knowing when and why aliasing occurs is the first step to
           preventing it.</p>
         </div>
-
-        <div class="diagram-wrap">
-          <svg viewBox="0 0 700 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
-            <defs><marker id="a5" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#7A7368"/></marker></defs>
-            <!-- GOOD SAMPLING -->
-            <text x="170" y="16" font-size="10" fill="#4A6741" text-anchor="middle">✓ fₛ &gt; 2f₀  (no aliasing)</text>
-            <line x1="20" y1="110" x2="320" y2="110" stroke="#D9C9A8" stroke-width="1" marker-end="url(#a5)"/>
-            <line x1="30" y1="180" x2="30" y2="28" stroke="#D9C9A8" stroke-width="1" marker-end="url(#a5)"/>
-            <!-- Original cosine (dashed background) -->
-            <path d="M30,110 C51,45 72,45 93,110 C114,175 135,175 156,110 C177,45 198,45 219,110 C240,175 261,175 282,110" fill="none" stroke="#D9C9A8" stroke-width="1.5" stroke-dasharray="4,3"/>
-            <!-- Well-placed stems: cosine period = 3 stems -->
-            <line x1="30" y1="110" x2="30" y2="45" stroke="#C0521F" stroke-width="2"/><circle cx="30" cy="45" r="4" fill="#C0521F"/>
-            <line x1="62" y1="110" x2="62" y2="142" stroke="#C0521F" stroke-width="2"/><circle cx="62" cy="142" r="4" fill="#C0521F"/>
-            <line x1="94" y1="110" x2="94" y2="175" stroke="#C0521F" stroke-width="2"/><circle cx="94" cy="175" r="4" fill="#C0521F"/>
-            <line x1="126" y1="110" x2="126" y2="142" stroke="#C0521F" stroke-width="2"/><circle cx="126" cy="142" r="4" fill="#C0521F"/>
-            <line x1="158" y1="110" x2="158" y2="45" stroke="#C0521F" stroke-width="2"/><circle cx="158" cy="45" r="4" fill="#C0521F"/>
-            <line x1="190" y1="110" x2="190" y2="142" stroke="#C0521F" stroke-width="2"/><circle cx="190" cy="142" r="4" fill="#C0521F"/>
-            <line x1="222" y1="110" x2="222" y2="175" stroke="#C0521F" stroke-width="2"/><circle cx="222" cy="175" r="4" fill="#C0521F"/>
-            <line x1="254" y1="110" x2="254" y2="142" stroke="#C0521F" stroke-width="2"/><circle cx="254" cy="142" r="4" fill="#C0521F"/>
-            <line x1="286" y1="110" x2="286" y2="45" stroke="#C0521F" stroke-width="2"/><circle cx="286" cy="45" r="4" fill="#C0521F"/>
-            <text x="170" y="197" font-size="8" fill="#4A6741" text-anchor="middle">Signal fully recoverable — stems capture full oscillation</text>
-            <!-- BAD SAMPLING -->
-            <text x="530" y="16" font-size="10" fill="#C0521F" text-anchor="middle">✗ fₛ &lt; 2f₀  (aliasing!)</text>
-            <line x1="380" y1="110" x2="680" y2="110" stroke="#D9C9A8" stroke-width="1" marker-end="url(#a5)"/>
-            <line x1="390" y1="180" x2="390" y2="28" stroke="#D9C9A8" stroke-width="1" marker-end="url(#a5)"/>
-            <!-- High-freq original (dashed) -->
-            <path d="M390,110 C398,60 406,60 414,110 C422,160 430,160 438,110 C446,60 454,60 462,110 C470,160 478,160 486,110 C494,60 502,60 510,110 C518,160 526,160 534,110 C542,60 550,60 558,110 C566,160 574,160 582,110 C590,60 598,60 606,110 C614,160 622,160 630,110 C638,60 646,60 654,110" fill="none" stroke="#D9C9A8" stroke-width="1.5" stroke-dasharray="4,3"/>
-            <!-- Sparse stems — too few per period -->
-            <line x1="390" y1="110" x2="390" y2="65" stroke="#C0521F" stroke-width="2"/><circle cx="390" cy="65" r="4" fill="#C0521F"/>
-            <line x1="438" y1="110" x2="438" y2="128" stroke="#C0521F" stroke-width="2"/><circle cx="438" cy="128" r="4" fill="#C0521F"/>
-            <line x1="486" y1="110" x2="486" y2="98" stroke="#C0521F" stroke-width="2"/><circle cx="486" cy="98" r="4" fill="#C0521F"/>
-            <line x1="534" y1="110" x2="534" y2="122" stroke="#C0521F" stroke-width="2"/><circle cx="534" cy="122" r="4" fill="#C0521F"/>
-            <line x1="582" y1="110" x2="582" y2="70" stroke="#C0521F" stroke-width="2"/><circle cx="582" cy="70" r="4" fill="#C0521F"/>
-            <line x1="630" y1="110" x2="630" y2="132" stroke="#C0521F" stroke-width="2"/><circle cx="630" cy="132" r="4" fill="#C0521F"/>
-            <!-- False low-freq alias -->
-            <path d="M390,65 C440,30 490,100 534,122 C580,140 630,132 660,110" fill="none" stroke="#C0521F" stroke-width="2" opacity="0.5"/>
-            <text x="530" y="164" font-size="8" fill="#C0521F" text-anchor="middle">Alias — false low-frequency signal appears</text>
-            <text x="530" y="178" font-size="8" fill="#C0521F" text-anchor="middle">indistinguishable from a genuine low-frequency component</text>
-            <text x="530" y="197" font-size="8" fill="#7A7368" text-anchor="middle">Anti-aliasing LPF must remove f₀ before ADC when fₛ &lt; 2f₀</text>
-          </svg>
-          <p class="diagram-caption">Left: sufficient sampling — stems faithfully trace the cosine. Right: undersampling — a false low-frequency alias appears.</p>
-        </div>
-        
-        <div class="diagram-wrap">
-          <svg viewBox="0 0 700 185" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
-            <defs><marker id="a5b" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#7A7368"/></marker></defs>
-            <text x="350" y="14" font-size="10" fill="#7A7368" text-anchor="middle">Frequency-domain view of sampling: spectral images appear at multiples of fₛ</text>
-            <!-- Original bandlimited spectrum -->
-            <text x="175" y="32" font-size="9" fill="#7A7368" text-anchor="middle">Baseband spectrum X(f)</text>
-            <line x1="20" y1="140" x2="330" y2="140" stroke="#D9C9A8" stroke-width="1" marker-end="url(#a5b)"/>
-            <line x1="175" y1="155" x2="175" y2="30" stroke="#D9C9A8" stroke-width="1" marker-end="url(#a5b)"/>
-            <!-- Triangle spectrum -->
-            <polygon points="100,140 140,55 175,55 215,55 250,140" fill="rgba(192,82,31,0.15)" stroke="#C0521F" stroke-width="1.5"/>
-            <text x="175" y="50" font-size="8" fill="#C0521F" text-anchor="middle">signal</text>
-            <text x="99" y="153" font-size="8" fill="#7A7368" text-anchor="middle">−B</text>
-            <text x="251" y="153" font-size="8" fill="#7A7368" text-anchor="middle">+B</text>
-            <text x="175" y="153" font-size="8" fill="#7A7368" text-anchor="middle">0</text>
-            <text x="330" y="153" font-size="8" fill="#7A7368">f</text>
-            <!-- After sampling spectrum (with images) -->
-            <text x="530" y="32" font-size="9" fill="#7A7368" text-anchor="middle">Sampled spectrum X_s(f) — images at kfₛ</text>
-            <line x1="375" y1="140" x2="690" y2="140" stroke="#D9C9A8" stroke-width="1" marker-end="url(#a5b)"/>
-            <line x1="530" y1="155" x2="530" y2="30" stroke="#D9C9A8" stroke-width="1" marker-end="url(#a5b)"/>
-            <!-- Main copy -->
-            <polygon points="455,140 495,65 530,65 565,65 605,140" fill="rgba(192,82,31,0.15)" stroke="#C0521F" stroke-width="1.5"/>
-            <!-- Left image -->
-            <polygon points="385,140 400,100 420,100 440,100 455,140" fill="rgba(192,82,31,0.07)" stroke="#C0521F" stroke-width="1" stroke-dasharray="3,2"/>
-            <!-- Right image -->
-            <polygon points="605,140 620,100 640,100 660,100 675,140" fill="rgba(192,82,31,0.07)" stroke="#C0521F" stroke-width="1" stroke-dasharray="3,2"/>
-            <text x="530" y="60" font-size="8" fill="#C0521F" text-anchor="middle">baseband copy</text>
-            <text x="415" y="92" font-size="7" fill="#C0521F" text-anchor="middle">image at −fₛ</text>
-            <text x="645" y="92" font-size="7" fill="#C0521F" text-anchor="middle">image at +fₛ</text>
-            <text x="455" y="153" font-size="7" fill="#7A7368" text-anchor="middle">−fₛ/2</text>
-            <text x="605" y="153" font-size="7" fill="#7A7368" text-anchor="middle">+fₛ/2</text>
-            <text x="530" y="153" font-size="7" fill="#7A7368" text-anchor="middle">0</text>
-            <!-- Nyquist boundaries -->
-            <line x1="455" y1="30" x2="455" y2="140" stroke="#4A6741" stroke-width="1" stroke-dasharray="3,2"/>
-            <line x1="605" y1="30" x2="605" y2="140" stroke="#4A6741" stroke-width="1" stroke-dasharray="3,2"/>
-            <text x="530" y="173" font-size="8" fill="#4A6741" text-anchor="middle">Nyquist band [−fₛ/2, fₛ/2] — signal must fit here to avoid aliasing</text>
-          </svg>
-          <p class="diagram-caption">Sampling in the frequency domain: copies of X(f) appear at every multiple of fₛ — the Nyquist band must contain the full signal</p>
-        </div>
-        
         <p class="subsection-label">Concepts</p>
           <div class="subsection-body">
             <p>Sampling is the bridge between the analog physical world and the digital DSP system. The <span class="term">Nyquist-Shannon Sampling Theorem</span> establishes the fundamental requirement for perfect reconstruction: you must sample faster than twice the signal's one-sided bandwidth \(B\):</p>
@@ -1385,45 +1044,6 @@ li .eq-block { margin-left: -1.2rem; }
           every modem from dial-up to LTE. Without it, symbols collide with each other at the receiver
           and the communication link fails entirely.</p>
         </div>
-
-        <div class="diagram-wrap">
-          <svg viewBox="0 0 700 195" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
-            <defs><marker id="a6" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#7A7368"/></marker></defs>
-            <text x="350" y="15" font-size="10" fill="#7A7368" text-anchor="middle">Pulse shapes and their tradeoffs: bandwidth vs. ISI vs. filter length</text>
-            <!-- Three pulse shapes -->
-            <!-- 1: Rectangular -->
-            <text x="116" y="33" font-size="9" fill="#7A7368" text-anchor="middle">Rectangular (ZOH)</text>
-            <line x1="20" y1="120" x2="212" y2="120" stroke="#D9C9A8" stroke-width="1"/>
-            <line x1="30" y1="170" x2="30" y2="45" stroke="#D9C9A8" stroke-width="1"/>
-            <polyline points="50,120 50,65 105,65 105,120" fill="none" stroke="#C0521F" stroke-width="2.5"/>
-            <text x="116" y="145" font-size="8" fill="#7A7368" text-anchor="middle">Simple, wide bandwidth</text>
-            <text x="116" y="158" font-size="8" fill="#C0521F" text-anchor="middle">causes ISI ✗</text>
-            <!-- 2: Raised cosine -->
-            <text x="350" y="33" font-size="9" fill="#7A7368" text-anchor="middle">Raised Cosine (α=0.5)</text>
-            <line x1="245" y1="120" x2="455" y2="120" stroke="#D9C9A8" stroke-width="1"/>
-            <line x1="255" y1="170" x2="255" y2="45" stroke="#D9C9A8" stroke-width="1"/>
-            <path d="M265,120 C278,120 288,118 298,108 C308,96 318,70 350,58 C382,70 392,96 402,108 C412,118 422,120 435,120" fill="none" stroke="#C0521F" stroke-width="2.5"/>
-            <!-- Zero crossings at ±T -->
-            <circle cx="298" cy="120" r="3" fill="#4A6741"/><circle cx="402" cy="120" r="3" fill="#4A6741"/>
-            <text x="298" y="113" font-size="7" fill="#4A6741">0</text><text x="402" y="113" font-size="7" fill="#4A6741">0</text>
-            <text x="350" y="145" font-size="8" fill="#7A7368" text-anchor="middle">Zero at ±T, ±2T, ... → no ISI</text>
-            <text x="350" y="158" font-size="8" fill="#4A6741" text-anchor="middle">★ Standard comms pulse ✓</text>
-            <!-- 3: Sinc -->
-            <text x="584" y="33" font-size="9" fill="#7A7368" text-anchor="middle">Sinc (ideal, α=0)</text>
-            <line x1="480" y1="120" x2="690" y2="120" stroke="#D9C9A8" stroke-width="1"/>
-            <line x1="490" y1="170" x2="490" y2="45" stroke="#D9C9A8" stroke-width="1"/>
-            <path d="M500,120 C510,118 515,112 520,100 C525,85 530,65 584,50 C638,65 643,85 648,100 C653,112 658,118 668,120" fill="none" stroke="#C0521F" stroke-width="2.5"/>
-            <!-- Sidelobes -->
-            <path d="M500,120 C495,122 490,126 485,120" fill="none" stroke="#C0521F" stroke-width="1.5" opacity="0.5"/>
-            <path d="M668,120 C673,122 678,126 683,120" fill="none" stroke="#C0521F" stroke-width="1.5" opacity="0.5"/>
-            <text x="584" y="145" font-size="8" fill="#7A7368" text-anchor="middle">Minimum bandwidth (Nyquist)</text>
-            <text x="584" y="158" font-size="8" fill="#C0521F" text-anchor="middle">infinite length → impractical ✗</text>
-            <!-- Upsampling chain -->
-            <text x="350" y="178" font-size="8" fill="#7A7368" text-anchor="middle">Tx chain: symbols → upsample ↑L (insert zeros) → pulse shape filter → channel</text>
-          </svg>
-          <p class="diagram-caption">Three pulse shapes: rectangular (simple but ISI), raised cosine (zero ISI at sampling instants), sinc (ideal but infinite)</p>
-        </div>
-        
         <p class="subsection-label">Concepts</p>
           <div class="subsection-body">
             <p>Interpolation is the reverse of sampling — it reconstructs a higher-rate or continuous-time signal from a lower-rate discrete sequence. In the context of digital communications, it is also the mechanism for <span class="term">pulse shaping</span>: controlling the shape of the transmitted waveform to manage bandwidth and minimize inter-symbol interference.</p>
@@ -1485,104 +1105,6 @@ li .eq-block { margin-left: -1.2rem; }
           phone line, it uses PAM at the acoustic level. The principles here are the foundation of the
           infrastructure the modern world depends on, and Lab 5 makes the full chain viscerally concrete.</p>
         </div>
-
-        <div class="diagram-wrap">
-          <svg viewBox="0 0 700 145" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
-            <defs><marker id="a7" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#7A7368"/></marker></defs>
-            <text x="350" y="14" font-size="10" fill="#7A7368" text-anchor="middle">Baseband PAM transceiver block diagram</text>
-            <!-- TRANSMITTER -->
-            <rect x="8" y="22" width="340" height="80" rx="3" fill="rgba(192,82,31,0.04)" stroke="#D9C9A8" stroke-width="1"/>
-            <text x="178" y="35" font-size="8" fill="#C0521F" text-anchor="middle">TRANSMITTER</text>
-            <!-- Bits input -->
-            <text x="14" y="68" font-size="9" fill="#7A7368">bits</text>
-            <text x="14" y="79" font-size="7" fill="#7A7368">1011...</text>
-            <line x1="42" y1="72" x2="62" y2="72" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a7)"/>
-            <!-- Symbol map box -->
-            <rect x="66" y="58" width="65" height="28" rx="2" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1.5"/>
-            <text x="98" y="69" font-size="8" fill="#1A1A18" text-anchor="middle">Bit→Symbol</text>
-            <text x="98" y="80" font-size="7" fill="#7A7368" text-anchor="middle">{±1, ±3}</text>
-            <line x1="131" y1="72" x2="151" y2="72" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a7)"/>
-            <!-- Upsample box -->
-            <rect x="155" y="58" width="55" height="28" rx="2" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1.5"/>
-            <text x="182" y="69" font-size="8" fill="#1A1A18" text-anchor="middle">↑L</text>
-            <text x="182" y="80" font-size="7" fill="#7A7368" text-anchor="middle">insert 0s</text>
-            <line x1="210" y1="72" x2="230" y2="72" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a7)"/>
-            <!-- Pulse shape -->
-            <rect x="234" y="58" width="65" height="28" rx="2" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1.5"/>
-            <text x="266" y="69" font-size="8" fill="#1A1A18" text-anchor="middle">RC Filter</text>
-            <text x="266" y="80" font-size="7" fill="#7A7368" text-anchor="middle">pulse shape</text>
-            <line x1="299" y1="72" x2="319" y2="72" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a7)"/>
-            <!-- Channel wavy line -->
-            <text x="352" y="60" font-size="8" fill="#7A7368" text-anchor="middle">channel</text>
-            <path d="M322,72 C330,62 337,82 345,72 C353,62 360,82 368,72" fill="none" stroke="#7A7368" stroke-width="1.5"/>
-            <text x="352" y="85" font-size="7" fill="#7A7368" text-anchor="middle">AWGN + ISI</text>
-            <line x1="370" y1="72" x2="390" y2="72" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a7)"/>
-            <!-- RECEIVER -->
-            <rect x="393" y="22" width="300" height="80" rx="3" fill="rgba(74,103,65,0.04)" stroke="#D9C9A8" stroke-width="1"/>
-            <text x="543" y="35" font-size="8" fill="#4A6741" text-anchor="middle">RECEIVER</text>
-            <!-- Matched filter -->
-            <rect x="395" y="58" width="65" height="28" rx="2" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1.5"/>
-            <text x="427" y="69" font-size="8" fill="#1A1A18" text-anchor="middle">Match Filt</text>
-            <text x="427" y="80" font-size="7" fill="#7A7368" text-anchor="middle">h[N−n]</text>
-            <line x1="460" y1="72" x2="480" y2="72" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a7)"/>
-            <!-- Downsample -->
-            <rect x="484" y="58" width="55" height="28" rx="2" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1.5"/>
-            <text x="511" y="69" font-size="8" fill="#1A1A18" text-anchor="middle">↓L</text>
-            <text x="511" y="80" font-size="7" fill="#7A7368" text-anchor="middle">timing sync</text>
-            <line x1="539" y1="72" x2="559" y2="72" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a7)"/>
-            <!-- Decide -->
-            <rect x="563" y="58" width="65" height="28" rx="2" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1.5"/>
-            <text x="595" y="69" font-size="8" fill="#1A1A18" text-anchor="middle">Decide</text>
-            <text x="595" y="80" font-size="7" fill="#7A7368" text-anchor="middle">threshold</text>
-            <line x1="628" y1="72" x2="648" y2="72" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a7)"/>
-            <text x="655" y="68" font-size="9" fill="#7A7368">bits</text>
-            <text x="655" y="79" font-size="7" fill="#7A7368">1011...</text>
-            <!-- Shannon capacity note -->
-            <text x="350" y="118" font-size="8" fill="#7A7368" text-anchor="middle">Shannon capacity: C = B·log₂(1+SNR) bps — no system can exceed this rate reliably</text>
-            <text x="350" y="132" font-size="8" fill="#7A7368" text-anchor="middle">More bits/symbol (larger M) → higher rate but needs higher SNR to maintain same BER</text>
-          </svg>
-          <p class="diagram-caption">Complete baseband PAM transceiver: transmitter (symbol map → upsample → pulse shape) and receiver (match filter → downsample → decide)</p>
-        </div>
-        
-        <div class="diagram-wrap">
-          <svg viewBox="0 0 700 185" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
-            <text x="350" y="14" font-size="10" fill="#7A7368" text-anchor="middle">Eye diagrams: matched filter output overlaid over many symbol periods</text>
-            <!-- OPEN EYE (good) -->
-            <text x="175" y="30" font-size="9" fill="#4A6741" text-anchor="middle">✓ Open eye — low ISI, good timing</text>
-            <line x1="20" y1="110" x2="330" y2="110" stroke="#D9C9A8" stroke-width="1"/>
-            <line x1="175" y1="160" x2="175" y2="30" stroke="#D9C9A8" stroke-width="1" stroke-dasharray="3,2"/>
-            <text x="174" y="170" font-size="8" fill="#7A7368" text-anchor="middle">↑ sample here</text>
-            <!-- Multiple overlaid traces forming open eye -->
-            <path d="M30,130 C70,130 100,60 175,55 C250,60 280,130 320,130" fill="none" stroke="#C0521F" stroke-width="1.5" opacity="0.7"/>
-            <path d="M30,125 C70,125 100,55 175,50 C250,55 280,125 320,125" fill="none" stroke="#C0521F" stroke-width="1" opacity="0.5"/>
-            <path d="M30,90 C70,90 100,160 175,165 C250,160 280,90 320,90" fill="none" stroke="#C0521F" stroke-width="1.5" opacity="0.7"/>
-            <path d="M30,95 C70,95 100,165 175,170 C250,165 280,95 320,95" fill="none" stroke="#C0521F" stroke-width="1" opacity="0.5"/>
-            <!-- Transitions -->
-            <path d="M30,90 C55,90 65,130 90,130" fill="none" stroke="#C0521F" stroke-width="1" opacity="0.4"/>
-            <path d="M30,130 C55,130 65,90 90,90" fill="none" stroke="#C0521F" stroke-width="1" opacity="0.4"/>
-            <!-- Eye opening annotation -->
-            <line x1="175" y1="60" x2="175" y2="105" stroke="#4A6741" stroke-width="1.5"/>
-            <line x1="168" y1="60" x2="182" y2="60" stroke="#4A6741" stroke-width="1"/>
-            <line x1="168" y1="105" x2="182" y2="105" stroke="#4A6741" stroke-width="1"/>
-            <text x="190" y="85" font-size="8" fill="#4A6741">eye opening</text>
-            <text x="190" y="96" font-size="7" fill="#4A6741">(noise margin)</text>
-            <!-- CLOSED EYE (bad) -->
-            <text x="530" y="30" font-size="9" fill="#C0521F" text-anchor="middle">✗ Closed eye — high ISI or noise</text>
-            <line x1="385" y1="110" x2="690" y2="110" stroke="#D9C9A8" stroke-width="1"/>
-            <line x1="535" y1="160" x2="535" y2="30" stroke="#D9C9A8" stroke-width="1" stroke-dasharray="3,2"/>
-            <text x="535" y="170" font-size="8" fill="#7A7368" text-anchor="middle">↑ sample here</text>
-            <!-- Closed/messy eye traces -->
-            <path d="M390,120 C420,115 470,100 535,95 C600,100 650,115 680,120" fill="none" stroke="#C0521F" stroke-width="1.5" opacity="0.6"/>
-            <path d="M390,100 C420,105 470,110 535,115 C600,110 650,105 680,100" fill="none" stroke="#C0521F" stroke-width="1.5" opacity="0.6"/>
-            <path d="M390,110 C430,90 480,80 535,78 C590,80 640,90 680,110" fill="none" stroke="#C0521F" stroke-width="1" opacity="0.4"/>
-            <path d="M390,108 C430,128 480,138 535,140 C590,138 640,128 680,108" fill="none" stroke="#C0521F" stroke-width="1" opacity="0.4"/>
-            <path d="M390,130 C420,128 460,120 535,105 C600,120 650,128 680,130" fill="none" stroke="#C0521F" stroke-width="1" opacity="0.5"/>
-            <path d="M390,90 C420,92 460,100 535,115 C600,100 650,92 680,90" fill="none" stroke="#C0521F" stroke-width="1" opacity="0.5"/>
-            <text x="535" y="150" font-size="8" fill="#7A7368" text-anchor="middle">ISI, noise, or timing error collapses the eye — errors become likely</text>
-          </svg>
-          <p class="diagram-caption">Eye diagram: open eye (left) means clean detection; closed eye (right) means ISI or noise is causing errors</p>
-        </div>
-        
         <p class="subsection-label">Concepts</p>
           <div class="subsection-body">
             <p><span class="term">Pulse Amplitude Modulation (PAM)</span> is the foundational scheme of digital communication. The idea is simple: map groups of bits to discrete amplitude levels and transmit a pulse of that amplitude once per symbol period. With \(M\) amplitude levels, each symbol carries \(J = \log_2 M\) bits, and the bit rate relates to the symbol rate by:</p>
@@ -1695,49 +1217,6 @@ li .eq-block { margin-left: -1.2rem; }
           MRI uses it in pulse sequence design. Every time your phone receives a text in a weak
           signal area, a matched filter is part of why it worked.</p>
         </div>
-
-        <div class="diagram-wrap">
-          <svg viewBox="0 0 700 185" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
-            <defs><marker id="a9" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#7A7368"/></marker></defs>
-            <text x="350" y="14" font-size="10" fill="#7A7368" text-anchor="middle">BER vs. Eb/N₀ curve for 2-PAM and 4-PAM — the fundamental communication performance measure</text>
-            <!-- Axes -->
-            <line x1="60" y1="160" x2="630" y2="160" stroke="#1A1A18" stroke-width="1.5" marker-end="url(#a9)"/>
-            <line x1="60" y1="160" x2="60" y2="28" stroke="#1A1A18" stroke-width="1.5" marker-end="url(#a9)"/>
-            <text x="635" y="163" font-size="9" fill="#7A7368">Eb/N₀ (dB)</text>
-            <text x="48" y="26" font-size="9" fill="#7A7368" text-anchor="middle">BER</text>
-            <!-- Y axis labels (log scale) -->
-            <text x="54" y="50" font-size="8" fill="#7A7368" text-anchor="end">10⁻¹</text>
-            <text x="54" y="80" font-size="8" fill="#7A7368" text-anchor="end">10⁻²</text>
-            <text x="54" y="110" font-size="8" fill="#7A7368" text-anchor="end">10⁻³</text>
-            <text x="54" y="140" font-size="8" fill="#7A7368" text-anchor="end">10⁻⁴</text>
-            <!-- X axis labels -->
-            <text x="120" y="173" font-size="8" fill="#7A7368" text-anchor="middle">0</text>
-            <text x="210" y="173" font-size="8" fill="#7A7368" text-anchor="middle">3</text>
-            <text x="300" y="173" font-size="8" fill="#7A7368" text-anchor="middle">6</text>
-            <text x="390" y="173" font-size="8" fill="#7A7368" text-anchor="middle">9</text>
-            <text x="480" y="173" font-size="8" fill="#7A7368" text-anchor="middle">12</text>
-            <text x="570" y="173" font-size="8" fill="#7A7368" text-anchor="middle">15</text>
-            <!-- Grid lines -->
-            <line x1="60" y1="50" x2="625" y2="50" stroke="#D9C9A8" stroke-width="0.5" stroke-dasharray="3,3"/>
-            <line x1="60" y1="80" x2="625" y2="80" stroke="#D9C9A8" stroke-width="0.5" stroke-dasharray="3,3"/>
-            <line x1="60" y1="110" x2="625" y2="110" stroke="#D9C9A8" stroke-width="0.5" stroke-dasharray="3,3"/>
-            <line x1="60" y1="140" x2="625" y2="140" stroke="#D9C9A8" stroke-width="0.5" stroke-dasharray="3,3"/>
-            <!-- 2-PAM BER curve: steeply falling Q function -->
-            <path d="M120,50 C145,55 170,65 195,80 C225,100 260,122 300,136 C345,148 390,155 435,158 C480,160 525,161 570,161" fill="none" stroke="#C0521F" stroke-width="2.5"/>
-            <text x="160" y="48" font-size="9" fill="#C0521F">2-PAM</text>
-            <!-- 4-PAM BER curve: shifted right ~5dB -->
-            <path d="M200,50 C225,54 255,65 285,80 C315,98 355,120 400,135 C445,147 490,155 535,158 C570,160 610,161 625,161" fill="none" stroke="#7A7368" stroke-width="2" stroke-dasharray="5,3"/>
-            <text x="230" y="48" font-size="9" fill="#7A7368">4-PAM (needs ~5 dB more)</text>
-            <!-- Annotation: BER=10^-3 operating point -->
-            <line x1="60" y1="110" x2="300" y2="110" stroke="#4A6741" stroke-width="1" stroke-dasharray="2,2"/>
-            <line x1="300" y1="110" x2="300" y2="160" stroke="#4A6741" stroke-width="1" stroke-dasharray="2,2"/>
-            <circle cx="300" cy="110" r="4" fill="#4A6741"/>
-            <text x="308" y="108" font-size="8" fill="#4A6741">BER=10⁻³ at ~6 dB</text>
-            <text x="308" y="119" font-size="7" fill="#4A6741">(2-PAM)</text>
-          </svg>
-          <p class="diagram-caption">BER vs. Eb/N₀: matched filtering minimizes BER. Each 3 dB SNR increase roughly halves the error rate on the steep part of the curve.</p>
-        </div>
-        
         <p class="subsection-label">Concepts</p>
           <div class="subsection-body">
             <p>Given that the channel adds AWGN to our transmitted signal, a natural question arises: what is the optimal way to filter the received signal before making a symbol decision? The answer is the <span class="term">matched filter</span> — the linear filter that maximizes the signal-to-noise ratio at the decision sampling instant.</p>
@@ -1802,124 +1281,6 @@ li .eq-block { margin-left: -1.2rem; }
           mobile broadband exists at the speeds it does. Lab 6 makes the challenge of carrier phase
           synchronization viscerally real: a few degrees of error corrupts both channels simultaneously.</p>
         </div>
-
-        <div class="diagram-wrap">
-          <svg viewBox="0 0 700 145" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
-            <defs><marker id="a10" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#7A7368"/></marker></defs>
-            <text x="350" y="14" font-size="10" fill="#7A7368" text-anchor="middle">QAM transmitter: two independent PAM streams on orthogonal carriers</text>
-            <!-- I branch -->
-            <text x="16" y="52" font-size="8" fill="#C0521F">I bits</text>
-            <line x1="48" y1="48" x2="68" y2="48" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a10)"/>
-            <rect x="72" y="35" width="55" height="26" rx="2" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1.5"/>
-            <text x="99" y="50" font-size="8" fill="#1A1A18" text-anchor="middle">Sym Map</text>
-            <text x="99" y="60" font-size="7" fill="#7A7368" text-anchor="middle">↑L · RC</text>
-            <line x1="127" y1="48" x2="150" y2="48" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a10)"/>
-            <!-- I mixer -->
-            <circle cx="165" cy="48" r="14" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1.5"/>
-            <text x="165" y="52" font-size="11" fill="#1A1A18" text-anchor="middle">×</text>
-            <text x="165" y="28" font-size="8" fill="#7A7368" text-anchor="middle">cos(ω꜀n)</text>
-            <line x1="165" y1="34" x2="165" y2="34" stroke="#D9C9A8" stroke-width="1"/>
-            <line x1="179" y1="48" x2="420" y2="48" stroke="#7A7368" stroke-width="1.5"/>
-            <!-- Q branch -->
-            <text x="16" y="108" font-size="8" fill="#4A6741">Q bits</text>
-            <line x1="48" y1="104" x2="68" y2="104" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a10)"/>
-            <rect x="72" y="91" width="55" height="26" rx="2" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1.5"/>
-            <text x="99" y="106" font-size="8" fill="#1A1A18" text-anchor="middle">Sym Map</text>
-            <text x="99" y="116" font-size="7" fill="#7A7368" text-anchor="middle">↑L · RC</text>
-            <line x1="127" y1="104" x2="150" y2="104" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a10)"/>
-            <!-- Q mixer -->
-            <circle cx="165" cy="104" r="14" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1.5"/>
-            <text x="165" y="108" font-size="11" fill="#1A1A18" text-anchor="middle">×</text>
-            <text x="165" y="130" font-size="8" fill="#7A7368" text-anchor="middle">−sin(ω꜀n)</text>
-            <line x1="179" y1="104" x2="420" y2="104" stroke="#7A7368" stroke-width="1.5"/>
-            <!-- Sum -->
-            <line x1="420" y1="48" x2="420" y2="104" stroke="#D9C9A8" stroke-width="1"/>
-            <circle cx="430" cy="76" r="14" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1.5"/>
-            <text x="430" y="81" font-size="14" fill="#1A1A18" text-anchor="middle">+</text>
-            <line x1="444" y1="76" x2="510" y2="76" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a10)"/>
-            <!-- Channel block -->
-            <rect x="514" y="62" width="70" height="28" rx="2" fill="#FAF7F2" stroke="#D9C9A8" stroke-width="1.5"/>
-            <text x="549" y="77" font-size="8" fill="#1A1A18" text-anchor="middle">Channel</text>
-            <text x="549" y="87" font-size="7" fill="#7A7368" text-anchor="middle">AWGN+phase</text>
-            <line x1="584" y1="76" x2="625" y2="76" stroke="#7A7368" stroke-width="1.5" marker-end="url(#a10)"/>
-            <text x="638" y="80" font-size="8" fill="#7A7368">Rx</text>
-            <!-- Orthogonality note -->
-            <text x="350" y="135" font-size="8" fill="#7A7368" text-anchor="middle">I and Q are orthogonal: ∫cos(ω꜀t)·sin(ω꜀t)dt = 0 over one symbol period → no interference between streams</text>
-          </svg>
-          <p class="diagram-caption">QAM transmitter: I and Q PAM streams modulated onto orthogonal cosine and sine carriers then summed</p>
-        </div>
-        
-        <div class="diagram-wrap">
-          <svg viewBox="0 0 700 195" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
-            <text x="350" y="14" font-size="10" fill="#7A7368" text-anchor="middle">QAM constellations with Gray coding — more points = more bits/symbol but smaller noise margin</text>
-            <!-- 4-QAM / QPSK -->
-            <text x="115" y="30" font-size="9" fill="#7A7368" text-anchor="middle">4-QAM (QPSK) — 2 bits/symbol</text>
-            <line x1="55" y1="110" x2="175" y2="110" stroke="#D9C9A8" stroke-width="1"/>
-            <line x1="115" y1="172" x2="115" y2="42" stroke="#D9C9A8" stroke-width="1"/>
-            <text x="178" y="113" font-size="8" fill="#7A7368">I</text>
-            <text x="118" y="40" font-size="8" fill="#7A7368">Q</text>
-            <circle cx="80" cy="75" r="6" fill="#C0521F"/>
-            <text x="80" y="69" font-size="7" fill="#C0521F" text-anchor="middle">11</text>
-            <circle cx="150" cy="75" r="6" fill="#C0521F"/>
-            <text x="150" y="69" font-size="7" fill="#C0521F" text-anchor="middle">01</text>
-            <circle cx="80" cy="145" r="6" fill="#C0521F"/>
-            <text x="80" y="158" font-size="7" fill="#C0521F" text-anchor="middle">10</text>
-            <circle cx="150" cy="145" r="6" fill="#C0521F"/>
-            <text x="150" y="158" font-size="7" fill="#C0521F" text-anchor="middle">00</text>
-            <!-- Decision boundaries -->
-            <line x1="55" y1="110" x2="175" y2="110" stroke="#D9C9A8" stroke-width="0.5" stroke-dasharray="2,2"/>
-            <line x1="115" y1="45" x2="115" y2="172" stroke="#D9C9A8" stroke-width="0.5" stroke-dasharray="2,2"/>
-            <!-- 16-QAM -->
-            <text x="350" y="30" font-size="9" fill="#7A7368" text-anchor="middle">16-QAM — 4 bits/symbol</text>
-            <line x1="265" y1="110" x2="435" y2="110" stroke="#D9C9A8" stroke-width="1"/>
-            <line x1="350" y1="172" x2="350" y2="42" stroke="#D9C9A8" stroke-width="1"/>
-            <text x="438" y="113" font-size="8" fill="#7A7368">I</text>
-            <text x="353" y="40" font-size="8" fill="#7A7368">Q</text>
-            <!-- 4x4 grid of dots with Gray-coded bit labels -->
-            <g fill="#C0521F">
-              <circle cx="293" cy="68" r="4.5"/><circle cx="317" cy="68" r="4.5"/>
-              <circle cx="383" cy="68" r="4.5"/><circle cx="407" cy="68" r="4.5"/>
-              <circle cx="293" cy="92" r="4.5"/><circle cx="317" cy="92" r="4.5"/>
-              <circle cx="383" cy="92" r="4.5"/><circle cx="407" cy="92" r="4.5"/>
-              <circle cx="293" cy="128" r="4.5"/><circle cx="317" cy="128" r="4.5"/>
-              <circle cx="383" cy="128" r="4.5"/><circle cx="407" cy="128" r="4.5"/>
-              <circle cx="293" cy="152" r="4.5"/><circle cx="317" cy="152" r="4.5"/>
-              <circle cx="383" cy="152" r="4.5"/><circle cx="407" cy="152" r="4.5"/>
-            </g>
-            <text x="350" y="180" font-size="7" fill="#7A7368" text-anchor="middle">Adjacent points differ by 1 bit (Gray coded)</text>
-            <!-- 64-QAM -->
-            <text x="585" y="30" font-size="9" fill="#7A7368" text-anchor="middle">64-QAM — 6 bits/symbol</text>
-            <line x1="500" y1="110" x2="670" y2="110" stroke="#D9C9A8" stroke-width="1"/>
-            <line x1="585" y1="172" x2="585" y2="42" stroke="#D9C9A8" stroke-width="1"/>
-            <text x="673" y="113" font-size="8" fill="#7A7368">I</text>
-            <text x="588" y="40" font-size="8" fill="#7A7368">Q</text>
-            <g fill="#C0521F">
-              <!-- 8x8 compact grid -->
-              <circle cx="518" cy="52" r="3"/><circle cx="532" cy="52" r="3"/><circle cx="546" cy="52" r="3"/><circle cx="560" cy="52" r="3"/>
-              <circle cx="610" cy="52" r="3"/><circle cx="624" cy="52" r="3"/><circle cx="638" cy="52" r="3"/><circle cx="652" cy="52" r="3"/>
-              <circle cx="518" cy="66" r="3"/><circle cx="532" cy="66" r="3"/><circle cx="546" cy="66" r="3"/><circle cx="560" cy="66" r="3"/>
-              <circle cx="610" cy="66" r="3"/><circle cx="624" cy="66" r="3"/><circle cx="638" cy="66" r="3"/><circle cx="652" cy="66" r="3"/>
-              <circle cx="518" cy="80" r="3"/><circle cx="532" cy="80" r="3"/><circle cx="546" cy="80" r="3"/><circle cx="560" cy="80" r="3"/>
-              <circle cx="610" cy="80" r="3"/><circle cx="624" cy="80" r="3"/><circle cx="638" cy="80" r="3"/><circle cx="652" cy="80" r="3"/>
-              <circle cx="518" cy="94" r="3"/><circle cx="532" cy="94" r="3"/><circle cx="546" cy="94" r="3"/><circle cx="560" cy="94" r="3"/>
-              <circle cx="610" cy="94" r="3"/><circle cx="624" cy="94" r="3"/><circle cx="638" cy="94" r="3"/><circle cx="652" cy="94" r="3"/>
-              <circle cx="518" cy="126" r="3"/><circle cx="532" cy="126" r="3"/><circle cx="546" cy="126" r="3"/><circle cx="560" cy="126" r="3"/>
-              <circle cx="610" cy="126" r="3"/><circle cx="624" cy="126" r="3"/><circle cx="638" cy="126" r="3"/><circle cx="652" cy="126" r="3"/>
-              <circle cx="518" cy="140" r="3"/><circle cx="532" cy="140" r="3"/><circle cx="546" cy="140" r="3"/><circle cx="560" cy="140" r="3"/>
-              <circle cx="610" cy="140" r="3"/><circle cx="624" cy="140" r="3"/><circle cx="638" cy="140" r="3"/><circle cx="652" cy="140" r="3"/>
-              <circle cx="518" cy="154" r="3"/><circle cx="532" cy="154" r="3"/><circle cx="546" cy="154" r="3"/><circle cx="560" cy="154" r="3"/>
-              <circle cx="610" cy="154" r="3"/><circle cx="624" cy="154" r="3"/><circle cx="638" cy="154" r="3"/><circle cx="652" cy="154" r="3"/>
-              <circle cx="518" cy="168" r="3"/><circle cx="532" cy="168" r="3"/><circle cx="546" cy="168" r="3"/><circle cx="560" cy="168" r="3"/>
-              <circle cx="610" cy="168" r="3"/><circle cx="624" cy="168" r="3"/><circle cx="638" cy="168" r="3"/><circle cx="652" cy="168" r="3"/>
-            </g>
-            <!-- Noise margin arrow for 64-QAM -->
-            <line x1="518" y1="52" x2="532" y2="52" stroke="#4A6741" stroke-width="1"/>
-            <text x="525" y="47" font-size="6" fill="#4A6741" text-anchor="middle">d</text>
-            <text x="585" y="188" font-size="7" fill="#7A7368" text-anchor="middle">Smaller point spacing d → needs higher SNR</text>
-          </svg>
-          <p class="diagram-caption">QAM constellations: doubling the order adds 1 bit/symbol but halves the noise margin, requiring ~6 dB more SNR</p>
-        </div>
-        
         <p class="subsection-label">Concepts</p>
           <div class="subsection-body">
             <p><span class="term">Quadrature Amplitude Modulation (QAM)</span> is the natural extension of PAM into two dimensions. The key insight is that a cosine and a sine at the same frequency are <em>orthogonal</em> — they do not interfere with each other when multiplied and integrated over a symbol period. This orthogonality allows us to transmit two completely independent PAM streams simultaneously in the same bandwidth, effectively doubling spectral efficiency at no additional cost in bandwidth.</p>
@@ -1969,60 +1330,6 @@ li .eq-block { margin-left: -1.2rem; }
           tradeoff. Getting it wrong means wasted silicon (too many bits) or audible noise and measurement
           error (too few) — the 6 dB/bit rule makes this tradeoff precise and quantifiable.</p>
         </div>
-
-        <div class="diagram-wrap">
-          <svg viewBox="0 0 700 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
-            <defs><marker id="a11" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#7A7368"/></marker></defs>
-            <text x="350" y="14" font-size="10" fill="#7A7368" text-anchor="middle">Uniform mid-rise quantizer: input amplitude → discrete levels</text>
-            <!-- Left: quantizer input/output diagram -->
-            <text x="175" y="30" font-size="9" fill="#7A7368" text-anchor="middle">3-bit quantizer (8 levels)</text>
-            <line x1="20" y1="110" x2="330" y2="110" stroke="#D9C9A8" stroke-width="1" marker-end="url(#a11)"/>
-            <line x1="175" y1="170" x2="175" y2="28" stroke="#D9C9A8" stroke-width="1" marker-end="url(#a11)"/>
-            <text x="333" y="113" font-size="8" fill="#7A7368">x(t)</text>
-            <text x="178" y="26" font-size="8" fill="#7A7368">Q(x)</text>
-            <!-- Staircase quantizer output -->
-            <polyline points="30,158 60,158 60,134 90,134 90,110 120,110 120,86 150,86 150,62 180,62 180,38 210,38 210,62 240,62" fill="none" stroke="#C0521F" stroke-width="2"/>
-            <!-- 45 degree ideal line (dashed) -->
-            <line x1="30" y1="158" x2="300" y2="38" stroke="#D9C9A8" stroke-width="1" stroke-dasharray="3,2"/>
-            <!-- Error bars -->
-            <line x1="75" y1="145" x2="75" y2="134" stroke="#4A6741" stroke-width="1.5"/>
-            <text x="84" y="141" font-size="7" fill="#4A6741">Δ/2</text>
-            <text x="175" y="155" font-size="7" fill="#C0521F" text-anchor="middle">step size Δ = range/2^B</text>
-            <!-- Right: SQNR vs bits -->
-            <text x="525" y="30" font-size="9" fill="#7A7368" text-anchor="middle">SQNR vs. bit depth</text>
-            <line x1="390" y1="155" x2="680" y2="155" stroke="#D9C9A8" stroke-width="1" marker-end="url(#a11)"/>
-            <line x1="400" y1="165" x2="400" y2="32" stroke="#D9C9A8" stroke-width="1" marker-end="url(#a11)"/>
-            <text x="683" y="158" font-size="8" fill="#7A7368">B (bits)</text>
-            <text x="392" y="30" font-size="8" fill="#7A7368">dB</text>
-            <!-- X axis ticks -->
-            <text x="430" y="165" font-size="8" fill="#7A7368" text-anchor="middle">4</text>
-            <text x="475" y="165" font-size="8" fill="#7A7368" text-anchor="middle">8</text>
-            <text x="520" y="165" font-size="8" fill="#7A7368" text-anchor="middle">12</text>
-            <text x="565" y="165" font-size="8" fill="#7A7368" text-anchor="middle">16</text>
-            <text x="610" y="165" font-size="8" fill="#7A7368" text-anchor="middle">20</text>
-            <text x="655" y="165" font-size="8" fill="#7A7368" text-anchor="middle">24</text>
-            <!-- SQNR = 6.02B + 1.76 line -->
-            <line x1="430" y1="127" x2="655" y2="42" stroke="#C0521F" stroke-width="2.5"/>
-            <!-- Data points: 4→26, 8→50, 12→74, 16→98, 20→122, 24→146 dB -->
-            <circle cx="430" cy="127" r="3.5" fill="#C0521F"/>
-            <circle cx="475" cy="107" r="3.5" fill="#C0521F"/>
-            <circle cx="520" cy="90" r="3.5" fill="#C0521F"/>
-            <circle cx="565" cy="70" r="3.5" fill="#C0521F"/>
-            <circle cx="610" cy="52" r="3.5" fill="#C0521F"/>
-            <circle cx="655" cy="35" r="3.5" fill="#C0521F"/>
-            <!-- Y axis labels -->
-            <text x="395" y="130" font-size="7" fill="#7A7368" text-anchor="end">~26</text>
-            <text x="395" y="73" font-size="7" fill="#7A7368" text-anchor="end">~98</text>
-            <!-- CD marker -->
-            <line x1="565" y1="155" x2="565" y2="70" stroke="#4A6741" stroke-width="1" stroke-dasharray="2,2"/>
-            <text x="567" y="65" font-size="7" fill="#4A6741">CD=16bit</text>
-            <text x="567" y="74" font-size="7" fill="#4A6741">~98 dB</text>
-            <!-- Slope annotation -->
-            <text x="545" y="105" font-size="8" fill="#C0521F" text-anchor="middle">≈ 6 dB/bit</text>
-          </svg>
-          <p class="diagram-caption">Left: 3-bit quantizer staircase — input rounds to nearest level. Right: SQNR ≈ 6.02B + 1.76 dB — each bit adds ~6 dB</p>
-        </div>
-        
         <p class="subsection-label">Concepts</p>
           <div class="subsection-body">
             <p><span class="term">Quantization</span> is the amplitude analog of sampling: just as sampling discretizes a signal in time, quantization discretizes it in amplitude. Every ADC performs both operations simultaneously — it samples the signal and quantizes the result to a finite number of bits. Understanding quantization is essential for managing the tradeoff between precision and speed in embedded DSP systems.</p>
@@ -2067,12 +1374,11 @@ li .eq-block { margin-left: -1.2rem; }
         </div>
       </div></div></div>
     </div>
+    </div>
 
-    <!-- ══════════════════════════════════════════════
-         LABS
-         ══════════════════════════════════════════════ -->
-
-    <div class="entry-block">
+    <!-- ── LABS PANEL ── -->
+    <div class="tab-panel" id="panel-labs">
+<div class="entry-block">
       <div class="entry-header">
         <div class="entry-left">
           <span class="entry-eyebrow">Lab 1</span>
@@ -2344,7 +1650,7 @@ li .eq-block { margin-left: -1.2rem; }
         </div>
       </div></div></div>
     </div>
-
+    </div>
   </main>
 
   <footer>
@@ -2360,8 +1666,9 @@ li .eq-block { margin-left: -1.2rem; }
       document.querySelectorAll('.entry-block').forEach(b => b.classList.add('open')));
     document.getElementById('collapse-all').addEventListener('click', () =>
       document.querySelectorAll('.entry-block').forEach(b => b.classList.remove('open')));
-    document.getElementById('yr').textContent = new Date().getFullYear();
+    document.querySelector('.footer-year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
+
 

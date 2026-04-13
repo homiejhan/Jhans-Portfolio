@@ -3,129 +3,604 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ECE 445L: Embedded Systems Design Laboratory — Justin Han</title>
+  <title>ECE 445L: Embedded Systems Design Lab — Justin Han</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --cream: #F5F0E8; --ink: #1A1A18; --rust: #C0521F; --sand: #D9C9A8; --muted: #7A7368; }
-    html, body { background: var(--cream); color: var(--ink); font-family: 'DM Mono', monospace; min-height: 100vh; }
-    body::before {
-      content: ''; position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none; z-index: 999; opacity: 0.5;
-    }
+/* ============================================================
+   JUSTIN HAN PORTFOLIO — MAIN STYLESHEET
+   Shared across all pages. Page-specific overrides go at
+   the bottom in clearly marked sections.
+   ============================================================ */
 
-    /* ── HEADER ── */
-    header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 2rem 3rem; border-bottom: 1px solid var(--sand);
-      position: sticky; top: 0; background: var(--cream); z-index: 100;
-    }
-    .logo { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
-    nav { display: flex; border: 1px solid var(--sand); }
-    nav a {
-      text-decoration: none; font-family: 'DM Mono', monospace; font-size: 0.72rem;
-      font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
-      color: var(--muted); padding: 0.65rem 1.4rem; border-right: 1px solid var(--sand);
-      transition: background 0.2s, color 0.2s;
-    }
-    nav a:last-child { border-right: none; }
-    nav a:hover, nav a.active { background: var(--ink); color: var(--cream); }
+/* ── RESET & BOX MODEL ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ── BREADCRUMB ── */
-    .breadcrumb {
-      max-width: 860px; margin: 0 auto;
-      padding: 1.5rem 3rem 0;
-      display: flex; align-items: center; gap: 0.6rem;
-      font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
-    }
-    .breadcrumb a { color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--sand); transition: color 0.2s, border-color 0.2s; }
-    .breadcrumb a:hover { color: var(--ink); border-color: var(--ink); }
-    .breadcrumb span { color: var(--rust); }
+/* ── DESIGN TOKENS ── */
+:root {
+  --cream:  #F5F0E8;
+  --ink:    #1A1A18;
+  --rust:   #C0521F;
+  --sage:   #4A6741;
+  --sand:   #D9C9A8;
+  --muted:  #7A7368;
+  --body:   #3A3830;
 
-    /* ── PAGE WRAP ── */
-    .page-wrap { max-width: 860px; margin: 0 auto; padding: 3rem 3rem 6rem; }
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-mono:  'DM Mono', 'Courier New', monospace;
 
-    /* ── COURSE HERO ── */
-    .course-hero { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--sand); }
-    .course-code {
-      font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--rust); margin-bottom: 0.75rem;
-    }
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.2rem, 5vw, 3.8rem);
-      line-height: 1.08; letter-spacing: -0.03em;
-      margin-bottom: 1.75rem; color: var(--ink);
-    }
-    h1 em { font-style: italic; color: var(--rust); }
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-    .course-meta {
-      display: flex; flex-wrap: wrap; gap: 0;
-      border: 1px solid var(--sand);
-      width: fit-content;
-    }
-    .meta-item { padding: 0.65rem 1.25rem; border-right: 1px solid var(--sand); }
-    .meta-item:last-child { border-right: none; }
-    .meta-key { font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust); margin-bottom: 0.25rem; }
-    .meta-val { font-size: 0.78rem; color: var(--ink); }
+/* ── BASE ── */
+html, body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  min-height: 100vh;
+}
 
-    /* ── ABSTRACT ── */
-    .abstract { margin-bottom: 3rem; }
-    .abstract p { font-size: 0.92rem; line-height: 1.95; color: #3A3830; }
+/* Noise texture overlay */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.5;
+}
 
-    /* ── CONTENT SECTIONS (Topics & Projects) ── */
-    .content-section {
-      border-top: 1px solid var(--sand);
-      padding: 2.5rem 0;
-    }
-    .content-section:last-child { border-bottom: 1px solid var(--sand); }
+/* ── TYPOGRAPHY ── */
+h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.75rem;
+}
+h1 em { font-style: italic; color: var(--rust); }
 
-    .section-eyebrow {
-      font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--rust); margin-bottom: 0.5rem;
-    }
-    h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em;
-      color: var(--ink); margin-bottom: 1.25rem; line-height: 1.2;
-    }
-    .section-body { font-size: 0.88rem; line-height: 1.9; color: #3A3830; }
-    .section-body p { margin-bottom: 0.85rem; }
-    .section-body p:last-child { margin-bottom: 0; }
+p {
+  font-size: 0.9rem;
+  line-height: 1.9;
+  color: var(--body);
+}
 
-    /* Bullet list inside section body */
-    .section-body ul { padding-left: 1.25rem; margin-bottom: 0.85rem; }
-    .section-body ul li { margin-bottom: 0.3rem; }
+/* ── HEADER ── */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem 3rem;
+  border-bottom: 1px solid var(--sand);
+  position: sticky;
+  top: 0;
+  background: var(--cream);
+  z-index: 100;
+}
 
-    /* Tags row inside a section */
-    .section-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
-    .tag {
-      font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase;
-      padding: 0.2rem 0.55rem; border: 1px solid var(--sand); color: var(--muted);
-    }
+.logo {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-decoration: none;
+}
 
-    /* ── FOOTER ── */
-    footer {
-      padding: 1.5rem 3rem; border-top: 1px solid var(--sand);
-      display: flex; justify-content: space-between; align-items: center;
-      font-size: 0.7rem; color: var(--muted); letter-spacing: 0.05em;
-    }
+/* ── NAV ── */
+nav { display: flex; border: 1px solid var(--sand); }
 
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
-    .page-wrap { animation: fadeUp 0.45s ease both; }
+nav a {
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0.65rem 1.4rem;
+  border-right: 1px solid var(--sand);
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
+}
+nav a:last-child { border-right: none; }
+nav a:hover,
+nav a.active { background: var(--ink); color: var(--cream); }
 
-    @media (max-width: 768px) {
-      header { padding: 1.25rem; flex-wrap: wrap; gap: 1rem; }
-      .breadcrumb { padding: 1rem 1.25rem 0; }
-      .page-wrap { padding: 2rem 1.25rem 4rem; }
-      nav a { padding: 0.55rem 0.9rem; font-size: 0.65rem; }
-      footer { flex-direction: column; gap: 0.5rem; padding: 1.25rem; }
-      .course-meta { flex-direction: column; }
-      .meta-item { border-right: none; border-bottom: 1px solid var(--sand); }
-      .meta-item:last-child { border-bottom: none; }
-    }
+/* ── FOOTER ── */
+footer {
+  padding: 1.5rem 3rem;
+  border-top: 1px solid var(--sand);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7rem;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+
+/* ── PAGE WRAP ── */
+.page-wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 5rem 3rem 6rem;
+}
+
+.page-wrap--wide { max-width: 1100px; }
+.page-wrap--narrow { max-width: 860px; }
+
+/* ── EYEBROW ── */
+.page-eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 1rem;
+}
+
+/* ── BREADCRUMB ── */
+.breadcrumb {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 1.5rem 3rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.breadcrumb a {
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--sand);
+  transition: color 0.2s, border-color 0.2s;
+}
+.breadcrumb a:hover { color: var(--ink); border-color: var(--ink); }
+.breadcrumb span { color: var(--rust); }
+
+/* ── TAGS ── */
+.tag {
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--sand);
+  color: var(--muted);
+}
+
+/* ── SECTION LABEL (divider style) ── */
+.section-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--sand); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-up { animation: fadeUp 0.5s var(--ease) both; }
+
+/* ============================================================
+   ABOUT PAGE
+   ============================================================ */
+.about-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.bio-section { display: flex; flex-direction: column; gap: 2rem; animation: fadeUp 0.5s var(--ease) both; }
+
+.avatar-block { display: flex; flex-direction: column; gap: 1.5rem; }
+.avatar {
+  width: 100%;
+  aspect-ratio: 3/4;
+  border: 1px solid var(--sand);
+  background: var(--sand);
+  position: relative;
+  overflow: hidden;
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+
+.fact-list { display: flex; flex-direction: column; }
+.fact-item { padding: 1rem 0; border-bottom: 1px solid var(--sand); }
+.fact-item:first-child { border-top: 1px solid var(--sand); }
+.fact-label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust); margin-bottom: 0.3rem; }
+.fact-value { font-size: 0.85rem; color: var(--ink); }
+.fact-value a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--sand); transition: border-color 0.2s; }
+.fact-value a:hover { border-color: var(--ink); }
+
+.skills-wrap { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+.skill-tag {
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--sand);
+  color: var(--muted);
+  transition: border-color 0.2s, color 0.2s;
+}
+.skill-tag:hover { border-color: var(--ink); color: var(--ink); }
+
+/* ============================================================
+   COURSEWORK PAGE
+   ============================================================ */
+.controls-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 3.5rem;
+  flex-wrap: wrap;
+}
+
+.sort-bar { display: flex; border: 1px solid var(--sand); }
+
+.sort-btn {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--cream);
+  border: none;
+  border-right: 1px solid var(--sand);
+  padding: 0.65rem 1.3rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.sort-btn:last-child { border-right: none; }
+.sort-btn:hover { background: #EDE8DF; color: var(--ink); }
+.sort-btn.active { background: var(--ink); color: var(--cream); }
+
+.alpha-label {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.alpha-label input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--sand);
+  background: var(--cream);
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  transition: background 0.2s, border-color 0.2s;
+}
+.alpha-label input[type="checkbox"]:checked { background: var(--ink); border-color: var(--ink); }
+.alpha-label input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 3px; top: 1px;
+  width: 5px; height: 8px;
+  border: 1.5px solid var(--cream);
+  border-top: none; border-left: none;
+  transform: rotate(45deg);
+}
+
+.section-block { margin-bottom: 4rem; animation: fadeUp 0.4s var(--ease) both; }
+
+.semester-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.25rem; }
+.semester-label {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.semester-divider { flex: 1; height: 1px; background: var(--sand); }
+.semester-count { font-size: 0.68rem; letter-spacing: 0.1em; color: var(--muted); white-space: nowrap; }
+
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1px;
+  background: var(--sand);
+  border: 1px solid var(--sand);
+}
+
+.course-card {
+  background: var(--cream);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  cursor: default;
+  color: inherit;
+  text-decoration: none;
+  transition: background 0.18s;
+}
+.course-card:hover { background: #EDE8DF; }
+.course-card:hover .card-arrow { opacity: 1; transform: translate(2px, -2px); }
+
+.card-meta { display: flex; justify-content: space-between; align-items: center; }
+.card-code { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust); }
+.card-semester { font-size: 0.62rem; color: var(--muted); letter-spacing: 0.05em; }
+.card-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--ink);
+}
+.card-desc { font-size: 0.78rem; line-height: 1.75; color: var(--muted); flex: 1; }
+.card-footer-row { display: flex; justify-content: space-between; align-items: center; margin-top: 0.25rem; }
+.card-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.card-arrow {
+  font-size: 0.85rem;
+  color: var(--rust);
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+  flex-shrink: 0;
+}
+
+.subtitle { font-size: 0.85rem; color: var(--muted); margin-bottom: 4rem; line-height: 1.7; }
+
+/* ============================================================
+   COURSE DETAIL PAGE  (ece-445s and template)
+   ============================================================ */
+.course-hero { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--sand); }
+.course-code { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--rust); margin-bottom: 0.75rem; }
+.course-hero h1 { font-size: clamp(2.2rem, 5vw, 3.8rem); line-height: 1.08; letter-spacing: -0.03em; margin-bottom: 1.75rem; }
+
+.course-meta { display: flex; flex-wrap: wrap; border: 1px solid var(--sand); width: fit-content; }
+.meta-item { padding: 0.65rem 1.25rem; border-right: 1px solid var(--sand); }
+.meta-item:last-child { border-right: none; }
+.meta-key { font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust); margin-bottom: 0.25rem; }
+.meta-val { font-size: 0.78rem; color: var(--ink); }
+
+.abstract { margin-bottom: 3rem; }
+.abstract p { font-size: 0.92rem; line-height: 1.95; color: var(--body); margin-bottom: 0.75rem; }
+.abstract p:last-child { margin-bottom: 0; }
+
+/* Controls */
+.section-controls { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+.ctrl-btn {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--cream);
+  border: 1px solid var(--sand);
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.ctrl-btn:hover { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+
+/* Collapsible entry blocks */
+.entry-block { border-top: 1px solid var(--sand); }
+.entry-block:last-child { border-bottom: 1px solid var(--sand); }
+
+.entry-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem 0;
+  cursor: pointer;
+  gap: 1rem;
+  user-select: none;
+}
+.entry-header:hover .entry-title { color: var(--rust); }
+
+.entry-left { display: flex; align-items: baseline; gap: 1rem; }
+.entry-eyebrow {
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rust);
+  flex-shrink: 0;
+  min-width: 4.5rem;
+}
+.entry-title {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+  transition: color 0.2s;
+}
+.entry-chevron {
+  font-size: 0.75rem;
+  color: var(--muted);
+  flex-shrink: 0;
+  transition: transform 0.25s var(--ease);
+}
+.entry-block.open .entry-chevron { transform: rotate(90deg); }
+
+.entry-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s var(--ease); }
+.entry-block.open .entry-body { grid-template-rows: 1fr; }
+.entry-body-inner { overflow: hidden; }
+.entry-body-content { padding-bottom: 2rem; }
+
+/* Subsections */
+.subsection { margin-bottom: 1.5rem; }
+.subsection:last-child { margin-bottom: 0; }
+.subsection-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.subsection-label::after { content: ''; flex: 1; height: 1px; background: var(--sand); }
+
+.subsection-body { font-size: 0.86rem; line-height: 1.9; color: var(--body); }
+.subsection-body p { margin-bottom: 0.75rem; }
+.subsection-body p:last-child { margin-bottom: 0; }
+.subsection-body ul { padding-left: 1.2rem; }
+.subsection-body ul li { margin-bottom: 0.35rem; }
+
+/* Tags row */
+.entry-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.25rem; }
+
+/* Motivation block */
+.motivation {
+  background: rgba(192, 82, 31, 0.05);
+  border-left: 3px solid var(--rust);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0 2px 2px 0;
+}
+.motivation-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+.motivation p { font-size: 0.84rem; line-height: 1.85; color: var(--body); margin-bottom: 0.5rem; }
+.motivation p:last-child { margin-bottom: 0; }
+
+/* Display equations */
+.eq-block {
+  display: block;
+  margin: 0.75rem 0;
+  padding: 0.65rem 1.25rem;
+  border-left: 2px solid var(--rust);
+  background: rgba(192, 82, 31, 0.04);
+  font-size: 0.95rem;
+  overflow-x: auto;
+}
+li .eq-block { margin-left: -1.2rem; }
+.eq-label { display: block; margin-bottom: 0.2rem; }
+
+/* Key term highlight */
+.term {
+  font-weight: 500;
+  color: var(--ink);
+  border-bottom: 1px solid var(--rust);
+  padding-bottom: 1px;
+}
+
+/* Vocabulary grid */
+.vocab-section { margin-top: 1.75rem; }
+.vocab-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.vocab-label::after { content: ''; flex: 1; height: 1px; background: var(--sand); }
+.vocab-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--sand);
+}
+.vocab-item {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--sand);
+  border-right: 1px solid var(--sand);
+}
+.vocab-item:nth-child(even) { border-right: none; }
+.vocab-item:nth-last-child(-n+2) { border-bottom: none; }
+.vocab-item:last-child:nth-child(odd) { border-right: none; border-bottom: none; grid-column: span 2; }
+.vocab-term { font-size: 0.72rem; font-weight: 500; color: var(--rust); margin-bottom: 0.25rem; letter-spacing: 0.04em; }
+.vocab-def { font-size: 0.76rem; color: var(--body); line-height: 1.6; }
+
+/* Diagrams */
+.diagram-wrap {
+  margin: 1.5rem 0;
+  border: 1px solid var(--sand);
+  padding: 1.25rem;
+  background: #FAF7F2;
+}
+.diagram-caption {
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 0.75rem;
+}
+.diagram-wrap svg text { font-family: 'DM Mono', monospace; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  header { padding: 1.25rem; flex-wrap: wrap; gap: 1rem; }
+  footer { flex-direction: column; gap: 0.5rem; padding: 1.25rem; }
+  nav a { padding: 0.55rem 0.9rem; font-size: 0.65rem; }
+
+  .page-wrap { padding: 3rem 1.25rem 4rem; }
+  .breadcrumb { padding: 1rem 1.25rem 0; }
+
+  .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+
+  .controls-row { flex-wrap: wrap; }
+  .sort-btn { font-size: 0.62rem; padding: 0.55rem 0.9rem; }
+
+  .course-meta { flex-direction: column; }
+  .meta-item { border-right: none; border-bottom: 1px solid var(--sand); }
+  .meta-item:last-child { border-bottom: none; }
+
+  .entry-left { flex-direction: column; gap: 0.25rem; }
+  .vocab-grid { grid-template-columns: 1fr; }
+  .vocab-item { border-right: none; }
+  .vocab-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--sand); }
+  .vocab-item:last-child { border-bottom: none; grid-column: span 1; }
+}
+
+
+/* ── COURSE PAGE TABS ── */
+.tab-bar {
+  display: flex;
+  border-bottom: 1px solid var(--sand);
+  margin-bottom: 1.75rem;
+  gap: 0;
+}
+.tab-btn {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.65rem 1.4rem;
+  cursor: pointer;
+  margin-bottom: -1px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.tab-btn:hover { color: var(--ink); }
+.tab-btn.active { color: var(--rust); border-bottom-color: var(--rust); }
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
   </style>
 </head>
 <body>
@@ -145,13 +620,9 @@
 
   <main class="page-wrap">
 
-    <!-- ══════════════════════════════════
-         HERO — update course name & code
-         ══════════════════════════════════ -->
     <div class="course-hero">
       <p class="course-code">ECE 445L</p>
-      <h1>Embedded Systems<br><em>Design Laboratory.</em></h1>
-
+      <h1>Embedded Systems<br><em>Design Lab.</em></h1>
       <div class="course-meta">
         <div class="meta-item">
           <div class="meta-key">Semester</div>
@@ -159,77 +630,791 @@
         </div>
         <div class="meta-item">
           <div class="meta-key">Professor</div>
-          <div class="meta-val">Prof. Name Here</div>  <!-- UPDATE -->
+          <div class="meta-val">Prof. Mark McDermott</div>
         </div>
         <div class="meta-item">
           <div class="meta-key">Textbook</div>
-          <div class="meta-val">None</div>  <!-- UPDATE -->
+          <div class="meta-val">Embedded Systems: Real-Time Interfacing to ARM Cortex-M (9th ed.)</div>
         </div>
         <div class="meta-item">
           <div class="meta-key">Credits</div>
-          <div class="meta-val">3</div>  <!-- UPDATE -->
+          <div class="meta-val">3</div>
         </div>
       </div>
     </div>
 
-    <!-- ══════════════════════════════════
-         ABSTRACT
-         ══════════════════════════════════ -->
-    <div class="abstract">
+        <div class="abstract">
       <p>
-        Write a short abstract describing the course — what it covered, what the general goals were,
-        and what you took away from it overall. A few sentences to a paragraph is plenty.
+        Every device with a microcontroller — your thermostat, your car's engine management system,
+        a medical infusion pump, a drone flight controller — was built by engineers who understood
+        how to bridge the gap between hardware and software. They knew how to make a processor talk
+        to a sensor, drive a motor, stream audio through a DAC, and respond to the physical world
+        in real time. ECE 445L is where that skill is built.
+      </p>
+      <p>
+        The course takes you through the full stack of embedded systems design on the Texas Instruments
+        TM4C123 ARM Cortex-M4 microcontroller: digital I/O, interrupts, serial communication,
+        analog-to-digital and digital-to-analog conversion, PCB layout with KiCad, and closed-loop
+        motor control. Every concept is immediately applied in a lab — and the semester culminates in
+        a complete hardware/software embedded system that you design, build, and demonstrate from scratch.
+      </p>
+      <p>
+        The goal is not just to write firmware. It is to think like a systems engineer — understanding
+        the hardware constraints that shape the software, and the software requirements that shape the hardware.
       </p>
     </div>
 
-    <!-- ══════════════════════════════════
-         TOPICS — duplicate as needed
-         ══════════════════════════════════ -->
-    <div class="content-section">
-      <p class="section-eyebrow">Topic 1</p>
-      <h2>Topic Name Here</h2>
-      <div class="section-body">
-        <p>Describe what this topic covered, what you learned, and why it mattered. Add as many paragraphs as you need.</p>
-        <ul>
-          <li>Key concept or takeaway</li>
-          <li>Another key concept</li>
-        </ul>
-      </div>
-      <div class="section-tags">
-        <span class="tag">Tag A</span>
-        <span class="tag">Tag B</span>
-      </div>
+    <!-- ── TAB BAR ── -->
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="topics">Topics</button>
+      <button class="tab-btn" data-tab="labs">Labs</button>
     </div>
 
-    <div class="content-section">
-      <p class="section-eyebrow">Topic 2</p>
-      <h2>Topic Name Here</h2>
-      <div class="section-body">
-        <p>Describe this topic here.</p>
-      </div>
-      <div class="section-tags">
-        <span class="tag">Tag A</span>
-      </div>
+    <!-- ── SHARED CONTROLS ── -->
+    <div class="section-controls">
+      <button class="ctrl-btn" id="expand-all">Expand All</button>
+      <button class="ctrl-btn" id="collapse-all">Collapse All</button>
     </div>
 
-    <!-- ══════════════════════════════════
-         PROJECTS — duplicate as needed
-         ══════════════════════════════════ -->
-    <div class="content-section">
-      <p class="section-eyebrow">Project 1</p>
-      <h2>Project Name Here</h2>
-      <div class="section-body">
-        <p>Describe the project — what you built, what problem it solved, how you approached it, and what you learned.</p>
-        <ul>
-          <li>Notable implementation detail</li>
-          <li>Tools or languages used</li>
-        </ul>
+    <!-- ── TOPICS PANEL ── -->
+            <div class="tab-panel active" id="panel-topics">
+
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Group 1</span>
+          <span class="entry-title">Intro to Embedded Systems & ARM Architecture</span>
+        </div>
+        <span class="entry-chevron">›</span>
       </div>
-      <div class="section-tags">
-        <span class="tag">Tag A</span>
-        <span class="tag">Tag B</span>
-        <span class="tag">Tag C</span>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="motivation">
+          <p class="motivation-label">Why This Matters</p>
+          <p>Every device around you with a microcontroller — your car's engine management unit,
+    a medical infusion pump, a drone flight controller, an industrial robot — was built by engineers
+    who understood both the hardware and the software. ECE 445L exists because that dual fluency is
+    exactly what industry pays a premium for. As McDermott puts it: software-centric students need to
+    become proficient with hardware, and hardware-centric students need to become proficient with software.
+    This first group gives you the foundation everything else is built on.</p>
+        </div>
+        
+        <div class="subsection">
+          <p class="subsection-label">Concepts</p>
+          <div class="subsection-body">
+            <p>An <span class="term">embedded system</span> is a computer built to perform a dedicated function within a larger device. Unlike a general-purpose PC, it operates under tight constraints — limited memory, fixed power budget, and real-time deadlines. The course hardware is the <span class="term">Texas Instruments TM4C123 LaunchPad</span>, a development board built around the <span class="term">ARM Cortex-M4</span> — the most widely deployed 32-bit processor architecture on Earth.</p>
+            <p>The Cortex-M4 is a <span class="term">RISC (Reduced Instruction Set Computer)</span> with a <span class="term">Harvard architecture</span>: separate buses for instructions and data allow simultaneous fetch and memory access. Key features: few opcodes, fixed-length instructions, many general-purpose registers (R0–R15), and a 3-stage pipeline. R13 is the stack pointer, R14 the link register (return address), and R15 the program counter.</p>
+            <p>The TM4C123 uses <span class="term">memory-mapped I/O</span> — every peripheral register (GPIO, timer, ADC, UART) is assigned a fixed address in the 4 GB address space. Reading and writing peripherals is identical to reading and writing RAM, just at different addresses. The memory map: Flash at 0x0000.0000 (256 KiB), SRAM at 0x2000.0000 (32 KiB).</p>
+            <p><span class="term">Fixed-point arithmetic</span> is essential when floating-point is too slow or unavailable. A fixed-point number is represented as an integer I and a fixed constant Δ (the resolution), where the true value = I × Δ. Key design choices: signed vs. unsigned, number of bits (8/16/32), and the resolution Δ. <span class="term">Range</span> is the number of distinguishable values (determined by bit width); <span class="term">resolution</span> is the smallest detectable step (equal to Δ). A practical example: a 12-bit ADC with Vref = 3.3 V gives Δ = 3.3/4096 ≈ 0.000806 V/bit. Storing millivolts as an integer (Δ = 0.001 V): I = (3300 × N) >> 12. Watch for overflow (promoting to 32-bit before multiply) and dropout (underflow from shifting before multiplying).</p>
+            <p><span class="term">ESD (Electrostatic Discharge)</span> can instantly destroy a LaunchPad — the human body can accumulate 3,000–5,000 V. Always handle boards by the edges and ground yourself first.</p>
+          </div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Key Takeaways</p>
+          <div class="subsection-body">
+            <ul><li>The Cortex-M4 is RISC/Harvard: few opcodes, fixed-length, separate instruction and data buses, 3-stage pipeline</li><li>All peripheral control is through memory-mapped registers — the datasheet is the source of truth for every address and bit field</li><li>Fixed-point value = I × Δ: choose Δ based on the resolution you need, choose bit width based on the range you need</li><li>Overflow and dropout are the two failure modes of fixed-point arithmetic — always cast to uint32_t before multiplying large values</li><li>Accuracy (closeness to true value), precision (reproducibility), and resolution (smallest detectable change) are three distinct concepts</li></ul>
+          </div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Real-World Applications</p>
+          <div class="subsection-body">
+            <p>Fixed-point arithmetic is how virtually every real-time DSP system on embedded hardware works — from the audio codec in your phone to the motor controller in an electric vehicle. The ARM Cortex-M4 is the processor inside products from hearing aids (Cochlear) to automotive ECUs (Bosch) to satellites. Understanding the architecture at the register level is what allows you to debug hardware-software interactions that no simulator can reproduce.</p>
+          </div>
+        </div>
+        <div class="vocab-section">
+          <p class="vocab-label">Vocabulary</p>
+          <div class="vocab-grid"><div class="vocab-item"><div class="vocab-term">ARM Cortex-M4</div><div class="vocab-def">32-bit RISC processor used in the TM4C123; includes FPU, NVIC, SysTick, and memory-mapped peripherals</div></div><div class="vocab-item"><div class="vocab-term">RISC</div><div class="vocab-def">Reduced Instruction Set Computer — simple uniform instructions, many registers, fixed length; most execute in 1–2 cycles</div></div><div class="vocab-item"><div class="vocab-term">Harvard Architecture</div><div class="vocab-def">Separate instruction and data memory buses — allows simultaneous instruction fetch and data access</div></div><div class="vocab-item"><div class="vocab-term">Memory-Mapped I/O</div><div class="vocab-def">Peripheral registers assigned to fixed memory addresses — read/write with standard load/store instructions</div></div><div class="vocab-item"><div class="vocab-term">Fixed-Point</div><div class="vocab-def">Representing fractional values as integer I with implied resolution Δ; value = I × Δ. Avoids floating-point hardware</div></div><div class="vocab-item"><div class="vocab-term">Resolution (Δ)</div><div class="vocab-def">Smallest detectable change in a measurement; equals the fixed constant in fixed-point, or Vref/2ᴺ for an N-bit ADC</div></div><div class="vocab-item"><div class="vocab-term">Range</div><div class="vocab-def">Total number of distinguishable values representable; determined by bit width (e.g., 2¹² = 4096 for a 12-bit ADC)</div></div><div class="vocab-item"><div class="vocab-term">ESD</div><div class="vocab-def">Electrostatic Discharge — voltages up to 5000 V that can permanently destroy IC junctions on contact</div></div></div>
+        </div>
+        <div class="entry-tags"><span class="tag">ARM Cortex-M4</span><span class="tag">TM4C123</span><span class="tag">Fixed-Point</span><span class="tag">RISC</span><span class="tag">Memory-Mapped I/O</span><span class="tag">ESD</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Group 2</span>
+          <span class="entry-title">Interrupts, Debugging & Critical Sections</span>
+        </div>
+        <span class="entry-chevron">›</span>
       </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="motivation">
+          <p class="motivation-label">Why This Matters</p>
+          <p>Real embedded systems have to respond to multiple asynchronous events simultaneously — a button press, a timer firing, a byte arriving over serial. Without interrupts, the processor wastes every cycle polling. Without debugging skills, you can't observe what the hardware is actually doing versus what you think it's doing. These two topics are the difference between embedded systems that work and embedded systems that seem to work.</p>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Concepts</p>
+          <div class="subsection-body">
+            <p>A <span class="term">thread</span> is the path of action of software as it executes. When an interrupt fires, a new <span class="term">background thread</span> (the ISR) is created. The main program and all ISRs share global variables but each has its own local variables and registers on the stack. The ARM Cortex-M manages interrupt priority through the <span class="term">NVIC (Nested Vectored Interrupt Controller)</span> — with 77 interrupt sources on the TM4C123 across 8 priority levels. A higher-priority ISR can preempt a lower-priority one; same-priority ISRs cannot preempt each other.</p>
+            <p>Three things are required to use any interrupt: first, <span class="term">arm</span> it — set the peripheral's arm bit to allow that specific flag to trigger an interrupt. Second, <span class="term">enable</span> the interrupt in the NVIC and set its priority. Third, enable globally with I=0 (CPSIE I). The global <span class="term">PRIMASK</span> bit (I) in the program status register enables (I=0) or disables (I=1) all interrupts at once — setting I=1 does not dismiss pending interrupts, it postpones them. Hardware sets the <span class="term">flag</span> when requesting an interrupt; the ISR must clear it (acknowledge) or disarm before returning.</p>
+            <p><span class="term">Edge-triggered interrupts</span> fire on a GPIO voltage transition — rising, falling, or both edges. The TM4C123 has 77 interrupt vectors; for example, GPIO Port F is vector 46, IRQ 30, priority bits 23–21 of NVIC_PRI7_R. When Port F fires: the current instruction finishes, 8 registers (R0–R3, R12, LR, PC, PSR) are pushed onto the stack, the vector address is loaded into PC, IPSR is set to 46, and LR is set to 0xFFFFFFF9 (return to Thread mode using MSP).</p>
+            <p><span class="term">Switch debouncing</span> is essential because mechanical contacts bounce 1–20 ms on every press, generating dozens of spurious edges. Software debounce: on the first edge, disarm the GPIO interrupt and start a one-shot timer (~10 ms). When the timer fires, re-read the switch state and re-arm the GPIO. Hardware debounce: an RC filter (100 kΩ × 0.1 µF ≈ 10 ms time constant) slows the voltage transition so the processor only sees one clean edge.</p>
+            <p><span class="term">Latency</span> is the time between when an event occurs and when the ISR responds. For input devices it's the time between data ready and software reading it; for periodic events (ADC, DAC, control loops) it's the difference between the scheduled time and the actual run time — excess latency generates <span class="term">jitter</span>. With a single interrupt source, jitter comes only from multicycle instructions (±1–2 cycles). With multiple interrupts competing, jitter spreads across tens to thousands of cycles — this is why timer-triggered ADC sampling eliminates jitter that software-triggered sampling cannot.</p>
+            <p>A <span class="term">critical section</span> exists when: (1) a global variable is shared between two threads, (2) the access is non-atomic (more than one instruction), and (3) at least one thread writes. The classic Lab 3 example: the SysTick ISR updates Hour and Minute, while main reads them to display. If an interrupt fires between reading Hour and reading Minute, the display shows an inconsistent time. Two solutions: <strong>make atomic</strong> — disable interrupts while reading shared data; or <strong>remove sharing</strong> — pack Hour and Minute into a single 32-bit variable (Time = 100×Hour + Minute) so the read is one atomic load instruction. A function is <span class="term">reentrant</span> if it can be called simultaneously by two threads without corruption — achieved by using only local variables, or by making global accesses atomic.</p>
+            <p>Debugging has two forms: <span class="term">performance debugging</span> (timing — is the system meeting its deadlines?) and <span class="term">functional debugging</span> (data — is the computation correct?). The process is: stabilize the bug, localize it, then correct it. Hardware tools: <span class="term">logic analyzers</span> capture multiple digital channels simultaneously and decode serial protocols — nonintrusive, meaning they don't affect system timing. <span class="term">Oscilloscopes</span> show analog voltage vs. time — essential for measuring signal levels and rise times. Software tools: <span class="term">dumps</span> save data into a global array during execution (use instead of printf — far less intrusive); a <span class="term">heartbeat</span> LED or GPIO toggle confirms the program is running; <span class="term">assertions</span> verify invariants in code. Intrusiveness matters: print statements and breakpoints halt the processor and can mask timing bugs — use logic analyzers and dumps instead for real-time systems.</p>
+            <p>The <span class="term">Central Limit Theorem</span> justifies ADC averaging: if noise is independent and zero-mean, averaging N samples makes the distribution Gaussian and drives the standard deviation toward zero. Averaging 4 samples roughly halves noise; averaging 16 samples reduces it by 4×.</p>
+          </div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Key Takeaways</p>
+          <div class="subsection-body">
+            <ul>
+              <li>Three steps for any interrupt: arm the device, enable in NVIC with priority set, enable globally (I=0) — miss any one and the interrupt silently fails</li>
+              <li>The ISR must acknowledge (clear the flag) or disarm before returning — failing to do so causes the ISR to fire repeatedly in an infinite loop</li>
+              <li>Switch bounce is real — always debounce, or one button press generates dozens of events</li>
+              <li>A critical section requires shared global + non-atomic access + at least one write — all three conditions must be present</li>
+              <li>In this class, anytime you want to debug with printf, use a dump and observe the data later — printf is too intrusive for real-time systems</li>
+              <li>Higher-priority ISR (lower number) preempts lower-priority — priority 3 ISR can be interrupted by priority 0, 1, or 2, but not by 3–7</li>
+            </ul>
+          </div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Real-World Applications</p>
+          <div class="subsection-body">
+            <p>Every keyboard, mouse, touchscreen, and button in every consumer device uses edge-triggered interrupts — polling would waste the entire CPU budget waiting for input that arrives unpredictably. Pacemakers use SysTick-style periodic interrupts to deliver precisely timed cardiac pulses — a jitter of even a few milliseconds is clinically significant. The Heisenberg principle of debugging is real: breakpoints in a motor control loop cause the motor to stop, making the bug disappear. Dumps are how firmware engineers debug production systems where attaching a debugger is impossible. The Central Limit Theorem is why your phone's accelerometer averages hundreds of samples before reporting orientation — raw ADC output is too noisy to use directly.</p>
+          </div>
+        </div>
+        <div class="vocab-section">
+          <p class="vocab-label">Vocabulary</p>
+          <div class="vocab-grid">
+            <div class="vocab-item"><div class="vocab-term">Thread</div><div class="vocab-def">The path of execution of software — the main program is the foreground thread; each ISR is a background thread created on each interrupt</div></div>
+            <div class="vocab-item"><div class="vocab-term">NVIC</div><div class="vocab-def">Nested Vectored Interrupt Controller — ARM hardware managing 77 interrupt sources across 8 priority levels on the TM4C123</div></div>
+            <div class="vocab-item"><div class="vocab-term">PRIMASK (I bit)</div><div class="vocab-def">Global interrupt enable/disable bit — I=0 enables all armed interrupts; I=1 postpones (not dismisses) all interrupts</div></div>
+            <div class="vocab-item"><div class="vocab-term">Interrupt Flag</div><div class="vocab-def">Hardware-set bit indicating a pending interrupt request; must be cleared by the ISR (acknowledge) or the interrupt fires again immediately</div></div>
+            <div class="vocab-item"><div class="vocab-term">Edge-Triggered</div><div class="vocab-def">Interrupt that fires on a voltage transition (rising or falling); configured via GPIO_IS_R (edge vs. level) and GPIO_IBE_R (both edges)</div></div>
+            <div class="vocab-item"><div class="vocab-term">Debounce</div><div class="vocab-def">Filtering out the multiple spurious transitions produced by a mechanical switch contact; done in hardware (RC filter) or software (timer delay)</div></div>
+            <div class="vocab-item"><div class="vocab-term">Latency</div><div class="vocab-def">Time between an event occurring and the ISR responding to it; for periodic tasks, excess latency becomes jitter</div></div>
+            <div class="vocab-item"><div class="vocab-term">Critical Section</div><div class="vocab-def">Code accessing a shared global variable non-atomically with at least one write — must be protected by disabling interrupts or restructuring data</div></div>
+            <div class="vocab-item"><div class="vocab-term">Reentrant</div><div class="vocab-def">A function safe to call from two threads simultaneously — uses only local variables or protects global accesses atomically</div></div>
+            <div class="vocab-item"><div class="vocab-term">Dump Array</div><div class="vocab-def">A global array used to log data during execution for post-mortem inspection — minimally intrusive alternative to printf in real-time systems</div></div>
+            <div class="vocab-item"><div class="vocab-term">Intrusiveness</div><div class="vocab-def">The degree to which a debugging technique perturbs the system being debugged — logic analyzers are nonintrusive; breakpoints are highly intrusive</div></div>
+            <div class="vocab-item"><div class="vocab-term">Central Limit Theorem</div><div class="vocab-def">Averaging N independent noise samples makes the distribution Gaussian and reduces standard deviation — justifies ADC oversampling for noise reduction</div></div>
+          </div>
+        </div>
+        <div class="entry-tags">
+          <span class="tag">Interrupts</span><span class="tag">NVIC</span><span class="tag">Edge-Triggered</span><span class="tag">Debouncing</span><span class="tag">Critical Sections</span><span class="tag">Debugging</span><span class="tag">Dump Array</span><span class="tag">Jitter</span><span class="tag">Reentrant Code</span>
+        </div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Group 3</span>
+          <span class="entry-title">Data Acquisition Systems</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="motivation">
+          <p class="motivation-label">Why This Matters</p>
+          <p>The physical world is analog. Sensors produce voltages; motors need voltages. The ADC and DAC are the hardware bridges between the digital processor and reality — and their characteristics directly determine what your system can measure and control. Equally important: if you sample incorrectly, you corrupt your data in a way that is mathematically irreversible. Every instrument from a handheld multimeter to a medical ECG to an industrial oscilloscope is fundamentally a data acquisition system.</p>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Concepts</p>
+          <div class="subsection-body">
+            <p>The <span class="term">Nyquist-Shannon Sampling Theorem</span> states: a band-limited signal with no frequency components above W Hz may be completely recovered from samples taken at a rate greater than 2W samples per second. In practice, Valvano's Postulate adds a stricter engineering rule: sample at more than 10× the highest frequency of interest for the reconstructed waveform to visually resemble the original. An <span class="term">anti-aliasing analog lowpass filter</span> must be placed before the ADC to remove all signal content above ½fₛ — content above this frequency folds back into the baseband as aliasing, which is irreversible. A 100 Hz signal sampled at 1600 Hz reconstructs perfectly; the same signal sampled at just above its Nyquist rate looks nothing like the original in the time domain even though it mathematically satisfies the theorem.</p>
+            <p>A complete <span class="term">Data Acquisition System (DAS)</span> consists of: measurand → transducer → analog preamplifier → analog filter → sample-and-hold → ADC → microcomputer → actuator. Each stage introduces its own errors. Key quantitative DAS parameters: <span class="term">range</span> (rₓ — total span of measurable values), <span class="term">resolution</span> (Δx — smallest detectable change), <span class="term">precision</span> (number of distinguishable alternatives nₓ), <span class="term">repeatability</span> (σ of repeated measurements under same conditions), and <span class="term">reproducibility</span> (σ under different conditions). Qualitative parameters for detection systems: true positive (event occurs, system detects it), false positive (event doesn't occur, system reports it), false negative (event occurs, system misses it), true negative (event doesn't occur, system correctly says so). Sensitivity = TP/(TP+FN); Specificity = TN/(TN+FP).</p>
+            <p>Three <span class="term">ADC architectures</span>: A <span class="term">Successive Approximation (SAR) ADC</span> performs a binary search — each bit is decided by comparing VIN to a DAC output, retaining or rejecting it. Example: converting 45 (6-bit SAR): Is X≥32? Yes (retain) → 0x1. Is X≥48? No (reject) → 0x10. Is X≥40? Yes → 0x101. Is X≥44? Yes → 0x1011. Is X≥46? No → 0x10110. Is X≥45? Yes → 0x101101 = 45. The TM4C123 uses a 12-bit SAR at up to 1 MSPS — good accuracy, moderate speed. A <span class="term">Flash ADC</span> uses 2ᴺ−1 simultaneous comparators — one clock cycle conversion, extremely fast but area-exponential. A <span class="term">Sigma-Delta ADC</span> oversamples at very high rates with 1-bit quantization then applies a digital decimation filter — excellent resolution for audio (high resolution, low speed), poor for fast distance measurement.</p>
+            <p><span class="term">Time jitter</span> in sampling violates the Nyquist theorem (which assumes uniform intervals), introduces errors in derivative computation (dx/dt = (x(t)−x(t−Δt))/Δt), distorts DAC-generated waveforms, and causes instability in control loops. With one interrupt source, jitter spans only ±2–3 clock cycles. With multiple competing interrupts, jitter grows to ±thousands of cycles. Elimination: use timer-triggered ADC sampling (the timer hardware directly triggers the ADC conversion, bypassing software latency entirely).</p>
+            <p>From Lec 13 on transistor interfaces: <span class="term">BJT operation</span> — in saturation, the transistor acts as a closed switch (Vbe > Vbe(SAT), typically 0.6–1.2 V). Collector current Ic = hfe × Ib. The <span class="term">TIP120 Darlington transistor</span> cascades two BJTs for hfe ≥ 1000, allowing a 3 mA GPIO signal to control 3 A of motor current. MOSFET operation: voltage-controlled current source; on when Vgs > threshold; Rds ≈ 0 when on, Rds = ∞ when off. <span class="term">Digital logic interfacing</span> requires VOH > VIH, IOH > IIH, VOL < VIL, IOL > IIL — the TM4C123 GPIO can drive 2/4/8 mA (configurable). To interface to the ESP8266 (Vih = 2.475 V, Voh(TM4C) = 2.4 V), a level shifter or pull-up resistor is required since Voh barely meets Vih. Inductive loads (motors, solenoids) require a <span class="term">flyback diode</span> across the load to clamp the back-EMF voltage spike when switching off — without it, the spike can permanently destroy the driver transistor.</p>
+          </div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Key Takeaways</p>
+          <div class="subsection-body">
+            <ul>
+              <li>Aliasing is irreversible — the anti-aliasing filter must come before the ADC, not after</li>
+              <li>Nyquist says sample >2W; Valvano's practical rule says sample >10× fmax for the waveform to look right on a plot</li>
+              <li>SAR ADC is good for accuracy; Flash ADC is fastest; Sigma-Delta is best for high-resolution audio</li>
+              <li>Timer-triggered ADC completely eliminates sampling jitter — software-triggered sampling cannot</li>
+              <li>Accuracy ≠ precision ≠ resolution — a precise ADC can be inaccurate; a high-resolution ADC can be imprecise</li>
+              <li>Always use a flyback diode across any inductive load — the back-EMF spike will destroy the driver without it</li>
+              <li>TM4C123 to ESP8266 interface requires a level shifter — Voh(TM4C) = 2.4 V barely meets Vih(ESP) = 2.475 V</li>
+            </ul>
+          </div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Real-World Applications</p>
+          <div class="subsection-body">
+            <p>The CD audio standard (44.1 kHz) was chosen to capture the full human hearing range (up to ~20 kHz) with a safety margin — a direct application of Nyquist. Medical ECG machines sample at 500–1000 Hz with 16-bit resolution; the anti-aliasing filter removes 60 Hz power line interference before sampling. Industrial motor drives use timer-triggered ADC for current feedback — even microseconds of jitter cause control instability at high loop gains. SAR ADCs dominate microcontroller applications because they balance speed, accuracy, and silicon area. The TIP120 Darlington is used in Lab 9 to drive a DC motor from a 3.3 V GPIO pin.</p>
+          </div>
+        </div>
+        <div class="vocab-section">
+          <p class="vocab-label">Vocabulary</p>
+          <div class="vocab-grid">
+            <div class="vocab-item"><div class="vocab-term">Nyquist Rate</div><div class="vocab-def">The minimum sampling rate (>2W Hz) required to perfectly reconstruct a signal with bandwidth W Hz</div></div>
+            <div class="vocab-item"><div class="vocab-term">Aliasing</div><div class="vocab-def">Irreversible distortion caused by sampling below the Nyquist rate — high-frequency content folds back into the baseband as false lower-frequency signals</div></div>
+            <div class="vocab-item"><div class="vocab-term">Anti-Aliasing Filter</div><div class="vocab-def">Analog lowpass filter applied before the ADC to remove signal content above ½fₛ, preventing aliasing</div></div>
+            <div class="vocab-item"><div class="vocab-term">SAR ADC</div><div class="vocab-def">Successive Approximation Register — binary search algorithm; N clock cycles for N bits; good accuracy; used in TM4C123 (12-bit, 1 MSPS)</div></div>
+            <div class="vocab-item"><div class="vocab-term">Flash ADC</div><div class="vocab-def">Parallel-comparator ADC — all bits in one clock cycle; fastest possible but requires 2ᴺ−1 comparators; impractical above 8 bits</div></div>
+            <div class="vocab-item"><div class="vocab-term">Sigma-Delta ADC</div><div class="vocab-def">Oversampling 1-bit ADC with decimation filter — very high resolution for audio; poor for fast measurements</div></div>
+            <div class="vocab-item"><div class="vocab-term">Time Jitter</div><div class="vocab-def">Variation in actual sampling instant from the ideal uniform schedule; causes aliasing violations and waveform distortion</div></div>
+            <div class="vocab-item"><div class="vocab-term">Flyback Diode</div><div class="vocab-def">Diode placed across an inductive load to absorb back-EMF voltage spike when current is switched off; prevents driver destruction</div></div>
+            <div class="vocab-item"><div class="vocab-term">TIP120 Darlington</div><div class="vocab-def">Two cascaded BJTs giving hfe ≥ 1000; allows milliamp GPIO signal to switch 3 A motor currents; Vbe(SAT) = 2.5 V</div></div>
+            <div class="vocab-item"><div class="vocab-term">Noise Margin</div><div class="vocab-def">Voltage headroom between logic family voltage levels — (VIL−VOL) for low, (VOH−VIH) for high; must be positive for reliable communication</div></div>
+          </div>
+        </div>
+        <div class="entry-tags">
+          <span class="tag">Nyquist</span><span class="tag">ADC</span><span class="tag">SAR</span><span class="tag">Aliasing</span><span class="tag">DAS</span><span class="tag">BJT</span><span class="tag">MOSFET</span><span class="tag">Logic Families</span><span class="tag">Jitter</span>
+        </div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Group 4</span>
+          <span class="entry-title">Serial Communication & IoT</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="motivation">
+          <p class="motivation-label">Why This Matters</p>
+          <p>No embedded system is an island. Every real product communicates — with sensors over SPI, with a PC over UART, with the internet over Wi-Fi. These protocols are precisely timed bit sequences with well-defined electrical and logical specifications. Understanding them at the register level means you can diagnose any failure with a logic analyzer instead of guessing at library bugs. IoT extends this to the cloud, enabling embedded systems to exchange data with web servers in real time.</p>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Concepts</p>
+          <div class="subsection-body"><p><span class="term">UART (Universal Asynchronous Receiver/Transmitter)</span> is the simplest serial protocol — no shared clock. A frame consists of a start bit (0), 8 data bits LSB-first, and a stop bit (1). Both sides must agree on <span class="term">baud rate</span> in advance (commonly 9600 or 115200 bps). A mismatch produces garbled output. UART is the primary debug output channel throughout this course via PuTTY on the host PC.</p>
+<p><span class="term">SPI (Serial Peripheral Interface)</span> is synchronous — it uses a shared clock (SCLK), MOSI (data out), MISO (data in), and CS (chip select, active-low). SPI runs much faster than UART; the TM4C123 SSI module runs to 25 MHz. CS must be held low for the entire transaction — toggling it between bytes resets the slave device state machine. SPI drives the ST7735R LCD, the TLV5618 DAC, and the SD card in this course.</p>
+<p>The <span class="term">Internet of Things (IoT)</span> connects embedded systems to networks. The <span class="term">ESP8266</span> Wi-Fi module interfaces to the TM4C123 via UART using AT commands — it joins a Wi-Fi network, opens a TCP socket, sends HTTP or MQTT messages, and receives responses. A <span class="term">client-server architecture</span> separates devices that request data (the embedded system as client) from those that serve it (a weather API or MQTT broker as server). The MQTT protocol is a lightweight publish-subscribe messaging system designed for constrained IoT devices operating over unreliable networks.</p>
+<p><span class="term">Bandwidth</span> is the maximum data rate a channel can carry — it may be limited by the I/O device (I/O-bound) or by the software (CPU-bound). If I/O-bound, faster hardware helps; if CPU-bound, better algorithms or a faster clock help. <span class="term">Latency</span> for IoT adds tens to hundreds of milliseconds from network stack overhead — never assume network responses are instantaneous in a timing-critical system.</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Key Takeaways</p>
+          <div class="subsection-body"><ul><li>UART baud rate must match on both sides — even a 1% error accumulates across a long frame and misaligns the stop bit</li><li>SPI CS must remain low for the entire transaction — any glitch resets the slave and corrupts the transfer</li><li>Use a FIFO queue and UART receive interrupt to avoid dropped characters when the main loop is busy</li><li>IoT adds non-deterministic network latency — decouple network operations from real-time sensor loops using double buffering</li><li>AT commands to the ESP8266 are text strings — always implement timeout detection, network errors will occur</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Real-World Applications</p>
+          <div class="subsection-body"><p>UART is how virtually every microcontroller communicates with a PC for debugging — from hobby boards to aerospace flight computers. SPI drives the displays in smartwatches and the flash memory in every SSD. MQTT runs on millions of IoT devices — smart thermostats, industrial sensors, connected medical monitors. The ESP8266 chip powers a vast ecosystem of Wi-Fi products from smart plugs to environmental monitors, and its successor the ESP32 is one of the most widely deployed IoT chips ever made.</p></div>
+        </div>
+        <div class="vocab-section">
+          <p class="vocab-label">Vocabulary</p>
+          <div class="vocab-grid"><div class="vocab-item"><div class="vocab-term">UART Frame</div><div class="vocab-def">Start bit (0) + 8 data bits LSB-first + stop bit (1); asynchronous — timing from agreed baud rate, no shared clock</div></div><div class="vocab-item"><div class="vocab-term">Baud Rate</div><div class="vocab-def">Bits per second; must match on both ends; 115200 bps standard for debug UART in this course</div></div><div class="vocab-item"><div class="vocab-term">SPI</div><div class="vocab-def">Synchronous serial — shared SCLK, MOSI, MISO, CS; faster than UART; used for LCD, DAC, SD card</div></div><div class="vocab-item"><div class="vocab-term">Chip Select (CS)</div><div class="vocab-def">Active-low signal selecting one SPI slave; must stay low for the entire transaction</div></div><div class="vocab-item"><div class="vocab-term">ESP8266</div><div class="vocab-def">Wi-Fi module interfaced via UART AT commands; connects TM4C123 to TCP/IP networks for IoT applications</div></div><div class="vocab-item"><div class="vocab-term">MQTT</div><div class="vocab-def">Lightweight publish-subscribe messaging protocol designed for constrained IoT devices over unreliable networks</div></div><div class="vocab-item"><div class="vocab-term">Client-Server</div><div class="vocab-def">Network architecture: embedded system (client) requests data from a server — weather API, MQTT broker</div></div><div class="vocab-item"><div class="vocab-term">Bandwidth</div><div class="vocab-def">Maximum data rate of a channel; I/O-bound when limited by hardware; CPU-bound when limited by software</div></div></div>
+        </div>
+        <div class="entry-tags"><span class="tag">UART</span><span class="tag">SPI</span><span class="tag">IoT</span><span class="tag">ESP8266</span><span class="tag">MQTT</span><span class="tag">Wi-Fi</span><span class="tag">TCP/IP</span><span class="tag">Bandwidth</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Group 5</span>
+          <span class="entry-title">Sound Generation & Digital-to-Analog Conversion</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="motivation">
+          <p class="motivation-label">Why This Matters</p>
+          <p>Audio is the most perceptually immediate output an embedded system can produce — you hear a bug the instant it appears. Building a music player forces you to simultaneously understand DAC hardware, interrupt-driven output, lookup tables, SPI timing, and the relationship between sample rate and audio quality. The result is immediately evaluable by ear, making this one of the richest learning experiences in the course. The same waveform generation principles apply to control signal synthesis, arbitrary function generators, and PWM audio.</p>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Concepts</p>
+          <div class="subsection-body"><p>A <span class="term">DAC (Digital-to-Analog Converter)</span> converts a binary code to a proportional analog voltage. The TM4C123 has no internal DAC. Two external approaches are used: an <span class="term">R-2R resistor ladder</span> uses only R and 2R valued resistors and N GPIO pins to produce 2ᴺ output levels via superposition — simple and cheap but limited by GPIO drive strength and resistor matching. The <span class="term">TLV5618</span> is a 12-bit SPI-interface DAC — higher resolution, lower output impedance, cleaner waveforms at the cost of an SPI transaction per sample.</p>
+<p><span class="term">Sound generation</span> requires writing a new DAC sample at the audio sample rate fₛ (typically 8–44.1 kHz). A SysTick or timer ISR fires at fₛ, reads the next value from a <span class="term">lookup table</span> of precomputed waveform samples stored in ROM, and writes it to the DAC. For note frequency f, the step through a table of length N is: step = (N × f) / fₛ. A larger step = higher pitch. The same table generates any note — elegant and memory efficient.</p>
+<p>Key DAC performance metrics: <span class="term">resolution</span> (bits — 12-bit gives 4096 levels, ~0.8 mV/step at 3.3 V), <span class="term">settling time</span> (how fast the output reaches its final value — limits max sample rate), <span class="term">SNR</span> (~6 dB per additional bit — 12-bit gives ~72 dB), and <span class="term">glitches</span> (transient spikes when multiple bits switch simultaneously, common in R-2R).</p>
+<p>The DAC output cannot drive a speaker directly — speakers are 8–32 Ω and require hundreds of milliwatts. The <span class="term">TPA731 audio amplifier</span> boosts the DAC output to speaker-driving levels. A series resistor between the amplifier output and speaker limits current and sets volume. The SPI timing protocol for the TLV5618 requires CS asserted low → 16 clock cycles of data MSB-first → CS deasserted → DAC latches the new value.</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Key Takeaways</p>
+          <div class="subsection-body"><ul><li>Sample rate must exceed 2× the highest audio frequency — for notes to 4 kHz, sample at ≥ 8 kHz minimum</li><li>Never block inside the DAC ISR — it must write one sample and return in under 1/fₛ seconds or audio glitches</li><li>Use a volatile global to pass DAC values between ISR and main — never share non-atomic data structures</li><li>R-2R output is noisy and high-impedance; for clean audio use an external SPI DAC with a reconstruction filter</li><li>The step size and table length are independent — step controls pitch, table length controls waveform resolution</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Real-World Applications</p>
+          <div class="subsection-body"><p>Lookup table DAC synthesis is how video game consoles produced music in the 1980s and how modern synthesizers generate waveforms digitally. Audio DACs in smartphones use the same principle at 24-bit, 192 kHz resolution. Medical infusion pumps use DACs to control motor drive signals with high precision. The TPA731 is a class-AB linear amplifier — the same topology as home stereo systems, scaled to milliwatts. Arbitrary waveform generators used in electronics labs are essentially high-speed DACs with lookup table output.</p></div>
+        </div>
+        <div class="vocab-section">
+          <p class="vocab-label">Vocabulary</p>
+          <div class="vocab-grid"><div class="vocab-item"><div class="vocab-term">DAC</div><div class="vocab-def">Digital-to-Analog Converter — converts binary code to proportional analog voltage</div></div><div class="vocab-item"><div class="vocab-term">R-2R Ladder</div><div class="vocab-def">Resistor network using only R and 2R values; converts N-bit code to analog via superposition; simple but noisy</div></div><div class="vocab-item"><div class="vocab-term">TLV5618</div><div class="vocab-def">12-bit SPI-interface dual DAC used in Lab 5; cleaner output than R-2R with higher resolution</div></div><div class="vocab-item"><div class="vocab-term">Lookup Table</div><div class="vocab-def">Precomputed waveform samples in ROM; ISR outputs one sample per interrupt call for continuous waveform generation</div></div><div class="vocab-item"><div class="vocab-term">Step Size</div><div class="vocab-def">Index increment through lookup table per ISR call; controls output frequency: step = (N × f) / fₛ</div></div><div class="vocab-item"><div class="vocab-term">SNR</div><div class="vocab-def">Signal-to-Noise Ratio — improves ~6 dB per additional DAC bit; 12-bit gives approximately 72 dB</div></div><div class="vocab-item"><div class="vocab-term">TPA731</div><div class="vocab-def">Audio power amplifier boosting DAC output to drive a speaker; used in Lab 5</div></div><div class="vocab-item"><div class="vocab-term">Settling Time</div><div class="vocab-def">Time for DAC output to stabilize after a code change; limits maximum usable sample rate</div></div></div>
+        </div>
+        <div class="entry-tags"><span class="tag">DAC</span><span class="tag">R-2R Ladder</span><span class="tag">SPI</span><span class="tag">TLV5618</span><span class="tag">Audio</span><span class="tag">Lookup Table</span><span class="tag">TPA731</span><span class="tag">Waveform Generation</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Group 6</span>
+          <span class="entry-title">Analog Front-End: Op-Amps, Sensors & Filters</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="motivation">
+          <p class="motivation-label">Why This Matters</p>
+          <p>The real world does not produce clean 0–3.3 V signals matched to ADC input ranges. Real sensors produce millivolt outputs buried in noise, at impedance levels that would load a GPIO flat, with common-mode interference from power supplies and radiated fields. The op-amp circuits and analog filters here are the hardware that makes sensors actually usable — they are the difference between a precision measurement system and an expensive noise generator.</p>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Concepts</p>
+          <div class="subsection-body"><p>A <span class="term">transducer</span> converts a physical quantity — temperature, pressure, light, force — into an electrical signal. Common examples: a <span class="term">thermistor</span> whose resistance changes predictably with temperature (used in Lab 8); a photoresistor sensitive to light; a piezoelectric sensor producing voltage proportional to force. Outputs are typically small (millivolts to hundreds of millivolts) and require amplification and filtering before digitization.</p>
+<p>An <span class="term">operational amplifier (op-amp)</span> is a high-gain differential amplifier used in closed-loop configurations. Key configurations: non-inverting (gain = 1 + Rf/R1, infinite input impedance — ideal for buffering high-impedance sensors); inverting (gain = −Rf/Rin); difference amplifier (amplifies Vp − Vn while rejecting common-mode). <span class="term">Rail-to-rail op-amps</span> (OPA2350, AD8032) are required with a 3.3 V single supply — standard op-amps cannot swing near the supply rails.</p>
+<p>An <span class="term">instrumentation amplifier (INA)</span> is a precision differential amplifier with high input impedance and gain set by a single external resistor. The INA122P: G = 5 + 80 kΩ/R_G. Its high <span class="term">CMRR (Common-Mode Rejection Ratio)</span> suppresses noise appearing equally on both inputs — critical when sensor leads pick up interference over long wire runs.</p>
+<p>Analog filters shape frequency content before digitization. A first-order RC LPF gives −20 dB/decade rolloff — too gentle for most anti-aliasing. A <span class="term">2-pole Butterworth LPF</span> gives −40 dB/decade with a maximally flat passband (no in-band ripple). Cutoff frequency fc = 1/(2π√(R1R2C1C2)). In Lab 8, the lpf.xls spreadsheet designs the anti-aliasing filter for the thermistor measurement chain. A <span class="term">highpass filter</span> removes DC offset and low-frequency drift from AC-coupled sensor signals.</p>
+<p><span class="term">Threshold detection</span> uses a comparator to produce a digital output when an analog input crosses a reference voltage — converts sensor signals into GPIO-compatible digital events. <span class="term">Input capture</span> records the exact timer count at each GPIO edge, enabling precise period and frequency measurement of encoder or tachometer pulses.</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Key Takeaways</p>
+          <div class="subsection-body"><ul><li>Match the sensor range to the ADC input range — a 0–100 mV sensor into a 3.3 V ADC wastes 97% of resolution</li><li>Op-amp input impedance must greatly exceed source impedance — loading a high-impedance sensor distorts the reading</li><li>INA122P gain resistor must be 1% tolerance — gain error directly becomes measurement error</li><li>A 2-pole Butterworth filter has the flattest passband — no ripple, ideal when in-band accuracy matters</li><li>Rail-to-rail op-amps are mandatory with single 3.3 V supply — standard op-amps cannot output near the rails</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Real-World Applications</p>
+          <div class="subsection-body"><p>Instrumentation amplifiers are in every ECG electrode, strain gauge bridge, and thermocouple interface — they reject enormous common-mode noise on body-attached or industrial sensors. Active lowpass filters are in every data acquisition system from seismometers (fc ~ 100 Hz) to studio audio interfaces (fc ~ 20 kHz). The thermistor circuit in Lab 8 is inside HVAC systems, medical incubators, and industrial ovens. Input capture timers measure rotation speed in every automotive engine, industrial servo, and hard disk drive.</p></div>
+        </div>
+        <div class="vocab-section">
+          <p class="vocab-label">Vocabulary</p>
+          <div class="vocab-grid"><div class="vocab-item"><div class="vocab-term">Transducer</div><div class="vocab-def">Converts a physical quantity to an electrical signal; output is typically small and noisy, requiring conditioning</div></div><div class="vocab-item"><div class="vocab-term">Op-Amp</div><div class="vocab-def">High-gain differential amplifier; used for buffering, amplification, filtering in closed-loop configurations</div></div><div class="vocab-item"><div class="vocab-term">INA122P</div><div class="vocab-def">Instrumentation amplifier: G = 5 + 80kΩ/R_G; high CMRR for differential sensing in noisy environments</div></div><div class="vocab-item"><div class="vocab-term">CMRR</div><div class="vocab-def">Common-Mode Rejection Ratio — ability to reject noise appearing equally on both inputs; measured in dB</div></div><div class="vocab-item"><div class="vocab-term">Butterworth Filter</div><div class="vocab-def">2-pole active LPF with maximally flat passband and −40 dB/decade rolloff; no in-band ripple</div></div><div class="vocab-item"><div class="vocab-term">Thermistor</div><div class="vocab-def">Resistor with temperature-dependent value; used in Lab 8 thermometer circuit</div></div><div class="vocab-item"><div class="vocab-term">Threshold Detection</div><div class="vocab-def">Comparator output going high/low when analog input crosses a reference — converts analog to digital event</div></div><div class="vocab-item"><div class="vocab-term">Input Capture</div><div class="vocab-def">Timer mode recording edge timestamps for precise period and frequency measurement of pulse trains</div></div></div>
+        </div>
+        <div class="entry-tags"><span class="tag">Op-Amps</span><span class="tag">INA122P</span><span class="tag">Sensors</span><span class="tag">Butterworth LPF</span><span class="tag">Transducers</span><span class="tag">CMRR</span><span class="tag">Analog Filters</span><span class="tag">Input Capture</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Group 7</span>
+          <span class="entry-title">Project Management: PCBs & System Design</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="motivation">
+          <p class="motivation-label">Why This Matters</p>
+          <p>Breadboards are for prototyping. Every real product runs on a PCB — and PCB fabrication has a hard, non-negotiable deadline. A late Gerber file means you pay for your own board. This group bridges the gap between a working breadboard prototype and a real engineered product, covering everything from writing a requirements document to calculating battery life to routing copper traces.</p>
+        </div>
+        
+        <div class="subsection">
+          <p class="subsection-label">Concepts</p>
+          <div class="subsection-body">
+            <p>Content from Lec 29 (Power Supplies/Regulators), Lec 30 (Specifications), Lec 32 (SD Cards, File Systems), Lec 33 (File Systems FAT16), Lec 34 (Enclosures/Connectors) will be added once uploaded. The following is from Lec 26 and Lec 31.</p>
+            <p>A <span class="term">PCB (Printed Circuit Board)</span> replaces point-to-point wiring with etched copper traces on an insulating substrate. Construction (2-layer): top copper (signal routing), FR4 substrate, bottom copper (ground/power). Trace width determines current capacity — 8 mil for digital signals, 20 mil for power rails. Fabrication specs for this course: minimum trace width 6 mil, minimum clearance 6 mil, minimum drill 15 mil, max board 60 in².</p>
+            <p>PCB layout rules from Lec 26: place all fixed-location parts first (connectors on edges); place bypass caps as close as possible to each IC power pin; avoid 90° trace corners (use 45° instead — reduces acid traps during etching and looks better); separate analog and digital grounds; add test points at strategic locations; run ground first, then power, then critical signals.</p>
+            <p>A <span class="term">requirements document</span> (Lec 31) states what the system will do — not how. It is unambiguous, complete, verifiable, and modifiable. Sections: Overview (objectives, roles, interactions with existing systems), Function Description (functionality, performance, usability), Deliverables. It serves as a legally binding agreement between the engineer and the client.</p>
+            <p><span class="term">Power budget</span> analysis: battery capacity in mA-Hour = sustained current × hours. An AA battery (1.5 V, 2890 mAh) stores ≈ 15,600 J. Average current = (I_active × duty_active) + (I_sleep × duty_sleep). Battery life = capacity / average current. Li-ion (3.7 V, 2600 mAh) with LP2950 LDO regulator (400 mV dropout) is the standard Lab 7/10 power supply.</p>
+          </div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Key Takeaways</p>
+          <div class="subsection-body">
+            <ul><li>Trace width is a current-carrying constraint: 8 mil for digital, 20 mil for power — use the IPC-2221 table</li><li>Bypass capacitors must be as close as possible to each IC power pin — long traces defeat their purpose</li><li>A requirements document states WHAT the system does, never HOW — mixing them creates unmaintainable specs</li><li>Battery life = capacity (mAh) / average current (mA) — calculate weighted average across all operating modes</li><li>PCB files are due by a hard deadline — late submission means paying for your own fabrication</li><li>Route ground first, then power, then critical signals — ground quality affects everything else</li></ul>
+          </div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Real-World Applications</p>
+          <div class="subsection-body">
+            <p>Requirements documents are how all commercial embedded products are specified — from FDA-regulated medical devices (where the requirements document is a legal submission) to automotive ECUs (ISO 26262 mandates formal requirements traceability). Battery budget calculations determine whether a product ships with a coin cell or a lithium pack — and getting it wrong means a product recall. PCB layout is how every chip in your phone, laptop, and car connects to the rest of the system.</p>
+          </div>
+        </div>
+        <div class="vocab-section">
+          <p class="vocab-label">Vocabulary</p>
+          <div class="vocab-grid"><div class="vocab-item"><div class="vocab-term">PCB Trace Width</div><div class="vocab-def">Minimum copper width to carry a given current without excessive temperature rise; 8 mil for digital, 20 mil for power</div></div><div class="vocab-item"><div class="vocab-term">Via</div><div class="vocab-def">A drilled, plated hole connecting copper on different PCB layers; minimum 25 mil pad, 15 mil hole in this course</div></div><div class="vocab-item"><div class="vocab-term">Bypass Capacitor</div><div class="vocab-def">100 nF ceramic cap placed at each IC power pin to absorb switching transients and suppress noise</div></div><div class="vocab-item"><div class="vocab-term">Requirements Document</div><div class="vocab-def">Formal specification of what a system does; unambiguous, verifiable, and legally binding</div></div><div class="vocab-item"><div class="vocab-term">LDO Regulator</div><div class="vocab-def">Low Dropout linear regulator (LP2950); converts battery voltage to 3.3 V with only 400 mV headroom needed</div></div><div class="vocab-item"><div class="vocab-term">mA-Hour</div><div class="vocab-def">Unit of battery capacity; an AA (2890 mAh) can deliver 144.5 mA for 20 hours</div></div><div class="vocab-item"><div class="vocab-term">Power Budget</div><div class="vocab-def">Weighted average current consumption across all operating modes; determines battery life</div></div><div class="vocab-item"><div class="vocab-term">DRC</div><div class="vocab-def">Design Rule Check — KiCad verification that all traces, clearances, and drill sizes meet fabrication constraints</div></div></div>
+        </div>
+        <div class="entry-tags"><span class="tag">PCB</span><span class="tag">KiCad</span><span class="tag">Schematic</span><span class="tag">Gerber</span><span class="tag">Requirements</span><span class="tag">Power Budget</span><span class="tag">Battery</span><span class="tag">System Design</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Group 8</span>
+          <span class="entry-title">Motors & Actuators</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="motivation">
+          <p class="motivation-label">Why This Matters</p>
+          <p>Motors convert electrical energy into mechanical motion — they are in every robot joint, EV drivetrain, HVAC fan, drone, hard drive, and industrial machine. Controlling them precisely requires understanding both the physics (back-EMF, inductance, torque) and the electronics (driver circuits, PWM, current sensing). Getting this wrong destroys hardware — a motor without a flyback diode will take out its driver transistor on the very first switch-off.</p>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Concepts</p>
+          <div class="subsection-body"><p><span class="term">DC motors</span> convert electrical power to rotation. Torque is proportional to current; speed is proportional to voltage minus back-EMF. <span class="term">Back-EMF</span> is the voltage generated by the spinning motor acting as a generator — it opposes applied voltage and grows with speed. At stall (speed = 0), back-EMF = 0 and current is maximum (Vsupply / Rwinding). This is why motors draw the most current at startup.</p>
+<p><span class="term">PWM (Pulse-Width Modulation)</span> controls average motor power by varying the fraction of time (duty cycle) the drive signal is high. At 50% duty cycle, average voltage = 0.5 × Vsupply. The TM4C123 timer generates PWM at programmable frequency and duty cycle. The <span class="term">TIP120 Darlington</span> (hfe ≥ 1000) acts as the power switch — a 3 mA GPIO drives 3 A of motor current. A <span class="term">flyback diode</span> across the motor clamps the back-EMF spike on every PWM turn-off.</p>
+<p>Speed measurement uses <span class="term">input capture</span>: a timer records the exact time of each tachometer pulse. RPM = 60 / (pulse_period × pulses_per_rev). The TM4C123 timer input capture mode achieves sub-microsecond resolution.</p>
+<p><span class="term">Stepper motors</span> move in discrete angular steps (typically 1.8° = 200 steps/rev) by energizing coils sequentially — open-loop position control without an encoder. Used in 3D printers, CNC machines, and camera actuators. <span class="term">Servo motors</span> accept a PWM command (1–2 ms pulse width) and hold the commanded angle using an internal position loop. <span class="term">BLDC (Brushless DC) motors</span> replace mechanical brushes with electronic commutation — higher efficiency and longer life; used in drones, EVs, and computer fans.</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Key Takeaways</p>
+          <div class="subsection-body"><ul><li>PWM frequency should exceed 20 kHz for quiet motor operation — audible whine occurs at lower frequencies</li><li>Always place a flyback diode across the motor — back-EMF spikes occur every PWM cycle and will destroy the driver transistor</li><li>Stall current = Vsupply / Rwinding — can be 10× running current; always size the driver for stall conditions</li><li>Stepper motors lose steps if commanded faster than load torque allows — use acceleration ramps for large inertia loads</li><li>Input capture gives sub-microsecond speed measurement resolution at 80 MHz timer clock</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Real-World Applications</p>
+          <div class="subsection-body"><p>PWM motor control is used in every electric vehicle (Tesla uses three-phase PWM inverters at 10–20 kHz), every drone (ESCs with BLDC motors), and every computer fan. Stepper motors position print heads in inkjet printers and extruders in every 3D printer. Servo motors actuate every joint in industrial robot arms. The PI motor controller in Lab 9 is structurally identical to field-oriented control in EV drives — just at lower power.</p></div>
+        </div>
+        <div class="vocab-section">
+          <p class="vocab-label">Vocabulary</p>
+          <div class="vocab-grid"><div class="vocab-item"><div class="vocab-term">PWM</div><div class="vocab-def">Pulse-Width Modulation — controls average power by varying the duty cycle of a fixed-frequency square wave</div></div><div class="vocab-item"><div class="vocab-term">Duty Cycle</div><div class="vocab-def">Fraction of PWM period the signal is high; 0% = off, 100% = full on; controls average motor voltage</div></div><div class="vocab-item"><div class="vocab-term">Back-EMF</div><div class="vocab-def">Voltage generated by spinning motor opposing applied voltage; proportional to speed; decreases current as motor accelerates</div></div><div class="vocab-item"><div class="vocab-term">Flyback Diode</div><div class="vocab-def">Diode across inductive load clamping back-EMF spike when PWM switches off; prevents driver transistor destruction</div></div><div class="vocab-item"><div class="vocab-term">TIP120 Darlington</div><div class="vocab-def">Power transistor hfe ≥ 1000; allows 3 mA GPIO output to switch 3 A motor load; Vce(SAT) = 2 V</div></div><div class="vocab-item"><div class="vocab-term">Input Capture</div><div class="vocab-def">Timer mode recording edge timestamps for speed measurement from encoder or tachometer</div></div><div class="vocab-item"><div class="vocab-term">Stepper Motor</div><div class="vocab-def">Motor moving in discrete angular steps by sequential coil energization; open-loop position without encoder</div></div><div class="vocab-item"><div class="vocab-term">BLDC Motor</div><div class="vocab-def">Brushless DC motor with electronic commutation; higher efficiency than brushed DC; requires 3-phase driver IC</div></div></div>
+        </div>
+        <div class="entry-tags"><span class="tag">DC Motors</span><span class="tag">PWM</span><span class="tag">Back-EMF</span><span class="tag">Flyback Diode</span><span class="tag">Input Capture</span><span class="tag">Stepper</span><span class="tag">BLDC</span><span class="tag">Servo</span><span class="tag">TIP120</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Group 9</span>
+          <span class="entry-title">Control Systems</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="motivation">
+          <p class="motivation-label">Why This Matters</p>
+          <p>A motor without feedback is open-loop — it goes where commanded but has no way to self-correct for load changes, friction, or component variation. Closed-loop control continuously measures the actual output and adjusts the drive to minimize error. Cruise control holding speed on a hill, a drone hovering in wind, a hard drive head landing on track — all are closed-loop systems. The PI controller in Lab 9 is the same mathematical structure used in industrial servo drives running hundred-kilowatt machinery.</p>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Concepts</p>
+          <div class="subsection-body"><p>A <span class="term">feedback control system</span> measures the actual output (process variable), compares it to the desired value (setpoint), computes an error, and adjusts the plant input to reduce the error. The <span class="term">plant</span> is the physical system being controlled — a DC motor with its mechanical load.</p>
+<p>A <span class="term">proportional (P) controller</span> computes: output = Kp × error. It responds immediately to error but exhibits <span class="term">steady-state error</span> — a persistent offset that cannot be eliminated because at steady state, error → 0 means output → 0, which cannot overcome friction or load torque. Increasing Kp reduces steady-state error but eventually causes oscillation.</p>
+<p>A <span class="term">PI (Proportional-Integral) controller</span> adds: output = Kp × error + Ki × Σerror. The integral accumulates past errors — if any error persists at steady state, the integral grows until the output is large enough to eliminate it, achieving <span class="term">zero steady-state error</span>. In discrete time on the TM4C123: output[n] = Kp × e[n] + Ki × sum(e[0..n]), computed every 10 ms in a SysTick ISR. Excessive Ki causes <span class="term">integral windup</span> and oscillation; clamp the integral when the output saturates (anti-windup).</p>
+<p>Tuning approach: increase Kp until the motor tracks the setpoint quickly without oscillating. Then add Ki to remove the remaining steady-state offset. Increase Ki slowly — too much causes oscillation that Kp alone cannot damp. The control loop must run at a rate at least 10× faster than the plant bandwidth for stability.</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Key Takeaways</p>
+          <div class="subsection-body"><ul><li>P-only control always has steady-state error — integral action is required to achieve zero offset</li><li>Run the control loop at a fixed rate via timer interrupt — variable timing at high gains causes instability</li><li>Anti-windup is essential: stop accumulating the integral when output saturates at 0% or 100% duty cycle</li><li>Tune Kp first for speed, then Ki for accuracy — adding both simultaneously makes instability diagnosis impossible</li><li>The control loop must run at least 10× faster than the plant bandwidth — for a DC motor this means > 100 Hz</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Real-World Applications</p>
+          <div class="subsection-body"><p>PI controllers are the most widely deployed control algorithm in the world — over 90% of industrial control loops use PID or PI. Every thermostat, cruise control, robot joint, and motor drive uses feedback control. The anti-lock braking system in your car runs a PI loop on each wheel at hundreds of Hz. Autopilots run cascaded PI loops for altitude, speed, and attitude. The voltage regulator on your laptop motherboard runs a PI loop at MHz switching frequencies. This material is prerequisite to ECE 445M (Real-Time Operating Systems).</p></div>
+        </div>
+        <div class="vocab-section">
+          <p class="vocab-label">Vocabulary</p>
+          <div class="vocab-grid"><div class="vocab-item"><div class="vocab-term">Setpoint</div><div class="vocab-def">The desired output value the controller targets — e.g., 1000 RPM</div></div><div class="vocab-item"><div class="vocab-term">Process Variable</div><div class="vocab-def">The measured actual output — e.g., current motor speed from tachometer</div></div><div class="vocab-item"><div class="vocab-term">Error</div><div class="vocab-def">Setpoint minus process variable; the quantity the controller works to reduce to zero</div></div><div class="vocab-item"><div class="vocab-term">Plant</div><div class="vocab-def">The physical system being controlled — DC motor plus its mechanical load</div></div><div class="vocab-item"><div class="vocab-term">P Controller</div><div class="vocab-def">Output = Kp × error; fast response but always has nonzero steady-state error</div></div><div class="vocab-item"><div class="vocab-term">PI Controller</div><div class="vocab-def">Output = Kp×e + Ki×Σe; integral term eliminates steady-state error over time</div></div><div class="vocab-item"><div class="vocab-term">Steady-State Error</div><div class="vocab-def">Persistent offset between setpoint and actual output after transients settle; eliminated by integral action</div></div><div class="vocab-item"><div class="vocab-term">Integral Windup</div><div class="vocab-def">Excessive integral buildup when output saturates; prevented by clamping the integral sum at saturation</div></div></div>
+        </div>
+        <div class="entry-tags"><span class="tag">PI Controller</span><span class="tag">Feedback Control</span><span class="tag">Steady-State Error</span><span class="tag">Setpoint</span><span class="tag">Plant</span><span class="tag">Integral Windup</span><span class="tag">Stability</span><span class="tag">Tuning</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Group 10</span>
+          <span class="entry-title">Communication Theory & FFT</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="motivation">
+          <p class="motivation-label">Why This Matters</p>
+          <p>Every wireless system — Wi-Fi, Bluetooth, LTE, GPS, radar — is built on signal processing mathematics. The FFT is the algorithm that makes real-time spectrum analysis possible on embedded hardware. It lets you see the frequency content of a signal without an expensive spectrum analyzer — which frequencies are present, what the noise floor is, and whether harmonics indicate distortion. Sound input, frequency analysis, and digital communication are different faces of the same underlying theory.</p>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Concepts</p>
+          <div class="subsection-body"><p>The <span class="term">Discrete Fourier Transform (DFT)</span> converts N time-domain samples into N frequency-domain coefficients. The kth coefficient corresponds to frequency k × fₛ/N Hz and represents the signal amplitude and phase at that frequency. A 16-point DFT at 1600 Hz gives bins at 0, 100, 200, ... 1500 Hz. The DFT reveals which frequencies are present — essential for audio processing, channel characterization, and fault detection in mechanical systems.</p>
+<p>The <span class="term">Fast Fourier Transform (FFT)</span> computes the DFT in O(N log N) operations instead of O(N²) — for N = 1024 this is a 100× speedup. The FFT exploits symmetry in the DFT butterfly structure to eliminate redundant multiplications. A 16-point FFT runs in real time on the TM4C123. The provided FFT16.xls tool visualizes FFT magnitude for lab use.</p>
+<p><span class="term">Sound input</span> digitizes a microphone signal with the TM4C123 ADC. The microphone output is amplified, DC-biased to ADC midrange (1.65 V for 3.3 V reference), and anti-alias filtered before sampling at fₛ. Applying the FFT to blocks of N samples produces a live frequency spectrum on the LCD display — the same principle as a guitar tuner, spectrum analyzer, or voice recognition frontend.</p>
+<p><span class="term">Communication theory</span>: information is encoded onto signals and transmitted despite noise. Key metrics: <span class="term">bandwidth</span> (frequency range of signal or channel), <span class="term">SNR</span> = 10 log₁₀(P_signal/P_noise) in dB, and <span class="term">modulation</span> (encoding data by varying amplitude AM, frequency FM, or phase PM of a carrier). Shannon's capacity theorem gives the theoretical maximum data rate: C = B log₂(1 + SNR) bits/s for bandwidth B and SNR.</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Key Takeaways</p>
+          <div class="subsection-body"><ul><li>DFT bin k = frequency k × fₛ/N Hz — for 16-point DFT at 1600 Hz: bin 1 = 100 Hz, bin 8 = 800 Hz</li><li>Apply a window function (Hanning, Hamming) before the FFT to reduce spectral leakage from signal discontinuities at block edges</li><li>FFT magnitude = √(real² + imag²) — phase is often discarded for spectrum display applications</li><li>Averaging multiple FFT frames reduces the noise floor by 3 dB for each doubling of averages</li><li>Frequencies above fₛ/2 are mirrors of the lower bins — always anti-alias filter before ADC input</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Real-World Applications</p>
+          <div class="subsection-body"><p>The FFT is one of the most important algorithms in engineering — it enables MP3 audio compression (MDCT), OFDM modulation in Wi-Fi and 5G, radar signal processing, seismic analysis, and MRI image reconstruction. Guitar tuner apps run an FFT on the microphone input to identify the dominant frequency. The same 16-bin display you build for the LCD runs on supercomputers analyzing gravitational wave signals from the LIGO observatory — same mathematics, vastly different scale.</p></div>
+        </div>
+        <div class="vocab-section">
+          <p class="vocab-label">Vocabulary</p>
+          <div class="vocab-grid"><div class="vocab-item"><div class="vocab-term">DFT</div><div class="vocab-def">Discrete Fourier Transform — converts N time-domain samples to N frequency coefficients; O(N²) direct computation</div></div><div class="vocab-item"><div class="vocab-term">FFT</div><div class="vocab-def">Fast Fourier Transform — O(N log N) DFT algorithm; 100× faster than direct DFT for N = 1024</div></div><div class="vocab-item"><div class="vocab-term">Frequency Bin</div><div class="vocab-def">DFT output sample k representing signal energy at frequency k × fₛ/N Hz</div></div><div class="vocab-item"><div class="vocab-term">Spectral Leakage</div><div class="vocab-def">Energy spreading across multiple bins when the signal is not periodic in the window; reduced by windowing</div></div><div class="vocab-item"><div class="vocab-term">SNR</div><div class="vocab-def">Signal-to-Noise Ratio — 10 log₁₀(P_signal/P_noise) dB; indicates how far the signal sits above noise floor</div></div><div class="vocab-item"><div class="vocab-term">Bandwidth</div><div class="vocab-def">Frequency range of a signal or channel; determines information carrying capacity</div></div><div class="vocab-item"><div class="vocab-term">Modulation</div><div class="vocab-def">Encoding data on a carrier by varying amplitude (AM), frequency (FM), or phase (PM)</div></div><div class="vocab-item"><div class="vocab-term">Shannon Capacity</div><div class="vocab-def">Maximum channel data rate C = B log₂(1 + SNR) bits/s for bandwidth B — theoretical upper bound</div></div></div>
+        </div>
+        <div class="entry-tags"><span class="tag">FFT</span><span class="tag">DFT</span><span class="tag">Spectrum Analysis</span><span class="tag">SNR</span><span class="tag">Communication Theory</span><span class="tag">Audio Input</span><span class="tag">Bandwidth</span><span class="tag">Modulation</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Group 11</span>
+          <span class="entry-title">Real-Time Systems</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="motivation">
+          <p class="motivation-label">Why This Matters</p>
+          <p>An embedded system that gives the right answer too late is wrong. Real-time does not mean fast — it means predictable. A pacemaker that fires 10 ms late is a medical emergency. An anti-lock brake system that responds 100 ms late causes a crash. A motor control loop that misses a deadline allows instability to grow. This distinction between real-time and merely fast is what separates firmware that works reliably in the field from firmware that only works in the lab under ideal conditions.</p>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Concepts</p>
+          <div class="subsection-body"><p>A <span class="term">real-time system</span> is one where correctness depends both on logical results and the time at which they are produced. Three categories: <span class="term">hard real-time</span> — missing any deadline is catastrophic (pacemakers, airbags, flight control); <span class="term">firm real-time</span> — occasional misses degrade quality but are not catastrophic (industrial control); <span class="term">soft real-time</span> — misses degrade quality gracefully (video streaming, user interfaces).</p>
+<p>A <span class="term">periodic task</span> must execute once every T seconds and complete within deadline D ≤ T. <span class="term">Jitter</span> is the variation in actual execution timing from the ideal — in hard real-time systems it must be bounded: −k ≤ δᵢ ≤ +k for all i. Jitter sources: interrupt latency, competing ISRs, variable-length instructions. Reduction: assign the task to a high-priority timer ISR. Elimination: use hardware-triggered ADC conversion that bypasses all software latency.</p>
+<p>A <span class="term">race condition</span> occurs when system behavior depends on the relative timing of concurrent events — a non-deterministic bug that appears and disappears based on timing. Race conditions on shared data produce <span class="term">data hazards</span>: RAW (read-after-write), WAW (write-after-write), WAR (write-after-read). All require atomic access to prevent corruption — through interrupt disabling, hardware atomic operations, or lock-free data structures.</p>
+<p>The simplest embedded scheduler is a <span class="term">foreground/background system</span>: a main loop (background) interrupted by ISRs (foreground). This course uses this model throughout. <span class="term">Rate-monotonic scheduling</span> is optimal for fixed-period preemptive tasks: assign highest priority to the shortest period. A set of N tasks is schedulable when total CPU utilization U = Σ(Cᵢ/Tᵢ) ≤ N(2^(1/N)−1), approaching ln 2 ≈ 0.693 for large N. <span class="term">Engineering ethics</span>: software failures in safety-critical real-time systems have killed people — the Therac-25 race condition, the Boeing 737 MAX MCAS software. Engineers have an ethical obligation to understand failure modes, test corner cases, and communicate limitations honestly.</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Key Takeaways</p>
+          <div class="subsection-body"><ul><li>Real-time means predictable, not fast — a system responding in exactly 10 ms every time is more real-time than one averaging 1 ms with outliers</li><li>Jitter must be bounded in hard real-time — use hardware timer-triggered tasks, not software polling loops</li><li>Race conditions are non-deterministic — they may pass all lab testing and only appear in the field under specific timing</li><li>Rate-monotonic scheduling: highest priority to shortest period — provably optimal for fixed-period preemptive tasks</li><li>Keep CPU utilization below ~70% — hard real-time systems need margin for worst-case interrupt storms</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Real-World Applications</p>
+          <div class="subsection-body"><p>Real-time systems theory governs every safety-critical embedded design: avionics flight controllers (DO-178C requires formal deadline analysis), automotive ECUs (AUTOSAR defines task scheduling), and FDA-regulated medical devices (formal software hazard analysis required). The foreground/background model used in this course is identical to what runs in simple consumer products — appliance controllers, power tools, basic sensors. FreeRTOS, VxWorks, and QNX implement rate-monotonic scheduling for complex products. This material is the foundation for ECE 445M.</p></div>
+        </div>
+        <div class="vocab-section">
+          <p class="vocab-label">Vocabulary</p>
+          <div class="vocab-grid"><div class="vocab-item"><div class="vocab-term">Hard Real-Time</div><div class="vocab-def">System where missing any deadline is catastrophic — pacemakers, airbags, fly-by-wire control</div></div><div class="vocab-item"><div class="vocab-term">Soft Real-Time</div><div class="vocab-def">System where missed deadlines degrade quality gracefully — video streaming, user interfaces</div></div><div class="vocab-item"><div class="vocab-term">Jitter</div><div class="vocab-def">Variation in actual task execution timing from ideal schedule; must be bounded in hard real-time systems</div></div><div class="vocab-item"><div class="vocab-term">Race Condition</div><div class="vocab-def">Non-deterministic bug where behavior depends on timing of concurrent events — caused by unprotected shared data</div></div><div class="vocab-item"><div class="vocab-term">Data Hazard</div><div class="vocab-def">Corruption from concurrent data access: RAW, WAW, WAR — all require atomic protection</div></div><div class="vocab-item"><div class="vocab-term">Foreground/Background</div><div class="vocab-def">Simple scheduler: main loop (background) plus ISRs (foreground); used throughout this course</div></div><div class="vocab-item"><div class="vocab-term">Rate-Monotonic</div><div class="vocab-def">Optimal fixed-period scheduling policy: highest priority to shortest-period task</div></div><div class="vocab-item"><div class="vocab-term">CPU Utilization</div><div class="vocab-def">Fraction of CPU time consumed: U = Σ(Cᵢ/Tᵢ); must stay below ~0.693 for schedulability guarantee</div></div></div>
+        </div>
+        <div class="entry-tags"><span class="tag">Hard Real-Time</span><span class="tag">Scheduling</span><span class="tag">Jitter</span><span class="tag">Race Conditions</span><span class="tag">Deadlines</span><span class="tag">Rate-Monotonic</span><span class="tag">Ethics</span><span class="tag">RTOS</span></div>
+      </div></div></div>
+    </div>
+        </div>
+    </div>
+
+    <div class="tab-panel" id="panel-labs">
+
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Lab 1</span>
+          <span class="entry-title">Fixed-Point Math and LCD Output</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="subsection">
+          <p class="subsection-label">Overview</p>
+          <div class="subsection-body"><p>Write fixed-point conversion routines and display formatted numerical output on the ST7735R color LCD. Establishes the development environment and programming style used throughout the semester.</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Implementation</p>
+          <div class="subsection-body"><ul><li>Install Keil µVision 5 (or CCS 12.8), configure TM4C123 project, flash starter program</li><li>Write a function converting a fixed-point integer (e.g., 0.001 V precision) to formatted ASCII string</li><li>Drive the ST7735R LCD via SPI using the provided graphics library — display numbers, strings, and graphics</li><li>Verify output accuracy across the full representable range</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Outcome &amp; Lessons</p>
+          <div class="subsection-body"><p>Establishes fluency with the development environment, SPI-driven LCD, and fixed-point conventions used every subsequent lab. Formatting bugs here cost significant debugging time later.</p></div>
+        </div>
+        <div class="entry-tags"><span class="tag">Fixed-Point</span><span class="tag">LCD</span><span class="tag">SPI</span><span class="tag">Keil</span><span class="tag">TM4C123</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Lab 2</span>
+          <span class="entry-title">Debugging: Oscilloscope, Logic Analyzer, Dump Profile</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="subsection">
+          <p class="subsection-label">Overview</p>
+          <div class="subsection-body"><p>A structured debugging lab — use oscilloscopes, logic analyzers, and software dump techniques to characterize the behavior of a running embedded system. No new peripheral code — entirely about measurement.</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Implementation</p>
+          <div class="subsection-body"><ul><li>Use oscilloscope to measure GPIO toggle rates, PWM duty cycles, and signal rise times</li><li>Use logic analyzer to capture and decode UART and SPI transactions bit by bit</li><li>Implement dump array: circular buffer logging (time, value) pairs inside an ISR; inspect post-mortem in debugger</li><li>Profile code execution by toggling GPIO at function entry/exit and measuring pulse width on oscilloscope</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Outcome &amp; Lessons</p>
+          <div class="subsection-body"><p>The debugging skills here — not the specific tools — pay dividends in every remaining lab. The ability to observe what the hardware is actually doing (vs. what you think it's doing) is the most valuable embedded systems skill.</p></div>
+        </div>
+        <div class="entry-tags"><span class="tag">Oscilloscope</span><span class="tag">Logic Analyzer</span><span class="tag">Debugging</span><span class="tag">Dump Array</span><span class="tag">Profiling</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Lab 3</span>
+          <span class="entry-title">Alarm Clock: LCD, Switches, SysTick, Edge-Triggered Interrupts</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="subsection">
+          <p class="subsection-label">Overview</p>
+          <div class="subsection-body"><p>Build a functional alarm clock on the TM4C123: timekeeping, graphical display, button input for setting time and alarm, and a buzzer output when the alarm fires.</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Implementation</p>
+          <div class="subsection-body"><ul><li>SysTick periodic interrupt at 100 Hz maintains the timekeeping counter (hours, minutes, seconds)</li><li>Edge-triggered GPIO interrupts debounce and respond to button presses for incrementing hours/minutes</li><li>LCD displays current time and alarm time in real time — updated from the SysTick ISR</li><li>Alarm output drives a buzzer or LED when current time matches alarm time</li><li>Critical section protects time variables accessed from both ISR and main loop</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Outcome &amp; Lessons</p>
+          <div class="subsection-body"><p>Integrates interrupts, LCD output, GPIO input, and time-critical code in one coherent system. Key lesson: shared variables between ISR and main code must be protected — ignoring this causes intermittent, hard-to-reproduce bugs.</p></div>
+        </div>
+        <div class="entry-tags"><span class="tag">SysTick</span><span class="tag">Edge Interrupts</span><span class="tag">LCD</span><span class="tag">Debouncing</span><span class="tag">Critical Sections</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Lab 4</span>
+          <span class="entry-title">IoT: Wi-Fi Communication, TCP, Client-Server</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="subsection">
+          <p class="subsection-label">Overview</p>
+          <div class="subsection-body"><p>Connect the TM4C123 to a Wi-Fi network via an ESP8266 module and implement a basic IoT weather monitor that fetches live data from a web server and displays it on the LCD.</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Implementation</p>
+          <div class="subsection-body"><ul><li>Interface ESP8266 to TM4C123 via UART at 115200 baud using AT command set</li><li>Connect to Wi-Fi access point and establish TCP socket to a weather API server</li><li>Parse HTTP response to extract temperature and humidity values</li><li>Display parsed sensor data on ST7735R LCD — update every 10 seconds</li><li>Handle network errors gracefully: timeout detection and reconnect logic</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Outcome &amp; Lessons</p>
+          <div class="subsection-body"><p>Network latency and unreliability require a fundamentally different programming model than local peripherals. Parsing text protocols in C reinforces pointer arithmetic. Demonstrates the full IoT stack from physical layer to application layer.</p></div>
+        </div>
+        <div class="entry-tags"><span class="tag">IoT</span><span class="tag">ESP8266</span><span class="tag">Wi-Fi</span><span class="tag">TCP/IP</span><span class="tag">HTTP</span><span class="tag">UART</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Lab 5</span>
+          <span class="entry-title">12-bit DAC, SPI, Music Player, Audio Amplifier</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="subsection">
+          <p class="subsection-label">Overview</p>
+          <div class="subsection-body"><p>Build a music player that generates audio waveforms using a 12-bit external DAC over SPI, amplifies the output with a power amplifier, and drives a speaker — all in real time on the TM4C123.</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Implementation</p>
+          <div class="subsection-body"><ul><li>Drive the TLV5618 12-bit DAC via SPI — write a new sample every interrupt for audio-rate waveforms</li><li>Store note waveforms (sine, triangle) as lookup tables in ROM; step through at correct rate for each note frequency</li><li>Use SysTick interrupt at audio sample rate (e.g., 11 kHz) to output samples to DAC</li><li>Amplify DAC output using TPA731 audio amplifier to drive a small speaker</li><li>Play a melody stored in a const array — verify pitch and timing with oscilloscope and by ear</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Outcome &amp; Lessons</p>
+          <div class="subsection-body"><p>Makes DAC theory, SPI communication, interrupt-driven output, and lookup table techniques immediately concrete — you hear the result. Reinforces that sample rate determines maximum audio frequency.</p></div>
+        </div>
+        <div class="entry-tags"><span class="tag">DAC</span><span class="tag">SPI</span><span class="tag">Audio</span><span class="tag">Lookup Table</span><span class="tag">TLV5618</span><span class="tag">TPA731</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Lab 6</span>
+          <span class="entry-title">PCB Layout Introduction (KiCad)</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="subsection">
+          <p class="subsection-label">Overview</p>
+          <div class="subsection-body"><p>A paper design exercise: capture a provided schematic in KiCad, assign footprints, and complete a PCB layout following good design rules — without fabrication. Prepares teams for the real PCB in Lab 7A/7B.</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Implementation</p>
+          <div class="subsection-body"><ul><li>Install KiCad with 445L component library; enter the provided schematic in the schematic editor</li><li>Run electrical rules check (ERC) and resolve all errors</li><li>Assign PCB footprints to all symbols; generate netlist</li><li>Place components following provided guidelines (connectors on edges, bypass caps near power pins)</li><li>Route all signal traces manually; add ground fill on bottom copper layer</li><li>Run DRC and resolve all violations; export Gerber files</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Outcome &amp; Lessons</p>
+          <div class="subsection-body"><p>Students discover how many decisions go into PCB layout that are invisible in a schematic. KiCad workflow learned here is used directly in the final project PCB.</p></div>
+        </div>
+        <div class="entry-tags"><span class="tag">KiCad</span><span class="tag">PCB Layout</span><span class="tag">Schematic</span><span class="tag">Gerber</span><span class="tag">DRC</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Lab 7A</span>
+          <span class="entry-title">Final Project: Design and PCB Fabrication</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="subsection">
+          <p class="subsection-label">Overview</p>
+          <div class="subsection-body"><p>Multi-week capstone design project — Phase A. Teams of 4 design a complete microcontroller-based embedded system of their choosing, lay out a custom PCB in KiCad, and submit it for fabrication.</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Implementation</p>
+          <div class="subsection-body"><ul><li>Write project specification: functional requirements, block diagram, hardware BOM, software module list</li><li>Complete schematic capture in KiCad; review with TA; begin PCB layout</li><li>Demonstrate breadboard prototype of core functionality to TA</li><li>Complete PCB layout; submit Gerber files to TA for the fabrication order</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Outcome &amp; Lessons</p>
+          <div class="subsection-body"><p>The PCB fabrication deadline is a hard constraint with no exceptions — late files mean paying for your own board. Most teams significantly underestimate how long layout takes relative to schematic capture.</p></div>
+        </div>
+        <div class="entry-tags"><span class="tag">Final Project</span><span class="tag">PCB</span><span class="tag">KiCad</span><span class="tag">Specification</span><span class="tag">System Design</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Lab 7B</span>
+          <span class="entry-title">Software Drivers for the Embedded System</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="subsection">
+          <p class="subsection-label">Overview</p>
+          <div class="subsection-body"><p>Write modular, well-documented device drivers for all peripherals in the final project system — the software half of the embedded system design before the PCB arrives.</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Implementation</p>
+          <div class="subsection-body"><ul><li>Write init/read/write functions for each peripheral (ADC, UART, SPI, GPIO, timers)</li><li>Test each driver independently on the breadboard prototype before integration</li><li>Document all functions with header comments: purpose, parameters, return value, side effects</li><li>Implement a FIFO queue for buffered UART receive — avoids lost characters when main loop is busy</li><li>Verify timing-critical drivers using oscilloscope profiling from Lab 2</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Outcome &amp; Lessons</p>
+          <div class="subsection-body"><p>Modular drivers make final integration manageable. Testing each driver in isolation catches bugs that would be nearly impossible to find in the fully integrated system.</p></div>
+        </div>
+        <div class="entry-tags"><span class="tag">Device Drivers</span><span class="tag">FIFO</span><span class="tag">Modular C</span><span class="tag">Testing</span><span class="tag">Documentation</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Lab 8</span>
+          <span class="entry-title">Temperature Measurement: ADC, Thermistor, LCD</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="subsection">
+          <p class="subsection-label">Overview</p>
+          <div class="subsection-body"><p>Build a complete temperature measurement system: thermistor voltage divider → analog conditioning → TM4C123 ADC → fixed-point calibration → LCD display in °C and °F.</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Implementation</p>
+          <div class="subsection-body"><ul><li>Design a voltage divider with thermistor and reference resistor; calculate for expected temperature range</li><li>Design a 2-pole Butterworth lowpass filter to remove 60 Hz and high-frequency noise before ADC</li><li>Sample ADC at 100 Hz via SysTick interrupt; average multiple samples to reduce noise</li><li>Convert raw ADC value to temperature using a calibration lookup table (10–40°C range)</li><li>Display temperature in °C and °F on LCD, updating once per second</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Outcome &amp; Lessons</p>
+          <div class="subsection-body"><p>Shows that a complete measurement chain has many stages each introducing its own error. Calibration turns raw ADC counts into physically meaningful numbers. The anti-aliasing filter becomes a real hardware component, not just theory.</p></div>
+        </div>
+        <div class="entry-tags"><span class="tag">ADC</span><span class="tag">Thermistor</span><span class="tag">Butterworth LPF</span><span class="tag">Calibration</span><span class="tag">LCD</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Lab 9</span>
+          <span class="entry-title">DC Motor Control: PWM, Input Capture, PI Controller</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="subsection">
+          <p class="subsection-label">Overview</p>
+          <div class="subsection-body"><p>The final structured lab — and the first test of the fabricated PCB. Implement a complete closed-loop DC motor speed controller: PWM drive, tachometer speed measurement, and a PI control algorithm.</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Implementation</p>
+          <div class="subsection-body"><ul><li>Solder all components to the received PCB; test power rails before connecting microcontroller</li><li>Configure TM4C123 timer in PWM mode to drive TIP120 transistor at 10 kHz; set duty cycle via software</li><li>Configure second timer in input capture mode to measure period between tachometer pulses</li><li>Compute speed in RPM from captured period; implement PI controller updating PWM duty cycle every 10 ms</li><li>Plot speed vs. time on LCD; demonstrate stable tracking of commanded setpoint with minimal steady-state error</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Outcome &amp; Lessons</p>
+          <div class="subsection-body"><p>The PCB integration step is where hardware bugs from layout are discovered — a missing via, a swapped pin, an undersized trace. Debugging real hardware requires patience and the oscilloscope skills from Lab 2.</p></div>
+        </div>
+        <div class="entry-tags"><span class="tag">DC Motor</span><span class="tag">PWM</span><span class="tag">PI Control</span><span class="tag">Input Capture</span><span class="tag">PCB Integration</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Lab 10 / Final Project</span>
+          <span class="entry-title">Final System Demo: Expo</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="subsection">
+          <p class="subsection-label">Overview</p>
+          <div class="subsection-body"><p>The semester capstone: complete, integrate, and demonstrate the embedded system designed in Labs 7A/7B. Teams present their working system at the ECE 445L Expo — a public demonstration.</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Implementation</p>
+          <div class="subsection-body"><ul><li>Integrate all hardware and software modules on the fabricated PCB</li><li>Debug and fix any PCB-level hardware issues found during bring-up</li><li>Complete a final test plan: list all functional requirements and verify each passes</li><li>Prepare a live demonstration showing all system features</li><li>Expo (last Thursday of class): demonstrate to judges; explain design decisions and tradeoffs</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Outcome &amp; Lessons</p>
+          <div class="subsection-body"><p>Teams that completed thorough testing in Lab 9 demonstrate confidently. Teams that integrated at the last minute discover that embedded systems rarely work correctly the first time — and there is no time left to fix them. Start early, test incrementally.</p></div>
+        </div>
+        <div class="entry-tags"><span class="tag">System Integration</span><span class="tag">Expo</span><span class="tag">Testing</span><span class="tag">PCB</span><span class="tag">Final Project</span></div>
+      </div></div></div>
+    </div>
     </div>
 
   </main>
@@ -238,6 +1423,34 @@
     <span>Justin Han · Portfolio</span>
     <span id="yr"></span>
   </footer>
-  <script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+
+  <script>
+    // ── Collapsible entry blocks ──
+    document.querySelectorAll('.entry-header').forEach(h => {
+      h.addEventListener('click', () => h.closest('.entry-block').classList.toggle('open'));
+    });
+
+    // ── Expand / Collapse All (only affects active panel) ──
+    document.getElementById('expand-all').addEventListener('click', () => {
+      document.querySelector('.tab-panel.active')
+        .querySelectorAll('.entry-block').forEach(b => b.classList.add('open'));
+    });
+    document.getElementById('collapse-all').addEventListener('click', () => {
+      document.querySelector('.tab-panel.active')
+        .querySelectorAll('.entry-block').forEach(b => b.classList.remove('open'));
+    });
+
+    // ── Tab switching ──
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    document.getElementById('yr').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>

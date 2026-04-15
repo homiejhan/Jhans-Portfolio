@@ -7,126 +7,609 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --cream: #F5F0E8; --ink: #1A1A18; --rust: #C0521F; --sand: #D9C9A8; --muted: #7A7368; }
-    html, body { background: var(--cream); color: var(--ink); font-family: 'DM Mono', monospace; min-height: 100vh; }
-    body::before {
-      content: ''; position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none; z-index: 999; opacity: 0.5;
-    }
+/* ============================================================
+   JUSTIN HAN PORTFOLIO — MAIN STYLESHEET
+   Shared across all pages. Page-specific overrides go at
+   the bottom in clearly marked sections.
+   ============================================================ */
 
-    /* ── HEADER ── */
-    header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 2rem 3rem; border-bottom: 1px solid var(--sand);
-      position: sticky; top: 0; background: var(--cream); z-index: 100;
-    }
-    .logo { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
-    nav { display: flex; border: 1px solid var(--sand); }
-    nav a {
-      text-decoration: none; font-family: 'DM Mono', monospace; font-size: 0.72rem;
-      font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
-      color: var(--muted); padding: 0.65rem 1.4rem; border-right: 1px solid var(--sand);
-      transition: background 0.2s, color 0.2s;
-    }
-    nav a:last-child { border-right: none; }
-    nav a:hover, nav a.active { background: var(--ink); color: var(--cream); }
+/* ── RESET & BOX MODEL ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ── BREADCRUMB ── */
-    .breadcrumb {
-      max-width: 860px; margin: 0 auto;
-      padding: 1.5rem 3rem 0;
-      display: flex; align-items: center; gap: 0.6rem;
-      font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
-    }
-    .breadcrumb a { color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--sand); transition: color 0.2s, border-color 0.2s; }
-    .breadcrumb a:hover { color: var(--ink); border-color: var(--ink); }
-    .breadcrumb span { color: var(--rust); }
+/* ── DESIGN TOKENS ── */
+:root {
+  --cream:  #F5F0E8;
+  --ink:    #1A1A18;
+  --rust:   #C0521F;
+  --sage:   #4A6741;
+  --sand:   #D9C9A8;
+  --muted:  #7A7368;
+  --body:   #3A3830;
 
-    /* ── PAGE WRAP ── */
-    .page-wrap { max-width: 860px; margin: 0 auto; padding: 3rem 3rem 6rem; }
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-mono:  'DM Mono', 'Courier New', monospace;
 
-    /* ── COURSE HERO ── */
-    .course-hero { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--sand); }
-    .course-code {
-      font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--rust); margin-bottom: 0.75rem;
-    }
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.2rem, 5vw, 3.8rem);
-      line-height: 1.08; letter-spacing: -0.03em;
-      margin-bottom: 1.75rem; color: var(--ink);
-    }
-    h1 em { font-style: italic; color: var(--rust); }
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-    .course-meta {
-      display: flex; flex-wrap: wrap; gap: 0;
-      border: 1px solid var(--sand);
-      width: fit-content;
-    }
-    .meta-item { padding: 0.65rem 1.25rem; border-right: 1px solid var(--sand); }
-    .meta-item:last-child { border-right: none; }
-    .meta-key { font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust); margin-bottom: 0.25rem; }
-    .meta-val { font-size: 0.78rem; color: var(--ink); }
+/* ── BASE ── */
+html, body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  min-height: 100vh;
+}
 
-    /* ── ABSTRACT ── */
-    .abstract { margin-bottom: 3rem; }
-    .abstract p { font-size: 0.92rem; line-height: 1.95; color: #3A3830; }
+/* Noise texture overlay */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.5;
+}
 
-    /* ── CONTENT SECTIONS (Topics & Projects) ── */
-    .content-section {
-      border-top: 1px solid var(--sand);
-      padding: 2.5rem 0;
-    }
-    .content-section:last-child { border-bottom: 1px solid var(--sand); }
+/* ── TYPOGRAPHY ── */
+h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.75rem;
+}
+h1 em { font-style: italic; color: var(--rust); }
 
-    .section-eyebrow {
-      font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--rust); margin-bottom: 0.5rem;
-    }
-    h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em;
-      color: var(--ink); margin-bottom: 1.25rem; line-height: 1.2;
-    }
-    .section-body { font-size: 0.88rem; line-height: 1.9; color: #3A3830; }
-    .section-body p { margin-bottom: 0.85rem; }
-    .section-body p:last-child { margin-bottom: 0; }
+p {
+  font-size: 0.9rem;
+  line-height: 1.9;
+  color: var(--body);
+}
 
-    /* Bullet list inside section body */
-    .section-body ul { padding-left: 1.25rem; margin-bottom: 0.85rem; }
-    .section-body ul li { margin-bottom: 0.3rem; }
+/* ── HEADER ── */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem 3rem;
+  border-bottom: 1px solid var(--sand);
+  position: sticky;
+  top: 0;
+  background: var(--cream);
+  z-index: 100;
+}
 
-    /* Tags row inside a section */
-    .section-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
-    .tag {
-      font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase;
-      padding: 0.2rem 0.55rem; border: 1px solid var(--sand); color: var(--muted);
-    }
+.logo {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-decoration: none;
+}
 
-    /* ── FOOTER ── */
-    footer {
-      padding: 1.5rem 3rem; border-top: 1px solid var(--sand);
-      display: flex; justify-content: space-between; align-items: center;
-      font-size: 0.7rem; color: var(--muted); letter-spacing: 0.05em;
-    }
+/* ── NAV ── */
+nav { display: flex; border: 1px solid var(--sand); }
 
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
-    .page-wrap { animation: fadeUp 0.45s ease both; }
+nav a {
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0.65rem 1.4rem;
+  border-right: 1px solid var(--sand);
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
+}
+nav a:last-child { border-right: none; }
+nav a:hover,
+nav a.active { background: var(--ink); color: var(--cream); }
 
-    @media (max-width: 768px) {
-      header { padding: 1.25rem; flex-wrap: wrap; gap: 1rem; }
-      .breadcrumb { padding: 1rem 1.25rem 0; }
-      .page-wrap { padding: 2rem 1.25rem 4rem; }
-      nav a { padding: 0.55rem 0.9rem; font-size: 0.65rem; }
-      footer { flex-direction: column; gap: 0.5rem; padding: 1.25rem; }
-      .course-meta { flex-direction: column; }
-      .meta-item { border-right: none; border-bottom: 1px solid var(--sand); }
-      .meta-item:last-child { border-bottom: none; }
-    }
+/* ── FOOTER ── */
+footer {
+  padding: 1.5rem 3rem;
+  border-top: 1px solid var(--sand);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7rem;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+
+/* ── PAGE WRAP ── */
+.page-wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 5rem 3rem 6rem;
+}
+
+.page-wrap--wide { max-width: 1100px; }
+.page-wrap--narrow { max-width: 860px; }
+
+/* ── EYEBROW ── */
+.page-eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 1rem;
+}
+
+/* ── BREADCRUMB ── */
+.breadcrumb {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 1.5rem 3rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.breadcrumb a {
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--sand);
+  transition: color 0.2s, border-color 0.2s;
+}
+.breadcrumb a:hover { color: var(--ink); border-color: var(--ink); }
+.breadcrumb span { color: var(--rust); }
+
+/* ── TAGS ── */
+.tag {
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--sand);
+  color: var(--muted);
+}
+
+/* ── SECTION LABEL (divider style) ── */
+.section-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--sand); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-up { animation: fadeUp 0.5s var(--ease) both; }
+
+/* ============================================================
+   ABOUT PAGE
+   ============================================================ */
+.about-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.bio-section { display: flex; flex-direction: column; gap: 2rem; animation: fadeUp 0.5s var(--ease) both; }
+
+.avatar-block { display: flex; flex-direction: column; gap: 1.5rem; }
+.avatar {
+  width: 100%;
+  aspect-ratio: 3/4;
+  border: 1px solid var(--sand);
+  background: var(--sand);
+  position: relative;
+  overflow: hidden;
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+
+.fact-list { display: flex; flex-direction: column; }
+.fact-item { padding: 1rem 0; border-bottom: 1px solid var(--sand); }
+.fact-item:first-child { border-top: 1px solid var(--sand); }
+.fact-label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust); margin-bottom: 0.3rem; }
+.fact-value { font-size: 0.85rem; color: var(--ink); }
+.fact-value a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--sand); transition: border-color 0.2s; }
+.fact-value a:hover { border-color: var(--ink); }
+
+.skills-wrap { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+.skill-tag {
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--sand);
+  color: var(--muted);
+  transition: border-color 0.2s, color 0.2s;
+}
+.skill-tag:hover { border-color: var(--ink); color: var(--ink); }
+
+/* ============================================================
+   COURSEWORK PAGE
+   ============================================================ */
+.controls-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 3.5rem;
+  flex-wrap: wrap;
+}
+
+.sort-bar { display: flex; border: 1px solid var(--sand); }
+
+.sort-btn {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--cream);
+  border: none;
+  border-right: 1px solid var(--sand);
+  padding: 0.65rem 1.3rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.sort-btn:last-child { border-right: none; }
+.sort-btn:hover { background: #EDE8DF; color: var(--ink); }
+.sort-btn.active { background: var(--ink); color: var(--cream); }
+
+.alpha-label {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.alpha-label input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--sand);
+  background: var(--cream);
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  transition: background 0.2s, border-color 0.2s;
+}
+.alpha-label input[type="checkbox"]:checked { background: var(--ink); border-color: var(--ink); }
+.alpha-label input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 3px; top: 1px;
+  width: 5px; height: 8px;
+  border: 1.5px solid var(--cream);
+  border-top: none; border-left: none;
+  transform: rotate(45deg);
+}
+
+.section-block { margin-bottom: 4rem; animation: fadeUp 0.4s var(--ease) both; }
+
+.semester-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.25rem; }
+.semester-label {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.semester-divider { flex: 1; height: 1px; background: var(--sand); }
+.semester-count { font-size: 0.68rem; letter-spacing: 0.1em; color: var(--muted); white-space: nowrap; }
+
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1px;
+  background: var(--sand);
+  border: 1px solid var(--sand);
+}
+
+.course-card {
+  background: var(--cream);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  cursor: default;
+  color: inherit;
+  text-decoration: none;
+  transition: background 0.18s;
+}
+.course-card:hover { background: #EDE8DF; }
+.course-card:hover .card-arrow { opacity: 1; transform: translate(2px, -2px); }
+
+.card-meta { display: flex; justify-content: space-between; align-items: center; }
+.card-code { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust); }
+.card-semester { font-size: 0.62rem; color: var(--muted); letter-spacing: 0.05em; }
+.card-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--ink);
+}
+.card-desc { font-size: 0.78rem; line-height: 1.75; color: var(--muted); flex: 1; }
+.card-footer-row { display: flex; justify-content: space-between; align-items: center; margin-top: 0.25rem; }
+.card-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.card-arrow {
+  font-size: 0.85rem;
+  color: var(--rust);
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+  flex-shrink: 0;
+}
+
+.subtitle { font-size: 0.85rem; color: var(--muted); margin-bottom: 4rem; line-height: 1.7; }
+
+/* ============================================================
+   COURSE DETAIL PAGE  (ece-445s and template)
+   ============================================================ */
+.course-hero { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--sand); }
+.course-code { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--rust); margin-bottom: 0.75rem; }
+.course-hero h1 { font-size: clamp(2.2rem, 5vw, 3.8rem); line-height: 1.08; letter-spacing: -0.03em; margin-bottom: 1.75rem; }
+
+.course-meta { display: flex; flex-wrap: wrap; border: 1px solid var(--sand); width: fit-content; }
+.meta-item { padding: 0.65rem 1.25rem; border-right: 1px solid var(--sand); }
+.meta-item:last-child { border-right: none; }
+.meta-key { font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust); margin-bottom: 0.25rem; }
+.meta-val { font-size: 0.78rem; color: var(--ink); }
+
+.abstract { margin-bottom: 3rem; }
+.abstract p { font-size: 0.92rem; line-height: 1.95; color: var(--body); margin-bottom: 0.75rem; }
+.abstract p:last-child { margin-bottom: 0; }
+
+/* Controls */
+.section-controls { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+.ctrl-btn {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--cream);
+  border: 1px solid var(--sand);
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.ctrl-btn:hover { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+
+/* Collapsible entry blocks */
+.entry-block { border-top: 1px solid var(--sand); }
+.entry-block:last-child { border-bottom: 1px solid var(--sand); }
+
+.entry-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem 0;
+  cursor: pointer;
+  gap: 1rem;
+  user-select: none;
+}
+.entry-header:hover .entry-title { color: var(--rust); }
+
+.entry-left { display: flex; align-items: baseline; gap: 1rem; }
+.entry-eyebrow {
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rust);
+  flex-shrink: 0;
+  min-width: 4.5rem;
+}
+.entry-title {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+  transition: color 0.2s;
+}
+.entry-chevron {
+  font-size: 0.75rem;
+  color: var(--muted);
+  flex-shrink: 0;
+  transition: transform 0.25s var(--ease);
+}
+.entry-block.open .entry-chevron { transform: rotate(90deg); }
+
+.entry-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s var(--ease); }
+.entry-block.open .entry-body { grid-template-rows: 1fr; }
+.entry-body-inner { overflow: hidden; }
+.entry-body-content { padding-bottom: 2rem; }
+
+/* Subsections */
+.subsection { margin-bottom: 1.5rem; }
+.subsection:last-child { margin-bottom: 0; }
+.subsection-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.subsection-label::after { content: ''; flex: 1; height: 1px; background: var(--sand); }
+
+.subsection-body { font-size: 0.86rem; line-height: 1.9; color: var(--body); }
+.subsection-body p { margin-bottom: 0.75rem; }
+.subsection-body p:last-child { margin-bottom: 0; }
+.subsection-body ul { padding-left: 1.2rem; }
+.subsection-body ul li { margin-bottom: 0.35rem; }
+
+/* Tags row */
+.entry-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.25rem; }
+
+/* Motivation block */
+.motivation {
+  background: rgba(192, 82, 31, 0.05);
+  border-left: 3px solid var(--rust);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0 2px 2px 0;
+}
+.motivation-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+.motivation p { font-size: 0.84rem; line-height: 1.85; color: var(--body); margin-bottom: 0.5rem; }
+.motivation p:last-child { margin-bottom: 0; }
+
+/* Display equations */
+.eq-block {
+  display: block;
+  margin: 0.75rem 0;
+  padding: 0.65rem 1.25rem;
+  border-left: 2px solid var(--rust);
+  background: rgba(192, 82, 31, 0.04);
+  font-size: 0.95rem;
+  overflow-x: auto;
+}
+li .eq-block { margin-left: -1.2rem; }
+.eq-label { display: block; margin-bottom: 0.2rem; }
+
+/* Key term highlight */
+.term {
+  font-weight: 500;
+  color: var(--ink);
+  border-bottom: 1px solid var(--rust);
+  padding-bottom: 1px;
+}
+
+/* Vocabulary grid */
+.vocab-section { margin-top: 1.75rem; }
+.vocab-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.vocab-label::after { content: ''; flex: 1; height: 1px; background: var(--sand); }
+.vocab-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--sand);
+}
+.vocab-item {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--sand);
+  border-right: 1px solid var(--sand);
+}
+.vocab-item:nth-child(even) { border-right: none; }
+.vocab-item:nth-last-child(-n+2) { border-bottom: none; }
+.vocab-item:last-child:nth-child(odd) { border-right: none; border-bottom: none; grid-column: span 2; }
+.vocab-term { font-size: 0.72rem; font-weight: 500; color: var(--rust); margin-bottom: 0.25rem; letter-spacing: 0.04em; }
+.vocab-def { font-size: 0.76rem; color: var(--body); line-height: 1.6; }
+
+/* Diagrams */
+.diagram-wrap {
+  margin: 1.5rem 0;
+  border: 1px solid var(--sand);
+  padding: 1.25rem;
+  background: #FAF7F2;
+}
+.diagram-caption {
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 0.75rem;
+}
+.diagram-wrap svg text { font-family: 'DM Mono', monospace; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  header { padding: 1.25rem; flex-wrap: wrap; gap: 1rem; }
+  footer { flex-direction: column; gap: 0.5rem; padding: 1.25rem; }
+  nav a { padding: 0.55rem 0.9rem; font-size: 0.65rem; }
+
+  .page-wrap { padding: 3rem 1.25rem 4rem; }
+  .breadcrumb { padding: 1rem 1.25rem 0; }
+
+  .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+
+  .controls-row { flex-wrap: wrap; }
+  .sort-btn { font-size: 0.62rem; padding: 0.55rem 0.9rem; }
+
+  .course-meta { flex-direction: column; }
+  .meta-item { border-right: none; border-bottom: 1px solid var(--sand); }
+  .meta-item:last-child { border-bottom: none; }
+
+  .entry-left { flex-direction: column; gap: 0.25rem; }
+  .vocab-grid { grid-template-columns: 1fr; }
+  .vocab-item { border-right: none; }
+  .vocab-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--sand); }
+  .vocab-item:last-child { border-bottom: none; grid-column: span 1; }
+}
+
+
+/* ── COURSE PAGE TABS ── */
+.tab-bar {
+  display: flex;
+  border-bottom: 1px solid var(--sand);
+  margin-bottom: 1.75rem;
+  gap: 0;
+}
+.tab-btn {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.65rem 1.4rem;
+  cursor: pointer;
+  margin-bottom: -1px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.tab-btn:hover { color: var(--ink); }
+.tab-btn.active { color: var(--rust); border-bottom-color: var(--rust); }
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+  
   </style>
+  <script>
+    MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script','noscript','style','textarea'] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" defer></script>
 </head>
 <body>
   <header>
@@ -145,13 +628,9 @@
 
   <main class="page-wrap">
 
-    <!-- ══════════════════════════════════
-         HERO — update course name & code
-         ══════════════════════════════════ -->
     <div class="course-hero">
       <p class="course-code">ECE 351M</p>
-      <h1>Digital<br><em>Signal Processing.</em></h1>
-
+      <h1>Digital Signal<br><em>Processing.</em></h1>
       <div class="course-meta">
         <div class="meta-item">
           <div class="meta-key">Semester</div>
@@ -159,77 +638,663 @@
         </div>
         <div class="meta-item">
           <div class="meta-key">Professor</div>
-          <div class="meta-val">Prof. Name Here</div>  <!-- UPDATE -->
+          <div class="meta-val">Prof. Vivek Telang</div>
         </div>
         <div class="meta-item">
           <div class="meta-key">Textbook</div>
-          <div class="meta-val">None</div>  <!-- UPDATE -->
+          <div class="meta-val">Oppenheim &amp; Schafer: Discrete-Time Signal Processing (3rd ed.)</div>
         </div>
         <div class="meta-item">
           <div class="meta-key">Credits</div>
-          <div class="meta-val">3</div>  <!-- UPDATE -->
+          <div class="meta-val">3</div>
         </div>
       </div>
     </div>
 
-    <!-- ══════════════════════════════════
-         ABSTRACT
-         ══════════════════════════════════ -->
     <div class="abstract">
       <p>
-        Write a short abstract describing the course — what it covered, what the general goals were,
-        and what you took away from it overall. A few sentences to a paragraph is plenty.
+        Every time you stream music, make a phone call, take a photo, get an MRI, or use GPS navigation,
+        digital signal processing is running invisibly beneath the surface. The algorithms that compress
+        your audio, cancel echo on your call, sharpen your photo, reconstruct images from X-ray
+        measurements, and separate satellite signals from noise were all designed by engineers who
+        understood how to represent, analyze, and manipulate signals mathematically.
+      </p>
+      <p>
+        ECE 351M builds the theoretical foundations of DSP from the ground up: starting with the
+        mathematics of discrete-time systems, moving through sampling theory and frequency analysis,
+        and culminating in practical filter design methods and modern topics including adaptive filtering,
+        neural networks, and statistical signal processing. The course bridges the gap between abstract
+        mathematics — Z-transforms, convolution, spectral density — and the algorithms running on
+        every digital device you own.
+      </p>
+      <p>
+        By the end, the frequency domain is no longer abstract. When you see a filter specification
+        or a spectrum plot, you will understand every design choice behind it — and know how to build
+        the system that produces it.
       </p>
     </div>
 
-    <!-- ══════════════════════════════════
-         TOPICS — duplicate as needed
-         ══════════════════════════════════ -->
-    <div class="content-section">
-      <p class="section-eyebrow">Topic 1</p>
-      <h2>Topic Name Here</h2>
-      <div class="section-body">
-        <p>Describe what this topic covered, what you learned, and why it mattered. Add as many paragraphs as you need.</p>
-        <ul>
-          <li>Key concept or takeaway</li>
-          <li>Another key concept</li>
-        </ul>
-      </div>
-      <div class="section-tags">
-        <span class="tag">Tag A</span>
-        <span class="tag">Tag B</span>
-      </div>
+    <div class="section-controls">
+      <button class="ctrl-btn" id="expand-all">Expand All</button>
+      <button class="ctrl-btn" id="collapse-all">Collapse All</button>
     </div>
 
-    <div class="content-section">
-      <p class="section-eyebrow">Topic 2</p>
-      <h2>Topic Name Here</h2>
-      <div class="section-body">
-        <p>Describe this topic here.</p>
+    
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Topic 1</span>
+          <span class="entry-title">LTI Systems</span>
+        </div>
+        <span class="entry-chevron">›</span>
       </div>
-      <div class="section-tags">
-        <span class="tag">Tag A</span>
-      </div>
-    </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="motivation">
+          <p class="motivation-label">Why This Matters</p>
+          <p>Linear Time-Invariant systems are the mathematical foundation of all of digital signal processing. Nearly every transform, filter, and algorithm in this course exists because we are working within the LTI framework — a framework that makes analysis tractable, gives us superposition, and guarantees that the frequency-domain description completely characterizes the system. Understanding what makes a system LTI, and what breaks that property, is prerequisite to everything else. Lectures 1–4 build this foundation from scratch: discrete-time signals, system properties, convolution, the DTFT, and the Z-transform.</p>
+        </div>
 
-    <!-- ══════════════════════════════════
-         PROJECTS — duplicate as needed
-         ══════════════════════════════════ -->
-    <div class="content-section">
-      <p class="section-eyebrow">Project 1</p>
-      <h2>Project Name Here</h2>
-      <div class="section-body">
-        <p>Describe the project — what you built, what problem it solved, how you approached it, and what you learned.</p>
-        <ul>
-          <li>Notable implementation detail</li>
-          <li>Tools or languages used</li>
-        </ul>
+        <div class="subsection">
+          <p class="subsection-label">Discrete-Time Sequences (Lecture 1)</p>
+          <div class="subsection-body">
+            <p>A <span class="term">discrete-time sequence</span> \(x[n]\) is obtained by sampling a continuous-time signal \(x_a(t)\) at sampling period \(T\): \(x[n] = x_a(nT)\). The sampling frequency is \(f_s = 1/T\). For example, audio signals have bandwidth 0–20 kHz and are typically sampled at \(f_s = 44.1\) ksamples/s (\(T = 22.7\,\mu\text{s}\)).</p>
+            <p>Four fundamental sequences appear throughout the course:</p>
+            <ul>
+              <li><span class="term">Unit sample (impulse):</span> \(\delta[n] = \begin{cases}1 & n=0 \\ 0 & n \neq 0\end{cases}\). Any arbitrary sequence can be written as \(x[n] = \sum_{k=-\infty}^{\infty} x[k]\,\delta[n-k]\) — a sum of scaled, delayed impulses. This identity is the key to deriving the convolution formula.</li>
+              <li><span class="term">Unit step:</span> \(u[n] = \begin{cases}1 & n \geq 0 \\ 0 & n < 0\end{cases}\). Note that \(u[n] = \sum_{k=0}^{\infty}\delta[n-k]\) and \(\delta[n] = u[n] - u[n-1]\).</li>
+              <li><span class="term">Real exponential:</span> \(x[n] = A\alpha^n\). Decays to zero for \(|\alpha| < 1\), grows unbounded for \(|\alpha| > 1\).</li>
+              <li><span class="term">Complex exponential / sinusoidal:</span> \(x[n] = |A|e^{j(\omega_0 n + \phi)} = |A|\cos(\omega_0 n + \phi) + j|A|\sin(\omega_0 n + \phi)\). Here \(\omega_0\) is the frequency in radians/sample and \(\phi\) is the phase in radians. Because \(e^{j(\omega_0 + 2\pi)n} = e^{j\omega_0 n}\), the frequency is unique only on a \(2\pi\)-interval, typically \(-\pi < \omega_0 \leq \pi\).</li>
+            </ul>
+            <p>A sequence is <span class="term">periodic</span> with period \(N\) if \(x[n+N] = x[n]\) for all \(n\), where \(N\) is a positive integer. For a complex exponential \(e^{j\omega_0 n}\) to be periodic, we need \(\omega_0 N = 2\pi k\) for some integer \(k\). This means \(\omega_0/2\pi\) must be a rational number. Unlike continuous-time, <em>not all</em> discrete-time complex exponentials are periodic — for example, \(x[n] = A\cos\!\left(\frac{\sqrt{2}\pi n}{4}\right)\) is not periodic because \(\omega_0 = \sqrt{2}\pi/4\) leads to \(N = 4\sqrt{2}\,k\), which is never an integer.</p>
+            <p>Basic sequence operations: sum \(y[n] = x_1[n] + x_2[n]\), product \(y[n] = x_1[n] \cdot x_2[n]\), scalar multiplication \(y[n] = ax[n]\), and delay \(y[n] = x[n-D]\).</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <p class="subsection-label">System Properties (Lectures 1–2)</p>
+          <div class="subsection-body">
+            <p>A <span class="term">discrete-time system</span> is a transformation \(T\{\cdot\}\) mapping input \(x[n]\) to output \(y[n]\). Five properties must be tested for every system:</p>
+            <ul>
+              <li><span class="term">Memoryless:</span> \(y[n]\) depends only on \(x[n]\) at the current time index — not on past or future inputs. Example: \(y[n] = (x[n])^2\) is memoryless. The delay system \(y[n] = x[n-1]\) has memory.</li>
+              <li><span class="term">Linear (Superposition):</span> Must satisfy both <em>additivity</em> — \(T\{x_1[n]+x_2[n]\} = T\{x_1[n]\}+T\{x_2[n]\}\) — and <em>homogeneity</em> — \(T\{ax[n]\} = aT\{x[n]\}\). Combined: \(T\{a_1x_1[n]+a_2x_2[n]\} = a_1y_1[n]+a_2y_2[n]\). The accumulator \(y[n]=\sum_{k=-\infty}^n x[k]\) is linear; \(y[n] = \log_{10}(x[n])\) is not (fails at \(x[n]=0\)).</li>
+              <li><span class="term">Time-Invariant:</span> A delayed input \(x[n-D]\) produces exactly the delayed output \(y[n-D]\), for all \(D\). The accumulator is time-invariant. The decimator \(y[n] = x[Mn]\) is <em>not</em> time-invariant because downsampling changes the time index non-uniformly.</li>
+              <li><span class="term">Causal:</span> For every \(n\), \(y[n]\) depends only on \(x[n], x[n-1], x[n-2], \ldots\) (present and past). Example: \(y[n] = x[n] - x[n-1]\) is causal; \(y[n] = x[n] - x[n+1]\) is not causal (requires future input).</li>
+              <li><span class="term">BIBO Stable:</span> If \(|x[n]| \leq B_x < \infty\) for all \(n\), then \(|y[n]| \leq B_y < \infty\) for all \(n\). Example: \(y[n]=(x[n])^2\) is BIBO stable (\(|y[n]| \leq B_x^2\)); \(y[n] = \log_{10}(x[n])\) is not (unbounded at \(x[n] \to 0\)).</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <p class="subsection-label">LTI Systems &amp; Convolution (Lecture 2)</p>
+          <div class="subsection-body">
+            <p>An LTI system is both linear and time-invariant. Because any input can be written as \(x[n] = \sum_{k=-\infty}^{\infty} x[k]\,\delta[n-k]\), applying linearity and time-invariance in sequence gives:
+            \[ y[n] = T\!\left\{\sum_{k=-\infty}^{\infty} x[k]\,\delta[n-k]\right\} = \sum_{k=-\infty}^{\infty} x[k]\,T\{\delta[n-k]\} = \sum_{k=-\infty}^{\infty} x[k]\,h[n-k] \]
+            where \(h[n] = T\{\delta[n]\}\) is the <span class="term">impulse response</span>. This is the <span class="term">convolution sum</span>:
+            \[ y[n] = x[n] * h[n] = \sum_{k=-\infty}^{\infty} x[k]\,h[n-k] \]
+            Given \(h[n]\), we can compute \(y[n]\) for <em>any</em> input \(x[n]\). Convolution is commutative, associative, and distributive. Cascade connection gives \(h[n] = h_1[n] * h_2[n]\); parallel connection gives \(h[n] = h_1[n] + h_2[n]\).</p>
+            <p>From the impulse response, the two key LTI properties follow directly:</p>
+            <ul>
+              <li><span class="term">BIBO stability of an LTI system:</span> \(\displaystyle\sum_{k=-\infty}^{\infty}|h[k]| < \infty\). Proof: \(|y[n]| \leq B_x \sum|h[k]|\), so if the sum is finite the output is bounded.</li>
+              <li><span class="term">Causality of an LTI system:</span> \(h[n] = 0\) for \(n < 0\). This follows because if \(h[-1] \neq 0\) then \(y[n]\) would depend on \(x[n+1]\), a future input.</li>
+            </ul>
+            <p>An LTI system with a finite-length impulse response is an <span class="term">FIR</span> system. One with an infinite-length impulse response is an <span class="term">IIR</span> system. Example: the differentiator \(y[n]=x[n]-x[n-1]\) has \(h[n]=\delta[n]-\delta[n-1]\) — FIR, stable, causal. The accumulator \(y[n]=\sum_{k=-\infty}^n x[k]\) has \(h[n]=u[n]\) — IIR, causal, but <em>not</em> stable (since \(\sum_{k=0}^{\infty}1 = \infty\)). The accumulator and differentiator are inverses of each other because \(u[n]*(\delta[n]-\delta[n-1]) = u[n]-u[n-1] = \delta[n]\).</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <p class="subsection-label">Representations of LTI Systems (Lectures 2–3)</p>
+          <div class="subsection-body">
+            <p>LTI systems have four equivalent representations: impulse response \(h[n]\), linear difference equation (LDE), frequency response \(H(e^{j\omega})\), and Z-transform \(H(z)\).</p>
+            <p><strong>Linear Difference Equations (LDE).</strong> Any causal LTI system can be written as:
+            \[ \sum_{k=0}^{N} a_k\,y[n-k] = \sum_{m=0}^{M} b_m\,x[n-m] \]
+            Assuming \(a_0 = 1\), this rearranges to a recursive implementation: \(y[n] = \sum_{m=0}^{M} b_m x[n-m] - \sum_{k=1}^{N} a_k y[n-k]\). This is hardware-friendly — only adders, multipliers, and unit delays (D blocks) are required. Example: the accumulator's infinite sum \(\sum_{k=-\infty}^n x[k]\) is impossible to implement directly, but its LDE \(y[n] = y[n-1] + x[n]\) requires only one delay and one adder.</p>
+            <p><strong>Frequency Response &amp; Eigenfunctions.</strong> The complex exponential \(e^{j\omega n}\) is an eigenfunction of every LTI system. When \(x[n] = e^{j\omega n}\):
+            \[ y[n] = \sum_{k=-\infty}^{\infty} h[k]\,e^{j\omega(n-k)} = e^{j\omega n}\underbrace{\sum_{k=-\infty}^{\infty} h[k]\,e^{-j\omega k}}_{H(e^{j\omega})} = H(e^{j\omega})\,e^{j\omega n} \]
+            The output is the same frequency, scaled by the complex number \(H(e^{j\omega})\) — the <span class="term">frequency response</span>. This means an LTI system cannot create new frequencies.</p>
+            <p><strong>DTFT.</strong> For any sequence \(x[n]\), the Discrete-Time Fourier Transform is:
+            \[ X(e^{j\omega}) = \sum_{n=-\infty}^{\infty} x[n]\,e^{-j\omega n}, \quad -\pi \leq \omega \leq \pi \]
+            The DTFT is periodic with period \(2\pi\) and exists if \(\sum_{n=-\infty}^{\infty}|x[n]| < \infty\). The inverse DTFT recovers the sequence:
+            \[ x[n] = \frac{1}{2\pi}\int_{-\pi}^{\pi} X(e^{j\omega})\,e^{j\omega n}\,d\omega \]
+            Key DTFT pairs: \(a^n u[n] \xleftrightarrow{\mathcal{F}} \frac{1}{1-ae^{-j\omega}}\) for \(|a|<1\); \(\delta[n] \xleftrightarrow{\mathcal{F}} 1\); \(\delta[n-n_0] \xleftrightarrow{\mathcal{F}} e^{-j\omega n_0}\). Key theorems: linearity, time-shift \(x[n-n_d] \xleftrightarrow{\mathcal{F}} e^{-j\omega n_d}X(e^{j\omega})\), convolution \(x[n]*y[n] \xleftrightarrow{\mathcal{F}} X(e^{j\omega})Y(e^{j\omega})\), and Parseval's theorem \(\sum_{n=-\infty}^{\infty}|x[n]|^2 = \frac{1}{2\pi}\int_{-\pi}^{\pi}|X(e^{j\omega})|^2\,d\omega\).</p>
+            <p>The IDTFT of an ideal lowpass filter \(H(e^{j\omega})=1\) for \(|\omega|\leq\omega_c\), 0 otherwise, is \(h[n] = \frac{\sin(\omega_c n)}{\pi n}\) — a two-sided infinite sinc function. This is the starting point for FIR window-method design (Topic 6).</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <p class="subsection-label">The Z-Transform (Lecture 4)</p>
+          <div class="subsection-body">
+            <p>The Z-transform generalizes the DTFT by replacing \(e^{j\omega}\) with the complex variable \(z\):
+            \[ X(z) = \sum_{n=-\infty}^{\infty} x[n]\,z^{-n} \]
+            When the DTFT exists, \(X(e^{j\omega}) = X(z)\big|_{z=e^{j\omega}}\) — the Z-transform evaluated on the unit circle. The Z-transform requires a <span class="term">Region of Convergence (ROC)</span>: the set of \(z\) where \(|X(z)| < \infty\). The ROC has no poles inside it.</p>
+            <p>ROC shapes depend on the signal's sidedness:</p>
+            <ul>
+              <li><span class="term">Right-sided (causal):</span> ROC is \(|z| > r\) (outside a circle). Example: \(a^n u[n] \xrightarrow{\mathcal{Z}} \frac{1}{1-az^{-1}}\), ROC: \(|z|>|a|\).</li>
+              <li><span class="term">Left-sided (anti-causal):</span> ROC is \(|z| < r\) (inside a circle). Example: \(-a^n u[-n-1] \xrightarrow{\mathcal{Z}} \frac{1}{1-az^{-1}}\), ROC: \(|z|<|a|\).</li>
+              <li><span class="term">Two-sided:</span> ROC is a ring (annulus) — the intersection of the right-sided and left-sided ROCs. If the ROCs do not intersect, the Z-transform does not exist.</li>
+            </ul>
+            <p>For an LTI system described by the LDE above, the Z-transform gives the <span class="term">system function</span>:
+            \[ H(z) = \frac{Y(z)}{X(z)} = \frac{\sum_{m=0}^{M} b_m z^{-m}}{\sum_{k=0}^{N} a_k z^{-k}} = \frac{b_0(1-c_1 z^{-1})(1-c_2 z^{-1})\cdots(1-c_M z^{-1})}{a_0(1-d_1 z^{-1})(1-d_2 z^{-1})\cdots(1-d_N z^{-1})} \]
+            The \(c_i\) are <span class="term">zeros</span> (numerator roots) and the \(d_i\) are <span class="term">poles</span> (denominator roots). The combination of pole-zero locations and the ROC uniquely specifies the system.</p>
+            <p>Three critical stability/causality connections from the Z-domain:</p>
+            <ul>
+              <li>For a <span class="term">stable</span> LTI system, the unit circle must lie in the ROC (since \(H(e^{j\omega})\) must be bounded).</li>
+              <li>For a <span class="term">causal</span> system, the ROC extends outside the outermost pole: \(|z| > \max_k|d_k|\).</li>
+              <li>For a system that is both <span class="term">causal and stable</span>, all poles must lie strictly inside the unit circle \(|z| < 1\).</li>
+            </ul>
+            <p>Inverse Z-transforms are typically computed via partial fraction expansion. For example, \(X(z) = \frac{1}{(1-az^{-1})(1-bz^{-1})}\) with \(|a|,|b|<1\) expands to \(\frac{a/(a-b)}{1-az^{-1}} - \frac{b/(a-b)}{1-bz^{-1}}\), giving \(x[n] = \frac{a}{a-b}a^n u[n] - \frac{b}{a-b}b^n u[n]\) for the causal ROC.</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <p class="subsection-label">Block Diagram Representations of LTI Systems (Lecture 5)</p>
+          <div class="subsection-body">
+            <p>Every LDE can be drawn as a signal-flow network using three primitive building blocks: an <span class="term">adder</span> (sums two signals), a <span class="term">scalar multiplier</span> (scales by constant \(a\)), and a <span class="term">unit delay</span> (\(z^{-1}\) block, shifts by one sample: \(x[n] \to x[n-1]\)). In the Z-domain a chain of \(k\) delays equals multiplication by \(z^{-k}\).</p>
+
+            <p><strong>Direct Form I</strong> implements the LDE directly with a feedforward section \(H_f(z)\) for the input side and a feedback section \(H_b(z)\) for the output side. For the general LDE \(\sum_{k=0}^{N}a_k y[n-k] = \sum_{k=0}^{M}b_k x[n-k]\), the transfer function is:</p>
+            \[ H(z) = \frac{\sum_{k=0}^{M} b_k z^{-k}}{\sum_{k=0}^{N} a_k z^{-k}} \]
+            <p>Direct Form I requires \(M + N\) delay elements — \(M\) in the feedforward path and \(N\) in the feedback path. It is the most memory-intensive structure.</p>
+
+            <p><strong>Direct Form II</strong> (Canonic Form) exploits commutativity of LTI systems to swap \(H_f\) and \(H_b\), then merge their identical delay chains into one shared chain. The intermediate signal \(w[n]\) satisfies:</p>
+            \[ w[n] = x[n] + a_1 w[n-1] + \cdots + a_N w[n-N] \]
+            \[ y[n] = b_0 w[n] + b_1 w[n-1] + \cdots + b_M w[n-M] \]
+            <p>Direct Form II uses only \(\max(N, M)\) delays — the theoretical minimum. The tradeoff is loss of access to the intermediate signal and tighter <span class="term">dynamic range</span> constraints (internal signals can overflow even when input/output are bounded).</p>
+
+            <p><strong>Cascade (Biquad) Form</strong> factors \(H(z)\) as a product of second-order sections:</p>
+            \[ H(z) = \prod_{k=1}^{N_s} \frac{b_{0k} + b_{1k}z^{-1} + b_{2k}z^{-2}}{1 - a_{1k}z^{-1} - a_{2k}z^{-2}} \]
+            <p>Each section \(H_k(z)\) is implemented in Direct Form II with 2 delays. First-order sections are a special case with \(a_2 = b_2 = 0\). Cascade form is modular, numerically robust (poles and zeros are paired locally), and is the standard hardware structure for IIR filters.</p>
+
+            <p><strong>Parallel Form</strong> uses partial fraction expansion to write \(H(z)\) as a sum of second-order sections:</p>
+            \[ H(z) = \sum_{k=1}^{N_p} \frac{b_{0k} + b_{1k}z^{-1}}{1 - a_{1k}z^{-1} - a_{2k}z^{-2}} \]
+            <p>All sections run on the same input simultaneously and their outputs are summed. Useful for parallel hardware implementations.</p>
+
+            <p><strong>Minimum Phase Systems.</strong> The inverse system \(H_i(z) = 1/H(z)\) is causal and stable only if all <em>zeros</em> of \(H(z)\) lie inside the unit circle (since they become poles of \(H_i\)). Combined with the requirement that all poles lie inside the unit circle for \(H(z)\) itself, a system that is causal and stable AND has a causal, stable inverse is called a <span class="term">minimum phase system</span>:</p>
+            \[ H_i(z) = \frac{1}{H(z)}, \quad \text{both } H(z) \text{ and } H_i(z) \text{ causal \& stable} \iff \text{all poles and zeros inside unit circle} \]
+
+            <p><strong>From Block Diagram to \(H(z)\).</strong> Two techniques extract the transfer function from a block diagram:</p>
+            <ul>
+              <li><span class="term">Auxiliary variable method:</span> label an internal node \(W(z)\), write equations at each summing junction, then solve for \(Y(z)/X(z)\). For a feedback loop with forward path \(F(z)\) and feedback path \(G(z)\):
+              \[ H(z) = \frac{F(z)}{1 - F(z)G(z)} \]</li>
+              <li><span class="term">Structural modification:</span> push a block through a branch point (duplicating it) to convert a complex topology into recognizable cascade, parallel, or feedback sub-structures that can be reduced using standard rules.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <p class="subsection-label">Key Takeaways</p>
+          <div class="subsection-body"><ul>
+            <li>A discrete-time complex exponential \(e^{j\omega_0 n}\) is periodic only if \(\omega_0/(2\pi)\) is rational — test by checking if \(\omega_0 N = 2\pi k\) has integer solutions.</li>
+            <li>To prove a system is NOT linear/time-invariant/stable, find a single counterexample. To prove it IS, you must show the property holds for all inputs.</li>
+            <li>The accumulator \(y[n] = \sum_{k=-\infty}^n x[k]\) is causal and linear but NOT stable (\(\sum|h[k]| = \infty\)). The differentiator \(y[n]=x[n]-x[n-1]\) is causal, linear, and stable. They are inverses.</li>
+            <li>The convolution formula \(y[n] = \sum_k x[k]h[n-k]\) is derived from the impulse decomposition identity \(x[n] = \sum_k x[k]\delta[n-k]\) combined with linearity and time-invariance — know this derivation.</li>
+            <li>The DTFT exists if \(\sum|x[n]| < \infty\); otherwise the Z-transform may still exist for some ROC. If the ROC includes the unit circle, the DTFT equals the Z-transform on the unit circle.</li>
+            <li>For a causal, stable system: all poles of \(H(z)\) must be inside the unit circle. This is the single most important stability test in filter design.</li>
+            <li>Always specify the ROC with the Z-transform — the same rational function \(X(z)\) can correspond to different time-domain signals (causal vs. anti-causal) depending on the ROC.</li>
+            <li>Cascaded LTI systems: \(H(z) = H_1(z) \cdot H_2(z)\); parallel LTI systems: \(H(z) = H_1(z) + H_2(z)\).</li>
+            <li>Direct Form I uses \(M + N\) delays; Direct Form II uses only \(\max(N, M)\) — the theoretical minimum — by sharing one delay chain between the feedback and feedforward paths.</li>
+            <li>Cascade (biquad) form is the standard IIR implementation: numerically stable, modular, pairs poles with nearby zeros to minimize coefficient sensitivity.</li>
+            <li>A minimum phase system has all poles AND zeros strictly inside the unit circle — it is causal, stable, and its inverse \(H_i(z) = 1/H(z)\) is also causal and stable.</li>
+            <li>Feedback loop formula: \(H(z) = F(z)/(1 - F(z)G(z))\) — memorize the derivation; it appears in digital control loops, echo cancellers, and PLLs.</li>
+            <li>To find \(H(z)\) from a block diagram: either assign an auxiliary variable \(W(z)\) at an internal node and solve the junction equations, or use structural modification to expose standard cascade/parallel/feedback patterns.</li>
+          </ul></div>
+        </div>
+
+        <div class="subsection">
+          <p class="subsection-label">Real-World Applications</p>
+          <div class="subsection-body"><p>Every digital filter in audio production, telecommunications, medical imaging, and control systems is an LTI system. The convolution sum is exactly what a DSP chip computes in a tight multiply-accumulate loop. The Z-transform pole-zero plot is how engineers in industry (Prof. Telang's background includes Broadcom, where this is daily practice) diagnose filter stability and shape frequency response without computing the full DTFT. Audio CD sampling at 44.1 kHz and optical transceivers sampling at 200 Gsamp/s both reduce to the same discrete-time mathematics. Linear difference equations allow infinite-memory systems (like the accumulator) to be implemented with finite hardware — a single delay register and adder replace an infinite sum.</p></div>
+        </div>
+
+        <div class="vocab-section">
+          <p class="vocab-label">Vocabulary</p>
+          <div class="vocab-grid">
+            <div class="vocab-item"><div class="vocab-term">Discrete-Time Sequence</div><div class="vocab-def">\(x[n] = x_a(nT)\) — samples of a continuous signal; the basic object of DSP</div></div>
+            <div class="vocab-item"><div class="vocab-term">Unit Sample \(\delta[n]\)</div><div class="vocab-def">\(\delta[n]=1\) at \(n=0\), 0 elsewhere; any \(x[n] = \sum_k x[k]\delta[n-k]\) — the key decomposition identity</div></div>
+            <div class="vocab-item"><div class="vocab-term">Complex Exponential</div><div class="vocab-def">\(e^{j\omega_0 n}\) — the eigenfunction of LTI systems; periodic iff \(\omega_0/2\pi\) is rational</div></div>
+            <div class="vocab-item"><div class="vocab-term">Memoryless</div><div class="vocab-def">\(y[n]\) depends only on \(x[n]\) at the same instant; e.g., \(y[n]=(x[n])^2\)</div></div>
+            <div class="vocab-item"><div class="vocab-term">Linear (Superposition)</div><div class="vocab-def">\(T\{a_1 x_1+a_2 x_2\}=a_1 y_1 + a_2 y_2\); requires both additivity and homogeneity</div></div>
+            <div class="vocab-item"><div class="vocab-term">Time-Invariant</div><div class="vocab-def">Shifting input by \(D\) shifts output by \(D\); decimator \(y[n]=x[Mn]\) violates this</div></div>
+            <div class="vocab-item"><div class="vocab-term">Causal</div><div class="vocab-def">\(y[n]\) depends only on \(x[n], x[n-1], \ldots\); for LTI: \(h[n]=0\) for \(n<0\)</div></div>
+            <div class="vocab-item"><div class="vocab-term">BIBO Stable</div><div class="vocab-def">Bounded input \(\Rightarrow\) bounded output; for LTI: \(\sum_{k}|h[k]|<\infty\)</div></div>
+            <div class="vocab-item"><div class="vocab-term">Impulse Response \(h[n]\)</div><div class="vocab-def">Output when input is \(\delta[n]\); uniquely characterizes the LTI system</div></div>
+            <div class="vocab-item"><div class="vocab-term">Convolution</div><div class="vocab-def">\(y[n]=x[n]*h[n]=\sum_k x[k]h[n-k]\); derived from superposition + time-invariance</div></div>
+            <div class="vocab-item"><div class="vocab-term">FIR vs. IIR</div><div class="vocab-def">Finite vs. Infinite Impulse Response; FIR always stable; IIR requires stability check</div></div>
+            <div class="vocab-item"><div class="vocab-term">Linear Difference Equation</div><div class="vocab-def">\(\sum_k a_k y[n-k]=\sum_m b_m x[n-m]\); hardware-implementable form of any LTI system</div></div>
+            <div class="vocab-item"><div class="vocab-term">Eigenfunction</div><div class="vocab-def">Signal whose shape is preserved by the system; \(e^{j\omega n}\) is the eigenfunction of LTI systems with eigenvalue \(H(e^{j\omega})\)</div></div>
+            <div class="vocab-item"><div class="vocab-term">DTFT</div><div class="vocab-def">\(X(e^{j\omega})=\sum_n x[n]e^{-j\omega n}\); continuous, \(2\pi\)-periodic; exists if \(\sum|x[n]|<\infty\)</div></div>
+            <div class="vocab-item"><div class="vocab-term">Z-Transform</div><div class="vocab-def">\(X(z)=\sum_n x[n]z^{-n}\); generalizes DTFT; equals DTFT when ROC includes unit circle</div></div>
+            <div class="vocab-item"><div class="vocab-term">ROC</div><div class="vocab-def">Region of Convergence — set of \(z\) where \(X(z)<\infty\); no poles in ROC; right-sided \(\Rightarrow\) outside circle</div></div>
+            <div class="vocab-item"><div class="vocab-term">Poles &amp; Zeros</div><div class="vocab-def">Roots of denominator/numerator of \(H(z)\); causal stable system \(\Rightarrow\) all poles inside unit circle</div></div>
+            <div class="vocab-item"><div class="vocab-term">Partial Fractions</div><div class="vocab-def">Technique for inverse Z-transform: decompose \(H(z)\) into sum of first-order terms, then use transform table</div></div>
+            <div class="vocab-item"><div class="vocab-term">Direct Form I</div><div class="vocab-def">\(M + N\) delays total; \(M\) in feedforward, \(N\) in feedback; separate delay chains for input and output sides</div></div>
+            <div class="vocab-item"><div class="vocab-term">Direct Form II</div><div class="vocab-def">Canonic form; \(\max(N,M)\) delays (theoretical minimum); feedback and feedforward share one delay chain via intermediate signal \(w[n]\)</div></div>
+            <div class="vocab-item"><div class="vocab-term">Cascade (Biquad) Form</div><div class="vocab-def">\(H(z) = \prod H_k(z)\); each \(H_k\) is a second-order section; standard IIR structure — numerically stable, modular</div></div>
+            <div class="vocab-item"><div class="vocab-term">Parallel Form</div><div class="vocab-def">\(H(z) = \sum H_k(z)\) via partial fraction expansion; sections run simultaneously, outputs summed; enables parallel computation</div></div>
+            <div class="vocab-item"><div class="vocab-term">Minimum Phase</div><div class="vocab-def">All poles AND zeros inside the unit circle; causal stable system whose inverse \(H_i(z) = 1/H(z)\) is also causal and stable</div></div>
+            <div class="vocab-item"><div class="vocab-term">Feedback Loop Formula</div><div class="vocab-def">\(H(z) = F(z)/(1-F(z)G(z))\); derived by writing \(Y = FX + FGY\) at the summing junction and solving for \(Y/X\)</div></div>
+            <div class="vocab-item"><div class="vocab-term">Auxiliary Variable Method</div><div class="vocab-def">Block diagram analysis: label internal node \(W(z)\), write junction equations, eliminate \(W\) to get \(Y(z)/X(z)\)</div></div>
+          </div>
+        </div>
+        <div class="entry-tags"><span class="tag">LTI</span><span class="tag">Discrete-Time Signals</span><span class="tag">Convolution</span><span class="tag">System Properties</span><span class="tag">BIBO Stability</span><span class="tag">Causality</span><span class="tag">FIR vs IIR</span><span class="tag">Linear Difference Equations</span><span class="tag">DTFT</span><span class="tag">Z-Transform</span><span class="tag">ROC</span><span class="tag">Poles &amp; Zeros</span><span class="tag">Eigenfunctions</span><span class="tag">Block Diagrams</span><span class="tag">Direct Form I/II</span><span class="tag">Cascade Form</span><span class="tag">Minimum Phase</span><span class="tag">Feedback Loops</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Topic 2</span>
+          <span class="entry-title">Sampling</span>
+        </div>
+        <span class="entry-chevron">›</span>
       </div>
-      <div class="section-tags">
-        <span class="tag">Tag A</span>
-        <span class="tag">Tag B</span>
-        <span class="tag">Tag C</span>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="motivation">
+          <p class="motivation-label">Why This Matters</p>
+          <p>Every digital signal processing system begins with sampling — the bridge between the continuous-time physical world and the discrete-time digital domain. Sampling theory answers the fundamental question: when can you perfectly reconstruct a continuous-time signal from a discrete set of samples, and what happens when you cannot? The consequences of getting this wrong — aliasing — are irreversible and ubiquitous in practice. This is the theoretical foundation of every ADC, every audio interface, every digital camera, and every software-defined radio.</p>
+        </div>
+
+        <div class="subsection">
+          <p class="subsection-label">The Two-Step Sampling Model (Lecture 6)</p>
+          <div class="subsection-body">
+            <p>Sampling a continuous-time signal \(x_c(t)\) at period \(T\) is analyzed as a two-step process.</p>
+            <p><strong>Step 1 — Modulation by an impulse train.</strong> The periodic impulse train \(s(t) = \sum_{n=-\infty}^{\infty} \delta(t - nT)\) has a Fourier Transform that is itself an impulse train in frequency: \(S(j\Omega) = \frac{2\pi}{T}\sum_{k=-\infty}^{\infty}\delta(\Omega - k\Omega_s)\), where \(\Omega_s = 2\pi/T\). Multiplying \(x_c(t)\) by \(s(t)\) gives:</p>
+            \[ x_s(t) = x_c(t) \cdot s(t) = \sum_{n=-\infty}^{\infty} x_c(nT)\,\delta(t - nT) \]
+            <p>Note that \(x_s(t)\) is still a continuous-time signal. In the frequency domain, multiplication in time equals convolution in frequency:</p>
+            \[ X_s(j\Omega) = \frac{1}{T} \sum_{k=-\infty}^{\infty} X_c\!\left(j(\Omega - k\Omega_s)\right) \]
+            <p>This is the central result: the spectrum of the sampled signal is the original spectrum \(X_c\) repeated at every integer multiple of \(\Omega_s\), scaled by \(1/T\).</p>
+            <p><strong>Step 2 — Conversion to a discrete-time sequence.</strong> Defining \(x[n] = x_c(nT)\) and comparing with the DTFT \(X(e^{j\omega}) = \sum_n x[n]e^{-j\omega n}\) shows that \(X_s(j\Omega) = X(e^{j\omega})\big|_{\omega=\Omega T}\). Substituting \(\omega = \Omega T\) into the Step 1 result:</p>
+            \[ X(e^{j\omega}) = \frac{1}{T} \sum_{k=-\infty}^{\infty} X_c\!\left(j\!\left(\frac{\omega}{T} - \frac{2\pi k}{T}\right)\right) \]
+            <p>The digital frequency \(\omega = \Omega T\) is dimensionless (rad/sample). The sampling frequency always maps to \(\omega_s = 2\pi\), and \(\omega = \pi\) always corresponds to \(\Omega_s/2 = \pi/T\) (half the sampling rate), regardless of \(T\).</p>
+            <p><span class="term">Images</span> are the repeated copies of \(X_c\) appearing in \(X(e^{j\omega})\). Sinusoids at frequencies \(f_0,\, f_0+f_s,\, f_0+2f_s,\,\ldots\) all produce identical sample sequences — they are indistinguishable after sampling. For example, with \(f_s = 150\,\text{Hz}\), sinusoids at 50 Hz, 200 Hz, 350 Hz, and 500 Hz all map to the same discrete-time samples.</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <p class="subsection-label">Aliasing (Lecture 6)</p>
+          <div class="subsection-body">
+            <p>For spectral images to be separable they must not overlap. The non-overlap condition is:</p>
+            \[ \Omega_N \leq \Omega_s - \Omega_N \quad\Longrightarrow\quad \Omega_s \geq 2\Omega_N \]
+            <p>When this is violated (\(\Omega_s < 2\Omega_N\)), adjacent copies overlap — <span class="term">aliasing</span>. A tone at \(\Omega_0\) with \(\Omega_s/2 < \Omega_0 < \Omega_s\) aliases to \(\Omega_s - \Omega_0\):</p>
+            \[ \cos(\Omega_0 t) \;\xrightarrow{\text{sample at } \Omega_s,\;\Omega_0 > \Omega_s/2}\; \cos\!\left((\Omega_s - \Omega_0)\,t\right) \]
+            <p>Aliasing is irreversible — the alias overlaps baseband content and cannot be separated. In the time domain: a 100 Hz cosine sampled at \(f_s = 150\,\text{Hz}\) (\(f_s/2 = 75\,\text{Hz}\)) produces samples identical to a 50 Hz cosine, since \(f_s - f_0 = 150 - 100 = 50\,\text{Hz}\).</p>
+            <p>Prevention requires an <span class="term">anti-aliasing filter</span> — a continuous-time LPF cutting off all energy above \(\Omega_s/2\) — applied to \(x_c(t)\) <em>before</em> the ADC. No post-processing can recover aliased content.</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <p class="subsection-label">Nyquist-Shannon Sampling Theorem (Lecture 7)</p>
+          <div class="subsection-body">
+            <p>Let \(x_c(t)\) be bandlimited with \(X_c(j\Omega) = 0\) for \(|\Omega| > \Omega_N\). Then \(x_c(t)\) is uniquely determined by its samples \(x[n] = x_c(nT)\) if and only if:</p>
+            \[ \Omega_s = \frac{2\pi}{T} \geq 2\Omega_N \]
+            <p>The minimum permissible sampling rate \(2\Omega_N\) is the <span class="term">Nyquist rate</span>. The maximum representable signal bandwidth \(\Omega_N = \Omega_s/2\) is the <span class="term">Nyquist bandwidth</span>. In frequency units: \(f_s \geq 2f_N\). For audio (up to 20 kHz), the CD standard uses \(f_s = 44.1\,\text{kHz}\), sampled well above Nyquist with margin for a realizable anti-aliasing filter rolloff.</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <p class="subsection-label">Signal Reconstruction (Lecture 7)</p>
+          <div class="subsection-body">
+            <p>D/C conversion (reconstruction) is also analyzed in two steps.</p>
+            <p><strong>Step 1:</strong> Convert the sequence back to an impulse train: \(x_s(t) = \sum_{n=-\infty}^{\infty} x[n]\,\delta(t - nT)\).</p>
+            <p><strong>Step 2 — Ideal reconstruction filter.</strong> Apply an ideal lowpass filter \(H_r(j\Omega)\) with gain \(T\) and cutoff \(\pi/T\):</p>
+            \[ H_r(j\Omega) = \begin{cases} T & |\Omega| \leq \pi/T \\ 0 & \text{otherwise} \end{cases}, \qquad h_r(t) = \frac{\sin(\pi t/T)}{\pi t/T} \]
+            <p>This passes only the baseband copy (\(k=0\)) of \(X_s\), discarding all images. The reconstruction in the time domain is:</p>
+            \[ x_r(t) = \sum_{n=-\infty}^{\infty} x[n]\, h_r(t - nT) = \sum_{n=-\infty}^{\infty} x[n]\, \frac{\sin(\pi(t-nT)/T)}{\pi(t-nT)/T} \]
+            <p>This is <span class="term">sinc interpolation</span>: each sample \(x[n]\) is weighted by a sinc pulse centered at \(t = nT\). When \(\Omega_s > 2\Omega_N\) the reconstruction is exact: \(x_r(t) = x_c(t)\).</p>
+            <p>In practice, ideal sinc interpolation is non-causal and infinite-length. Real DACs use a <span class="term">zero-order hold</span> (step-wise output) followed by an analog smoothing filter. <span class="term">Linear interpolation</span> uses a triangle pulse for \(h_r(t)\) — causal and simple, but introduces frequency-dependent distortion since the triangle's spectrum is \(\text{sinc}^2\), not rectangular.</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <p class="subsection-label">Discrete-Time Processing of Analog Signals (Lecture 8)</p>
+          <div class="subsection-body">
+            <p>The standard architecture samples \(x_c(t)\) at rate \(f_s\), applies a digital filter \(H(e^{j\omega})\), then reconstructs. If \(x_c(t)\) is bandlimited and sampled above Nyquist, the combined system behaves as a single continuous-time filter with effective frequency response:</p>
+            \[ H_{\text{eff}}(j\Omega) = \begin{cases} H(e^{j\Omega T}) & |\Omega| < \pi/T \\ 0 & |\Omega| \geq \pi/T \end{cases} \]
+            <p>To design a digital filter that achieves a continuous-time cutoff \(f_c\), convert: \(\omega_c = 2\pi f_c / f_s\). For example, a signal bandlimited to 2000 Hz sampled at \(f_s = 5000\,\text{Hz}\), with a digital LPF cutting at \(f_c = 1750\,\text{Hz}\), requires digital cutoff \(\omega_c = 2\pi \times 1750/5000 = 0.7\pi\,\text{rad/sample}\).</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <p class="subsection-label">Downsampling (Lecture 8)</p>
+          <div class="subsection-body">
+            <p><span class="term">Downsampling by \(M\)</span> (sampling rate compression) keeps every \(M\)th sample:</p>
+            \[ x_d[n] = x[Mn] = x_c[nMT] \]
+            <p>The new sampling period is \(T_d = MT\). The DTFT of the downsampled signal is:</p>
+            \[ X_d(e^{j\omega}) = \frac{1}{M} \sum_{i=0}^{M-1} X\!\left(e^{j(\omega - 2\pi i)/M}\right) \]
+            <p>Two steps visually: (1) superpose \(M\) shifted copies of \(X(e^{j\omega})\) separated by \(2\pi/M\); (2) expand the frequency axis by \(M\). To avoid aliasing in the downsampled signal, the original bandwidth must satisfy \(\omega_N \leq \pi/M\). If it exceeds this, apply a discrete-time LPF with cutoff \(\pi/M\) first:</p>
+            \[ x[n] \;\longrightarrow\; \text{LPF}\!\left(\omega_c = \tfrac{\pi}{M}\right) \;\longrightarrow\; \downarrow M \;\longrightarrow\; x_d[n] \]
+            <p>Aliasing after downsampling is fundamentally the same phenomenon as aliasing in original sampling — both arise from insufficient sampling rate relative to signal bandwidth.</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <p class="subsection-label">Upsampling (Lecture 8)</p>
+          <div class="subsection-body">
+            <p><span class="term">Upsampling by \(L\)</span> (sampling rate expansion) inserts \(L-1\) zeros between each sample:</p>
+            \[ x_u[n] = \begin{cases} x[n/L] & n = 0, \pm L, \pm 2L, \ldots \\ 0 & \text{otherwise} \end{cases} \]
+            <p>The DTFT compresses the frequency axis by \(L\): \(X_u(e^{j\omega}) = X(e^{j\omega L})\). This squeezes the baseband to \([-\pi/L, \pi/L]\) and creates spectral images at multiples of \(2\pi/L\). A discrete-time LPF with cutoff \(\pi/L\) and gain \(L\) removes the images:</p>
+            \[ x[n] \;\longrightarrow\; \uparrow L \;\longrightarrow\; \text{LPF}\!\left(\omega_c = \tfrac{\pi}{L},\;\text{gain}=L\right) \;\longrightarrow\; x_u[n] \]
+            <p><strong>Rational rate conversion.</strong> To change the sampling rate by \(L/M\), upsample by \(L\) first, apply a single LPF with cutoff \(\min(\pi/L,\,\pi/M)\), then downsample by \(M\). The upsampling step must come first to avoid losing spectral content. This allows any rational rate change entirely in discrete time — no analog conversion required. For example, converting 44.1 kHz (CD) to 48 kHz (DAT) uses \(L/M = 160/147\).</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <p class="subsection-label">Key Takeaways</p>
+          <div class="subsection-body"><ul>
+            <li>Sampling creates infinite spectral copies (images) of \(X_c(j\Omega)\) spaced \(\Omega_s\) apart — the Nyquist condition \(\Omega_s \geq 2\Omega_N\) ensures non-overlap.</li>
+            <li>Aliasing is irreversible — the anti-aliasing LPF must come before the ADC; no post-processing can recover overlapped content.</li>
+            <li>Aliased frequency for a tone at \(\Omega_0 > \Omega_s/2\): the alias appears at \(\Omega_s - \Omega_0\). Example: 100 Hz at \(f_s = 150\,\text{Hz}\) aliases to 50 Hz.</li>
+            <li>\(\omega = \Omega T\) (rad/sample); \(\omega = \pi\) always equals \(f_s/2\). Convert digital cutoff to physical: \(f_c = \omega_c f_s / (2\pi)\).</li>
+            <li>Ideal reconstruction: ideal LPF with gain \(T\) and cutoff \(\pi/T\); impulse response is \(\text{sinc}(t/T)\); exact when Nyquist condition holds.</li>
+            <li>Downsampling by \(M\): keep every \(M\)th sample; spectrum superimposes \(M\) shifted copies then expands by \(M\); must LPF to \(\pi/M\) first to prevent aliasing.</li>
+            <li>Upsampling by \(L\): insert \(L-1\) zeros; spectrum compresses by \(L\) and images appear; must LPF at \(\pi/L\) after to remove images.</li>
+            <li>Rational rate conversion \(L/M\): upsample first (\(\uparrow L\)), apply LPF at \(\min(\pi/L,\pi/M)\), then downsample (\(\downarrow M\)) — all in discrete time.</li>
+          </ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Real-World Applications</p>
+          <div class="subsection-body"><p>Every audio interface (24-bit, 192 kHz), every smartphone camera sensor, every software-defined radio, and every medical imaging system is a sampling system. CD audio (44.1 kHz) captures hearing up to 20 kHz with margin for a realizable anti-aliasing filter. Sigma-delta ADCs oversample by 64–512×, enabling 24-bit resolution from simple 1-bit comparators. Multirate DSP enables speech codecs to operate at 8 kHz while the microphone samples at 48 kHz. Sample rate conversion (e.g., 44.1 kHz → 48 kHz in professional audio) uses rational upsampling/downsampling (\(L/M = 160/147\)) with a polyphase filter bank. Aliasing is intentionally exploited in subsampled radar and undersampled RF receivers to frequency-shift signals without analog mixers.</p></div>
+        </div>
+        <div class="vocab-section">
+          <p class="vocab-label">Vocabulary</p>
+          <div class="vocab-grid">
+            <div class="vocab-item"><div class="vocab-term">Impulse Train \(s(t)\)</div><div class="vocab-def">\(s(t) = \sum_n\delta(t-nT)\); CTFT = \(\frac{2\pi}{T}\sum_k\delta(\Omega-k\Omega_s)\); multiplying by \(s(t)\) creates spectral copies spaced \(\Omega_s\) apart</div></div>
+            <div class="vocab-item"><div class="vocab-term">Spectral Images</div><div class="vocab-def">Copies of \(X_c(j\Omega)\) centered at multiples of \(\Omega_s\) in \(X_s(j\Omega)\); must not overlap for alias-free sampling</div></div>
+            <div class="vocab-item"><div class="vocab-term">Digital Frequency \(\omega\)</div><div class="vocab-def">\(\omega = \Omega T = \Omega/f_s\) (rad/sample); \(\omega=\pi\) always equals \(f_s/2\); dimensionless and independent of the physical sampling rate</div></div>
+            <div class="vocab-item"><div class="vocab-term">Nyquist Rate</div><div class="vocab-def">Minimum sampling rate \(\Omega_s = 2\Omega_N\) for alias-free reconstruction; in practice exceeded by 5–10× for realizable anti-aliasing filters</div></div>
+            <div class="vocab-item"><div class="vocab-term">Nyquist Bandwidth</div><div class="vocab-def">Maximum representable signal bandwidth \(\Omega_N = \Omega_s/2\) at a given sampling rate</div></div>
+            <div class="vocab-item"><div class="vocab-term">Aliasing</div><div class="vocab-def">Irreversible spectral overlap when \(\Omega_s < 2\Omega_N\); tone at \(\Omega_0\) folds to \(\Omega_s - \Omega_0\); requires anti-aliasing LPF before ADC</div></div>
+            <div class="vocab-item"><div class="vocab-term">Anti-Aliasing Filter</div><div class="vocab-def">Continuous-time LPF cutting off above \(\Omega_s/2\); applied before ADC; no post-processing can substitute for it</div></div>
+            <div class="vocab-item"><div class="vocab-term">Ideal Reconstruction Filter</div><div class="vocab-def">\(H_r(j\Omega)=T\) for \(|\Omega|\leq\pi/T\), 0 otherwise; impulse response = sinc; passes only the baseband copy of \(X_s\)</div></div>
+            <div class="vocab-item"><div class="vocab-term">Sinc Interpolation</div><div class="vocab-def">\(x_r(t)=\sum x[n]\sin(\pi(t-nT)/T)/(\pi(t-nT)/T)\); exact reconstruction when Nyquist satisfied; non-causal and infinite-length in practice</div></div>
+            <div class="vocab-item"><div class="vocab-term">Downsampling (\(\downarrow M\))</div><div class="vocab-def">\(x_d[n]=x[Mn]\); \(T_d=MT\); spectrum: \(M\) shifted copies compressed to \([-\pi,\pi]\); requires LPF at \(\pi/M\) first to avoid aliasing</div></div>
+            <div class="vocab-item"><div class="vocab-term">Upsampling (\(\uparrow L\))</div><div class="vocab-def">Insert \(L-1\) zeros; \(X_u(e^{j\omega})=X(e^{j\omega L})\); creates images at \(2\pi/L\) intervals; follow with LPF at \(\pi/L\), gain \(L\), to remove images</div></div>
+            <div class="vocab-item"><div class="vocab-term">Rational Rate Conversion</div><div class="vocab-def">Change rate by \(L/M\): upsample \(\uparrow L\) → LPF at \(\min(\pi/L,\pi/M)\) → downsample \(\downarrow M\); entirely discrete-time, no analog step needed</div></div>
+            <div class="vocab-item"><div class="vocab-term">Decimation Filter</div><div class="vocab-def">Discrete-time LPF applied before \(\downarrow M\); cutoff \(\pi/M\); prevents aliasing by bandlimiting signal to new Nyquist frequency</div></div>
+            <div class="vocab-item"><div class="vocab-term">Oversampling</div><div class="vocab-def">Sampling well above Nyquist; relaxes analog anti-aliasing filter requirements; enables noise shaping in \(\Sigma\Delta\) ADCs</div></div>
+          </div>
+        </div>
+        <div class="entry-tags"><span class="tag">Sampling</span><span class="tag">Nyquist Theorem</span><span class="tag">Aliasing</span><span class="tag">Anti-Aliasing</span><span class="tag">Impulse Train</span><span class="tag">Spectral Images</span><span class="tag">Signal Reconstruction</span><span class="tag">Sinc Interpolation</span><span class="tag">Downsampling</span><span class="tag">Upsampling</span><span class="tag">Multirate DSP</span><span class="tag">Rational Rate Conversion</span><span class="tag">Oversampling</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Topic 3</span>
+          <span class="entry-title">Discrete Fourier Transform (DFT)</span>
+        </div>
+        <span class="entry-chevron">›</span>
       </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="motivation">
+          <p class="motivation-label">Why This Matters</p>
+          <p>The DTFT gives us a theoretically beautiful but computationally impossible frequency representation — it requires an infinite sum and produces a continuous function of frequency. The DFT solves both problems: it takes a finite-length sequence and produces a finite set of frequency coefficients, enabling digital computation. It is the practical tool that makes spectrum analysis, filtering, and spectral estimation possible on real hardware. Every audio equalizer, speech recognizer, and wireless modem is built on DFT mathematics.</p>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Concepts</p>
+          <div class="subsection-body"><p>The <span class="term">N-point DFT</span> of a length-\(N\) sequence \(x[n]\) is:
+            \[ X[k] = \sum_{n=0}^{N-1} x[n]\, e^{-j2\pi kn/N}, \quad k = 0, 1, \ldots, N-1 \]
+            and the <span class="term">inverse DFT (IDFT)</span> recovers the original sequence:
+            \[ x[n] = \frac{1}{N} \sum_{k=0}^{N-1} X[k]\, e^{j2\pi kn/N}, \quad n = 0, 1, \ldots, N-1 \]
+            The DFT bin \(k\) corresponds to frequency \(\omega_k = 2\pi k/N\) (rad/sample), or \(f_k = k f_s/N\) (Hz). Bins \(k = 0, 1, \ldots, N/2\) represent \(0\) to \(f_s/2\); bins \(k = N/2+1, \ldots, N-1\) represent negative frequencies \(-f_s/2\) to \(-f_s/N\).</p>
+            <p>Using the notation \(W_N = e^{-j2\pi/N}\) (the <span class="term">twiddle factor</span>), the DFT becomes:
+            \[ X[k] = \sum_{n=0}^{N-1} x[n]\, W_N^{kn} \]
+            Direct computation costs \(O(N^2)\) complex multiplications.</p>
+            <p>Key DFT properties (all operations modulo \(N\)):
+            <ul>
+            <li><strong>Linearity:</strong> \(\text{DFT}\{ax[n]+bw[n]\} = aX[k]+bW[k]\)</li>
+            <li><strong>Circular shift:</strong> \(\text{DFT}\{x[(n-m)_N]\} = W_N^{km}\,X[k]\)</li>
+            <li><strong>Circular convolution:</strong> \(\text{DFT}\{x[n] \circledast y[n]\} = X[k]\,Y[k]\)</li>
+            <li><strong>Parseval's theorem:</strong> \(\sum_{n=0}^{N-1}|x[n]|^2 = \frac{1}{N}\sum_{k=0}^{N-1}|X[k]|^2\)</li>
+            <li><strong>Symmetry (real input):</strong> \(X[N-k] = X^*[k]\) — spectrum is conjugate-symmetric, so only \(N/2+1\) bins are unique</li>
+            </ul></p>
+            <p><span class="term">Circular convolution</span> arises because the DFT implicitly treats signals as periodic with period \(N\). To compute <em>linear</em> convolution of two length-\(N\) sequences using the DFT, zero-pad both to length \(\geq 2N-1\) before taking the DFT — this is the basis of <span class="term">fast convolution</span>. The <span class="term">overlap-add</span> and <span class="term">overlap-save</span> methods extend this to filtering long (or infinite) sequences in blocks.</p>
+            <p><span class="term">Spectral leakage</span> occurs when a signal is not exactly periodic in the analysis window — energy from a single frequency spreads across many bins. Leakage is reduced by <span class="term">windowing</span>: multiplying \(x[n]\) by a window \(w[n]\) (e.g., Hanning, Hamming, Blackman) before taking the DFT. Windowing reduces leakage at the cost of widening the main lobe (<span class="term">frequency resolution</span> is \(\Delta f = f_s/N\); increasing \(N\) improves resolution). The <span class="term">zero-padding</span> trick: appending zeros before the DFT interpolates the spectrum but does not improve true frequency resolution — it only reveals what resolution is already present.</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Key Takeaways</p>
+          <div class="subsection-body"><ul><li>DFT bin \(k\) corresponds to frequency \(f_k = k f_s / N\) Hz — the \(N/2+1\) bins from \(0\) to \(f_s/2\) are the unique bins for real input</li><li>Circular convolution ≠ linear convolution — always zero-pad to length \(\geq N_1 + N_2 - 1\) before multiplying DFTs</li><li>Spectral leakage is caused by implicit periodicity assumption — window the signal before the DFT to trade main-lobe width for reduced side lobes</li><li>Zero-padding interpolates the spectrum (smoother plot) but does NOT improve frequency resolution — resolution is \(\Delta f = f_s/N\)</li><li>Parseval\'s theorem: total energy is preserved between time and frequency domains — use it to check DFT computations</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Real-World Applications</p>
+          <div class="subsection-body"><p>The DFT is used in every spectrum analyzer, audio equalizer, speech recognition frontend, OFDM wireless modem, and medical MRI machine. Overlap-add filtering is how DAWs (digital audio workstations) apply convolution reverb effects in real time on blocks of audio samples. The circular convolution property is exploited in OFDM (Wi-Fi, LTE, 5G) where the cyclic prefix converts linear channel convolution into circular — enabling single-tap frequency-domain equalization. Windowing functions are a routine choice in spectrum analyzers — the Blackman window is preferred for measuring harmonic distortion in audio equipment.</p></div>
+        </div>
+        <div class="vocab-section">
+          <p class="vocab-label">Vocabulary</p>
+          <div class="vocab-grid"><div class="vocab-item"><div class="vocab-term">N-point DFT</div><div class="vocab-def">\(X[k] = \sum_{n=0}^{N-1} x[n]W_N^{kn}\) where \(W_N = e^{-j2\pi/N}\); produces \(N\) complex frequency coefficients</div></div><div class="vocab-item"><div class="vocab-term">Twiddle Factor</div><div class="vocab-def">\(W_N = e^{-j2\pi/N}\) — the \(N\)th root of unity; encodes the DFT basis frequencies</div></div><div class="vocab-item"><div class="vocab-term">Circular Convolution</div><div class="vocab-def">\(y[n] = x[n] \circledast h[n] = \text{IDFT}\{X[k]\cdot H[k]\}\); arises from DFT\'s implicit periodicity assumption</div></div><div class="vocab-item"><div class="vocab-term">Spectral Leakage</div><div class="vocab-def">Spreading of a single frequency\'s energy across many DFT bins due to signal non-periodicity in the window</div></div><div class="vocab-item"><div class="vocab-term">Windowing</div><div class="vocab-def">Multiplying signal by a tapering window \(w[n]\) before DFT to reduce spectral leakage; costs main-lobe width</div></div><div class="vocab-item"><div class="vocab-term">Zero-Padding</div><div class="vocab-def">Appending zeros before DFT to interpolate the frequency spectrum; does not improve true frequency resolution</div></div><div class="vocab-item"><div class="vocab-term">Frequency Resolution</div><div class="vocab-def">\(\Delta f = f_s/N\) Hz — the spacing between adjacent DFT bins; improved only by longer record length \(N\)</div></div><div class="vocab-item"><div class="vocab-term">Overlap-Add</div><div class="vocab-def">Block convolution method: zero-pad input blocks, multiply by \(H[k]\), IDFT, then add overlapping output segments</div></div></div>
+        </div>
+        <div class="entry-tags"><span class="tag">DFT</span><span class="tag">IDFT</span><span class="tag">Circular Convolution</span><span class="tag">Spectral Leakage</span><span class="tag">Windowing</span><span class="tag">Zero-Padding</span><span class="tag">Overlap-Add</span><span class="tag">Frequency Resolution</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Topic 4</span>
+          <span class="entry-title">Fast Fourier Transform (FFT)</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="motivation">
+          <p class="motivation-label">Why This Matters</p>
+          <p>The DFT requires \(O(N^2)\) operations — at \(N = 1024\) that is over a million multiplications per frame. The FFT reduces this to \(O(N \log_2 N)\) — a 100× speedup for \(N = 1024\), a 1000× speedup for \(N = 65536\). This is not a different transform — it is an efficient algorithm for computing exactly the same DFT result. The FFT made real-time spectral analysis possible on 1960s hardware. Today it enables GPS receivers to correlate pseudorandom codes in milliseconds, MRI scanners to reconstruct 3D images in seconds, and 5G base stations to process hundreds of OFDM subcarriers simultaneously.</p>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Concepts</p>
+          <div class="subsection-body"><p>The <span class="term">Cooley-Tukey FFT</span> exploits the periodicity and symmetry of the twiddle factors \(W_N^{kn}\) to decompose an \(N\)-point DFT into smaller DFTs. The key identity: for \(N = 2M\), split \(x[n]\) into even-indexed and odd-indexed subsequences:
+            \[ X[k] = \underbrace{\sum_{n=0}^{M-1} x[2n]\, W_{2M}^{2kn}}_{X_{\text{even}}[k]} + W_{2M}^k \underbrace{\sum_{n=0}^{M-1} x[2n+1]\, W_{2M}^{2kn}}_{X_{\text{odd}}[k]} \]
+            Since \(W_{2M}^{2k} = W_M^k\), both sums are \(M\)-point DFTs. Applying this recursively for \(N = 2^\nu\) gives \(\nu = \log_2 N\) stages, each requiring \(N/2\) complex multiplications — total cost \(\frac{N}{2}\log_2 N\) multiplications and \(N\log_2 N\) additions.</p>
+            <p>The <span class="term">butterfly operation</span> is the core computational unit:
+            \[ A' = A + W_N^k B, \qquad B' = A - W_N^k B \]
+            An \(N = 8\) point decimation-in-time (DIT) FFT has \(\log_2 8 = 3\) stages, each with 4 butterflies, totaling 12 complex multiplications versus 64 for direct DFT computation. The <span class="term">bit-reversal permutation</span> reorders the input before the first butterfly stage — the index \(n\) in bit-reversed binary order maps the natural input to the DIT structure.</p>
+            <p>Two main decomposition strategies: <span class="term">Decimation-in-Time (DIT)</span> — split the input sequence into even/odd halves; <span class="term">Decimation-in-Frequency (DIF)</span> — split the output sequence. Both give the same \(O(N\log N)\) complexity. For non-power-of-2 \(N\), the <span class="term">Bluestein algorithm</span> (chirp-Z transform) or mixed-radix FFTs (radix-3, radix-4) extend FFT efficiency to arbitrary lengths.</p>
+            <p>The <span class="term">inverse FFT (IFFT)</span> computes the IDFT with the same \(O(N\log N)\) cost — simply conjugate the twiddle factors and scale by \(1/N\). Fast convolution via FFT: zero-pad both \(x[n]\) and \(h[n]\) to length \(N \geq N_x + N_h - 1\), compute FFT of each, multiply pointwise, IFFT — total cost \(O(N\log N)\) versus \(O(N^2)\) for direct convolution. Break-even over direct convolution occurs around \(N \approx 32\).</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Key Takeaways</p>
+          <div class="subsection-body"><ul><li>FFT cost: \(\frac{N}{2}\log_2 N\) multiplications; direct DFT: \(N^2\) — at \(N = 1024\) the FFT is \(\approx 200\times\) faster</li><li>FFT computes exactly the same result as the DFT — it is an algorithm, not a different transform</li><li>Bit-reversal permutation is required for in-place DIT FFT — the input must be reordered before the butterfly stages</li><li>Fast convolution: FFT both signals (zero-padded), multiply, IFFT — faster than direct convolution for \(N \gtrsim 32\)</li><li>For non-power-of-2 lengths, always zero-pad to the next power of 2 — the savings from avoiding a mixed-radix FFT almost always outweigh the extra computation</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Real-World Applications</p>
+          <div class="subsection-body"><p>The FFT is one of the ten most important algorithms of the 20th century (per IEEE). FFTW (Fastest Fourier Transform in the West) achieves near-optimal FFT performance on any hardware and is embedded in MATLAB, NumPy, and virtually every DSP library. OFDM — the modulation scheme in Wi-Fi, LTE, and 5G — uses IFFT at the transmitter to generate subcarriers and FFT at the receiver to demodulate them. Audio codec MP3 uses the modified DCT (a variant of the FFT) for time-frequency analysis. Computed tomography (CT scanners) uses the FFT to reconstruct images from X-ray projections via the filtered backprojection algorithm.</p></div>
+        </div>
+        <div class="vocab-section">
+          <p class="vocab-label">Vocabulary</p>
+          <div class="vocab-grid"><div class="vocab-item"><div class="vocab-term">Cooley-Tukey FFT</div><div class="vocab-def">Radix-2 DIT FFT splitting \(N\)-point DFT into two \(N/2\)-point DFTs recursively; \(O(N\log_2 N)\) complexity</div></div><div class="vocab-item"><div class="vocab-term">Butterfly</div><div class="vocab-def">Core FFT computation: \(A&#x27; = A + W_N^k B\), \(B&#x27; = A - W_N^k B\); one complex multiply, two adds</div></div><div class="vocab-item"><div class="vocab-term">Decimation-in-Time</div><div class="vocab-def">FFT variant splitting the input into even/odd indexed subsequences before applying butterflies</div></div><div class="vocab-item"><div class="vocab-term">Bit-Reversal</div><div class="vocab-def">Input reordering required for in-place DIT FFT: index \(n\) is placed at its bit-reversed position</div></div><div class="vocab-item"><div class="vocab-term">Radix-2</div><div class="vocab-def">FFT decomposition splitting by factor 2; requires \(N = 2^\nu\); most common; \(\nu = \log_2 N\) butterfly stages</div></div><div class="vocab-item"><div class="vocab-term">Fast Convolution</div><div class="vocab-def">Zero-pad → FFT → pointwise multiply → IFFT; \(O(N\log N)\) vs \(O(N^2)\) for direct convolution</div></div><div class="vocab-item"><div class="vocab-term">Bluestein Algorithm</div><div class="vocab-def">Chirp-Z transform enabling FFT-speed DFT computation for arbitrary (non-power-of-2) lengths</div></div><div class="vocab-item"><div class="vocab-term">IFFT</div><div class="vocab-def">Inverse FFT: same butterfly structure with conjugated twiddle factors and \(1/N\) scale; \(O(N\log N)\)</div></div></div>
+        </div>
+        <div class="entry-tags"><span class="tag">FFT</span><span class="tag">Cooley-Tukey</span><span class="tag">Butterfly</span><span class="tag">DIT</span><span class="tag">Radix-2</span><span class="tag">Fast Convolution</span><span class="tag">Bit-Reversal</span><span class="tag">IFFT</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Topic 5</span>
+          <span class="entry-title">IIR Filter Design</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="motivation">
+          <p class="motivation-label">Why This Matters</p>
+          <p>IIR filters use feedback — the output depends on past output values as well as past and present inputs. This recursive structure enables very sharp frequency selectivity with a small number of coefficients compared to FIR filters. A 6th-order Butterworth IIR filter can achieve the same stopband attenuation as a 60th-order FIR filter. The tradeoff is phase nonlinearity and potential instability. IIR design leverages a century of analog filter theory — Butterworth, Chebyshev, and elliptic filters — and transforms it to the discrete-time domain.</p>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Concepts</p>
+          <div class="subsection-body"><p>An IIR filter is described by an LCCDDE with feedback terms:
+            \[ y[n] = \sum_{k=1}^{N} a_k\, y[n-k] + \sum_{k=0}^{M} b_k\, x[n-k] \]
+            with system function \(H(z) = \frac{\sum_{k=0}^{M} b_k z^{-k}}{1 - \sum_{k=1}^{N} a_k z^{-k}}\). Because the denominator polynomial can be non-trivial, IIR filters have poles, and stability requires all poles inside the unit circle.</p>
+            <p>The primary design strategy is <span class="term">analog prototype design followed by transformation to discrete time</span>. Step 1: design an analog prototype filter \(H_c(s)\) meeting the specifications. Step 2: apply a frequency transformation to convert to discrete time.</p>
+            <p>The three classical analog prototype filters:</p>
+            <ul>
+            <li><span class="term">Butterworth:</span> Maximally flat magnitude in the passband. The \(N\)th-order Butterworth magnitude response is \(|H_c(j\Omega)|^2 = \frac{1}{1 + (\Omega/\Omega_c)^{2N}}\). Poles lie on a circle of radius \(\Omega_c\) in the left half \(s\)-plane, equally spaced by \(\pi/N\) radians.</li>
+            <li><span class="term">Chebyshev Type I:</span> Equiripple in the passband, monotone in the stopband. Achieves steeper rolloff than Butterworth for the same order. The ripple magnitude \(\varepsilon\) is a free parameter.</li>
+            <li><span class="term">Chebyshev Type II:</span> Monotone in the passband, equiripple in the stopband. Useful when flat passband response is required.</li>
+            <li><span class="term">Elliptic (Cauer):</span> Equiripple in both passband and stopband. Achieves the sharpest transition for a given filter order — optimal in the minimax sense. At the cost of highly nonlinear phase.</li>
+            </ul>
+            <p>Two methods for converting analog prototypes to discrete-time IIR filters:</p>
+            <p><span class="term">Impulse Invariance:</span> set \(h[n] = T\, h_c(nT)\) — the discrete-time impulse response is a sampled version of the analog one. The relationship \(s_k \mapsto z_k = e^{s_k T}\) maps \(s\)-plane poles to \(z\)-plane poles. The frequency mapping is \(j\Omega \mapsto e^{j\Omega T}\), which wraps the entire \(j\Omega\) axis onto the unit circle — causing aliasing of frequency response replicas. Only suitable for lowpass and bandpass filters where the analog response is negligible above \(\Omega_s/2\).</p>
+            <p><span class="term">Bilinear Transform:</span> substitute \(s = \frac{2}{T}\cdot\frac{z-1}{z+1}\) (or equivalently \(z = \frac{1 + (T/2)s}{1 - (T/2)s}\)). This maps the entire \(j\Omega\) axis to the unit circle without aliasing via a nonlinear frequency <span class="term">warping</span>:
+            \[ \Omega = \frac{2}{T}\tan\!\left(\frac{\omega}{2}\right) \implies \omega = 2\arctan\!\left(\frac{\Omega T}{2}\right) \]
+            High analog frequencies compress into the band near \(\omega = \pi\). To compensate, <span class="term">prewarping</span> the critical frequency before designing the analog prototype ensures it maps correctly to digital: \(\Omega_c = \frac{2}{T}\tan(\omega_c/2)\). The bilinear transform is the preferred method for lowpass, highpass, bandpass, and notch filters.</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Key Takeaways</p>
+          <div class="subsection-body"><ul><li>IIR filter stability: all poles of \(H(z)\) must lie strictly inside the unit circle — check after every transformation</li><li>Bilinear transform is always preferred over impulse invariance — it avoids aliasing entirely; only the prewarping step must not be skipped</li><li>Prewarp the critical frequency: \(\Omega_c = \frac{2}{T}\tan(\omega_c/2)\) before designing the analog prototype</li><li>Butterworth: maximally flat, lowest selectivity; Chebyshev: more selective but ripple; Elliptic: highest selectivity but nonlinear phase</li><li>Implement high-order IIR as cascaded second-order sections (biquads) to minimize coefficient sensitivity and prevent numerical overflow</li><li>IIR filters are not linear-phase in general — never use them when phase distortion matters (e.g., data communications)</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Real-World Applications</p>
+          <div class="subsection-body"><p>IIR filters are used wherever computational efficiency matters more than linear phase: audio equalizers (parametric EQ uses biquad IIR sections), hearing aid processors (real-time filtering on battery power), power system 60 Hz notch filters, and biomedical instrumentation (ECG baseline wander removal). The Butterworth filter design equations are used in analog active filter design (op-amp Sallen-Key topology). The bilinear transform is implemented in virtually every DSP textbook filter design function — MATLAB's <code>butter()</code>, <code>cheby1()</code>, and <code>ellip()</code> all use it internally. Biquad filter sections in fixed-point arithmetic are the workhorses of real-time embedded audio processing.</p></div>
+        </div>
+        <div class="vocab-section">
+          <p class="vocab-label">Vocabulary</p>
+          <div class="vocab-grid"><div class="vocab-item"><div class="vocab-term">IIR Filter</div><div class="vocab-def">Infinite Impulse Response — recursive filter with feedback; poles and zeros; very selective with few coefficients</div></div><div class="vocab-item"><div class="vocab-term">Butterworth</div><div class="vocab-def">Maximally flat magnitude in passband; \(|H|^2 = 1/(1+(\Omega/\Omega_c)^{2N})\); poles equally spaced on left-half \(s\)-plane circle</div></div><div class="vocab-item"><div class="vocab-term">Chebyshev I</div><div class="vocab-def">Equiripple passband, monotone stopband; more selective than Butterworth at same order</div></div><div class="vocab-item"><div class="vocab-term">Elliptic (Cauer)</div><div class="vocab-def">Equiripple in both bands; sharpest transition for given order; highly nonlinear phase</div></div><div class="vocab-item"><div class="vocab-term">Impulse Invariance</div><div class="vocab-def">IIR design method: \(h[n] = T h_c(nT)\); maps poles \(s_k \to e^{s_k T}\); prone to aliasing — not recommended for highpass filters</div></div><div class="vocab-item"><div class="vocab-term">Bilinear Transform</div><div class="vocab-def">IIR design: \(s = \frac{2}{T}\cdot\frac{z-1}{z+1}\); maps entire \(j\Omega\)-axis to unit circle without aliasing; requires frequency prewarping</div></div><div class="vocab-item"><div class="vocab-term">Prewarping</div><div class="vocab-def">Compensating for bilinear frequency warping: design analog prototype at \(\Omega_c = \frac{2}{T}\tan(\omega_c/2)\)</div></div><div class="vocab-item"><div class="vocab-term">Biquad Section</div><div class="vocab-def">Second-order IIR section; high-order filters implemented as cascaded biquads for numerical stability</div></div></div>
+        </div>
+        <div class="entry-tags"><span class="tag">IIR Filters</span><span class="tag">Butterworth</span><span class="tag">Chebyshev</span><span class="tag">Elliptic</span><span class="tag">Bilinear Transform</span><span class="tag">Impulse Invariance</span><span class="tag">Prewarping</span><span class="tag">Biquad</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Topic 6</span>
+          <span class="entry-title">FIR Filter Design</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="motivation">
+          <p class="motivation-label">Why This Matters</p>
+          <p>FIR filters have no feedback — the output depends only on a finite window of past and present inputs. This means they are always stable, and they can be designed to have exactly linear phase — a property IIR filters cannot achieve. Linear phase means all frequency components experience the same time delay, which is critical for any application where waveform shape must be preserved: data communications, audio processing, and biomedical signal acquisition. The design challenge is achieving sharp frequency selectivity with a tractable filter length.</p>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Concepts</p>
+          <div class="subsection-body"><p>An <span class="term">FIR filter</span> of length \(M\) (order \(M-1\)) has the system function:
+            \[ H(z) = \sum_{n=0}^{M-1} h[n]\, z^{-n} \]
+            It has \(M-1\) zeros and no poles (except at \(z = 0\)). All FIR filters are BIBO stable. An FIR filter has <span class="term">linear phase</span> (constant group delay \(\tau = (M-1)/2\)) if and only if \(h[n]\) is symmetric: \(h[n] = h[M-1-n]\) (Type I/II, even/odd \(M\)) or anti-symmetric: \(h[n] = -h[M-1-n]\) (Type III/IV). Linear phase in the frequency domain means \(H(e^{j\omega}) = |H(e^{j\omega})|\, e^{-j\omega(M-1)/2}\).</p>
+            <p><strong>Window Method:</strong> Start with the ideal (infinite) impulse response of the desired filter (e.g., ideal lowpass: \(h_d[n] = \frac{\omega_c}{\pi}\text{sinc}(\omega_c n / \pi)\)) and truncate it to length \(M\) by multiplying by a window \(w[n]\):
+            \[ h[n] = h_d[n]\, w[n], \quad 0 \leq n \leq M-1 \]
+            Common windows and their characteristics:
+            <ul>
+            <li><strong>Rectangular:</strong> sharpest transition band (\(\approx 0.9/M \cdot f_s\)), but highest sidelobe level (−13 dB) — causes Gibbs phenomenon</li>
+            <li><strong>Hanning:</strong> −44 dB first sidelobe, wider transition band (\(\approx 3.1/M \cdot f_s\))</li>
+            <li><strong>Hamming:</strong> −53 dB first sidelobe, wider transition (\(\approx 3.3/M \cdot f_s\))</li>
+            <li><strong>Blackman:</strong> −74 dB first sidelobe, widest transition (\(\approx 5.5/M \cdot f_s\))</li>
+            <li><strong>Kaiser:</strong> parameterized by \(\beta\) — adjustable tradeoff between sidelobe level and transition width; preferred for its flexibility: \(M \approx \frac{A - 8}{2.285\, \Delta\omega}\) where \(A\) is the desired stopband attenuation in dB</li>
+            </ul></p>
+            <p><strong>Parks-McClellan (Equiripple) Method:</strong> Uses the <span class="term">Chebyshev equiripple criterion</span> — the optimal FIR filter minimizes the maximum error between the desired and actual frequency response (minimax criterion). The <span class="term">Remez exchange algorithm</span> iteratively finds the optimal coefficient set. The result has equiripple behavior in both passband and stopband — the minimum-length filter for given specifications. Compared to the window method, Parks-McClellan gives sharper transitions for the same \(M\) and allows independent specification of passband ripple \(\delta_1\) and stopband attenuation \(\delta_2\).</p>
+            <p><strong>Filter Length Estimation.</strong> For the window method (Kaiser): 
+            \[ M \approx \frac{A - 8}{2.285\,\Delta\omega} + 1 \]
+            where \(\Delta\omega = \omega_{\text{stop}} - \omega_{\text{pass}}\) (rad/sample) and \(A = -20\log_{10}\delta_s\) dB. For Parks-McClellan (Harris rule of thumb):
+            \[ M \approx \frac{-10\log_{10}(\delta_p \delta_s) - 13}{14.6\,\Delta f/f_s} + 1 \]
+            FIR filters typically require 5–10× more coefficients than an equivalent IIR filter — but their linear phase and stability are often worth the computational cost.</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Key Takeaways</p>
+          <div class="subsection-body"><ul><li>Linear phase requires symmetric coefficients: \(h[n] = h[M-1-n]\); guaranteed group delay of \((M-1)/2\) samples</li><li>All FIR filters are stable (no poles off unit circle) — no stability check needed, unlike IIR</li><li>Window method: easy to design, good intuition, not optimal; Parks-McClellan: optimal, equiripple, minimum length for given specs</li><li>Gibbs phenomenon limits rectangular window stopband to −21 dB regardless of filter length — use Kaiser or Blackman for high attenuation</li><li>FIR computational cost scales with length \(M\) — the Kaiser length estimate (\(M \approx (A-8)/(2.285\Delta\omega)\)) is your first design step</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Real-World Applications</p>
+          <div class="subsection-body"><p>FIR filters with linear phase are used in every digital communications receiver — matched filters, channel equalizers, and pulse shaping filters all exploit linear phase to avoid inter-symbol interference. Audio crossover networks in studio monitors use linear-phase FIR designs. Medical ECG and EEG systems use FIR notch filters to remove 60 Hz power line interference without distorting the waveform phase. Polyphase FIR structures enable efficient decimation and interpolation in software-defined radios. The Parks-McClellan algorithm is implemented as MATLAB's <code>firpm()</code> and <code>fir1()</code> functions used by DSP engineers daily.</p></div>
+        </div>
+        <div class="vocab-section">
+          <p class="vocab-label">Vocabulary</p>
+          <div class="vocab-grid"><div class="vocab-item"><div class="vocab-term">FIR Filter</div><div class="vocab-def">Finite Impulse Response — no feedback, always stable; \(H(z) = \sum h[n]z^{-n}\); \(M-1\) zeros, no poles</div></div><div class="vocab-item"><div class="vocab-term">Linear Phase</div><div class="vocab-def">Frequency response: \(H(e^{j\omega}) = |H|e^{-j\omega(M-1)/2}\); requires symmetric \(h[n]\); constant group delay for all frequencies</div></div><div class="vocab-item"><div class="vocab-term">Window Method</div><div class="vocab-def">Truncate ideal impulse response with window \(w[n]\): \(h[n] = h_d[n]w[n]\); trade sidelobe level vs. transition width</div></div><div class="vocab-item"><div class="vocab-term">Kaiser Window</div><div class="vocab-def">Parameterized window with shape factor \(\beta\); preferred for filter design; length estimate: \(M \approx (A-8)/(2.285\Delta\omega)\)</div></div><div class="vocab-item"><div class="vocab-term">Gibbs Phenomenon</div><div class="vocab-def">Oscillatory overshoot (~9%) near discontinuities when truncating with rectangular window; independent of \(M\)</div></div><div class="vocab-item"><div class="vocab-term">Parks-McClellan</div><div class="vocab-def">Optimal equiripple FIR design minimizing max error (minimax); uses Remez exchange algorithm; implemented as MATLAB firpm()</div></div><div class="vocab-item"><div class="vocab-term">Equiripple</div><div class="vocab-def">Property of optimal FIR filters: error between desired and actual response oscillates at its maximum value across the band</div></div><div class="vocab-item"><div class="vocab-term">Group Delay</div><div class="vocab-def">\(\tau(\omega) = -d\angle H/d\omega\); constant for linear-phase FIR (\(\tau = (M-1)/2\) samples)</div></div><div class="vocab-item"><div class="vocab-term">Polyphase</div><div class="vocab-def">Efficient FIR structure for decimation/interpolation: splits filter into \(M\) subfilters, each operating at the lower rate</div></div></div>
+        </div>
+        <div class="entry-tags"><span class="tag">FIR Filters</span><span class="tag">Linear Phase</span><span class="tag">Window Method</span><span class="tag">Kaiser Window</span><span class="tag">Parks-McClellan</span><span class="tag">Equiripple</span><span class="tag">Gibbs Phenomenon</span><span class="tag">Polyphase</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Topic 7</span>
+          <span class="entry-title">Adaptive Filters & Neural Networks</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="motivation">
+          <p class="motivation-label">Why This Matters</p>
+          <p>Classical filter design assumes we know the signal and noise characteristics in advance. In many real systems we do not — the channel changes, the noise is non-stationary, or the signal of interest is unknown a priori. Adaptive filters solve this by continuously updating their own coefficients based on observed data, converging to the optimal filter for the current environment. From noise-canceling headphones to 5G channel equalizers to hearing aids, adaptive filtering is the technology that makes high-performance signal processing possible in unknown and changing environments.</p>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Concepts</p>
+          <div class="subsection-body"><p>The <span class="term">Wiener filter</span> is the optimal linear filter in the mean-square error sense for stationary signals. Given a desired response \(d[n]\) and input \(x[n]\), the optimal FIR Wiener filter of length \(M\) minimizes:
+            \[ \xi = E\{|e[n]|^2\} = E\{|d[n] - \mathbf{h}^T \mathbf{x}[n]|^2\} \]
+            Setting the gradient to zero gives the <span class="term">Wiener-Hopf equations</span>:
+            \[ \mathbf{R}_{xx}\, \mathbf{h}_{\text{opt}} = \mathbf{r}_{dx} \]
+            where \(\mathbf{R}_{xx}\) is the \(M \times M\) autocorrelation matrix of the input and \(\mathbf{r}_{dx}\) is the cross-correlation vector between the desired signal and input. The optimal filter is \(\mathbf{h}_{\text{opt}} = \mathbf{R}_{xx}^{-1}\, \mathbf{r}_{dx}\). The minimum mean-square error is \(\xi_{\min} = \sigma_d^2 - \mathbf{r}_{dx}^T \mathbf{R}_{xx}^{-1} \mathbf{r}_{dx}\).</p>
+            <p>The Wiener solution requires knowing \(\mathbf{R}_{xx}\) and \(\mathbf{r}_{dx}\) — not always available, and expensive to invert for large \(M\). <span class="term">Adaptive filters</span> estimate these statistics on-line and update coefficients iteratively.</p>
+            <p>The <span class="term">LMS (Least Mean Squares) algorithm</span> is a stochastic gradient descent approximation. Using the instantaneous error \(e[n] = d[n] - \mathbf{h}^T[n]\mathbf{x}[n]\), the update rule is:
+            \[ \mathbf{h}[n+1] = \mathbf{h}[n] + \mu\, e[n]\, \mathbf{x}[n] \]
+            The step size \(\mu\) controls the convergence speed–misadjustment tradeoff. LMS converges in the mean if:
+            \[ 0 < \mu < \frac{2}{\lambda_{\max}} \approx \frac{2}{M \sigma_x^2} \]
+            where \(\lambda_{\max}\) is the largest eigenvalue of \(\mathbf{R}_{xx}\). A small \(\mu\) gives accurate but slow convergence; large \(\mu\) converges faster but with more <span class="term">misadjustment</span> (residual error after convergence).</p>
+            <p>The <span class="term">RLS (Recursive Least Squares) algorithm</span> minimizes the sum of all past squared errors (with exponential forgetting factor \(\lambda \in (0,1]\)):
+            \[ \mathbf{h}[n] = \arg\min_{\mathbf{h}} \sum_{i=0}^{n} \lambda^{n-i} |d[i] - \mathbf{h}^T \mathbf{x}[i]|^2 \]
+            RLS converges in approximately \(2M\) samples (vs. \(M/\mu\sigma_x^2\) for LMS) at the cost of \(O(M^2)\) complexity per sample (vs. \(O(M)\) for LMS). The matrix inversion lemma enables recursive update of \(\mathbf{P}[n] = (\mathbf{R}_{xx}^{(n)})^{-1}\).</p>
+            <p>Key adaptive filter applications: <span class="term">system identification</span> (model an unknown plant); <span class="term">noise cancellation</span> (subtract a reference noise signal adaptively correlated with the noise on the primary channel); <span class="term">channel equalization</span> (invert an unknown communication channel); <span class="term">linear prediction</span> (predict \(x[n]\) from its past values — used in speech coding LPC).</p>
+            <p><span class="term">Neural networks</span> generalize adaptive filtering beyond the linear model. A single neuron computes \(y = f(\mathbf{w}^T \mathbf{x} + b)\) where \(f\) is a nonlinear activation function (sigmoid, ReLU). Multi-layer perceptrons (MLPs) stack these to approximate arbitrary functions. The <span class="term">backpropagation algorithm</span> computes gradients of the loss with respect to all weights via the chain rule, enabling stochastic gradient descent training analogous to LMS. Convolutional neural networks (CNNs) apply learned filter banks — a direct generalization of linear FIR filtering to the nonlinear domain.</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Key Takeaways</p>
+          <div class="subsection-body"><ul><li>Wiener filter requires knowing \(\mathbf{R}_{xx}\) and \(\mathbf{r}_{dx}\) — if unknown, use LMS/RLS to estimate them adaptively</li><li>LMS stability condition: \(0 < \mu < 2/\lambda_{\max} \approx 2/(M\sigma_x^2)\) — normalize by input power to get NLMS</li><li>LMS: \(O(M)\) per sample, slow convergence; RLS: \(O(M^2)\) per sample, fast convergence (~\(2M\) samples) — choose based on application</li><li>Misadjustment is proportional to \(\mu M \sigma_x^2\) — excess MSE above \(\xi_{\min}\) due to using noisy gradient estimates</li><li>Neural networks are nonlinear adaptive systems — backpropagation is stochastic gradient descent, the same idea as LMS but applied to multi-layer nonlinear models</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Real-World Applications</p>
+          <div class="subsection-body"><p>Noise-canceling headphones (Bose QuietComfort, AirPods Pro) use adaptive LMS filters running at 48 kHz on a DSP chip — the reference microphone picks up ambient noise, and the adaptive filter learns to subtract it from the audio feed. 5G base station receivers use adaptive channel equalizers running RLS variants to track rapidly changing multipath channels. Speech codecs (G.711, AMR) use LPC (linear prediction) — a Wiener filter — to model the vocal tract and achieve high compression. Cochlear implants use adaptive noise suppression to separate speech from background noise. Deep learning audio models (WaveNet, Whisper) are large-scale nonlinear adaptive systems trained with backpropagation on millions of audio samples.</p></div>
+        </div>
+        <div class="vocab-section">
+          <p class="vocab-label">Vocabulary</p>
+          <div class="vocab-grid"><div class="vocab-item"><div class="vocab-term">Wiener Filter</div><div class="vocab-def">Optimal linear MSE filter: \(\mathbf{h}_{\text{opt}} = \mathbf{R}_{xx}^{-1}\mathbf{r}_{dx}\); requires known autocorrelation and cross-correlation</div></div><div class="vocab-item"><div class="vocab-term">Wiener-Hopf Equations</div><div class="vocab-def">\(\mathbf{R}_{xx}\mathbf{h} = \mathbf{r}_{dx}\) — normal equations whose solution is the optimal Wiener filter coefficient vector</div></div><div class="vocab-item"><div class="vocab-term">LMS Algorithm</div><div class="vocab-def">\(\mathbf{h}[n+1] = \mathbf{h}[n] + \mu e[n]\mathbf{x}[n]\); \(O(M)\); stable for \(0 < \mu < 2/\lambda_{\max}\)</div></div><div class="vocab-item"><div class="vocab-term">Step Size (\(\mu\))</div><div class="vocab-def">LMS convergence parameter: small \(\mu\) → slow, accurate; large \(\mu\) → fast, high misadjustment</div></div><div class="vocab-item"><div class="vocab-term">Misadjustment</div><div class="vocab-def">Excess MSE above \(\xi_{\min}\) due to noisy gradient in LMS; proportional to \(\mu M \sigma_x^2\)</div></div><div class="vocab-item"><div class="vocab-term">RLS Algorithm</div><div class="vocab-def">Recursive Least Squares; minimizes sum of exponentially-weighted past errors; converges in \(\approx 2M\) steps; \(O(M^2)\)</div></div><div class="vocab-item"><div class="vocab-term">Forgetting Factor</div><div class="vocab-def">\(\lambda \in (0,1]\) in RLS; controls how quickly old data is discarded; \(\lambda = 1\) is standard LS; \(\lambda < 1\) tracks non-stationary signals</div></div><div class="vocab-item"><div class="vocab-term">Backpropagation</div><div class="vocab-def">Chain-rule gradient algorithm for training neural networks; generalizes LMS to nonlinear multi-layer architectures</div></div></div>
+        </div>
+        <div class="entry-tags"><span class="tag">Wiener Filter</span><span class="tag">LMS</span><span class="tag">RLS</span><span class="tag">Adaptive Filters</span><span class="tag">Noise Cancellation</span><span class="tag">Linear Prediction</span><span class="tag">Neural Networks</span><span class="tag">Backpropagation</span></div>
+      </div></div></div>
+    </div>
+    <div class="entry-block">
+      <div class="entry-header">
+        <div class="entry-left">
+          <span class="entry-eyebrow">Topic 8</span>
+          <span class="entry-title">Random Processes & Spectral Estimation</span>
+        </div>
+        <span class="entry-chevron">›</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner"><div class="entry-body-content">
+        <div class="motivation">
+          <p class="motivation-label">Why This Matters</p>
+          <p>Real signals are not deterministic — they are random. Noise, speech, seismic data, financial time series, neural recordings — all are best described statistically. Random process theory provides the mathematical framework for characterizing signals whose exact values are unknown but whose statistical properties are stable. Spectral estimation connects this to the frequency domain, answering the question: given a finite observation of a random process, what can we say about its power distribution across frequencies? This is the foundation of radar, sonar, speech processing, neuroscience, and quantitative finance.</p>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Concepts</p>
+          <div class="subsection-body"><p>A <span class="term">random process</span> (or stochastic process) \(\{X[n]\}\) is an indexed family of random variables. For each realization (outcome), we observe a deterministic sequence; the statistical properties are characterized across all realizations. Key statistical descriptors:</p>
+            <ul>
+            <li><span class="term">Mean:</span> \(\mu_X[n] = E\{X[n]\}\)</li>
+            <li><span class="term">Autocorrelation:</span> \(R_{XX}[n_1, n_2] = E\{X[n_1]X^*[n_2]\}\)</li>
+            <li><span class="term">Autocovariance:</span> \(C_{XX}[n_1,n_2] = R_{XX}[n_1,n_2] - \mu_X[n_1]\mu_X^*[n_2]\)</li>
+            </ul>
+            <p>A process is <span class="term">wide-sense stationary (WSS)</span> if (1) \(\mu_X[n] = \mu_X\) (constant mean) and (2) \(R_{XX}[n_1,n_2] = R_{XX}[n_1 - n_2]\) depends only on the lag \(k = n_1 - n_2\). WSS is the key assumption enabling spectral analysis — under WSS, the autocorrelation sequence \(R_{XX}[k]\) is a well-defined function of lag alone, and the <span class="term">power spectral density (PSD)</span> is its DTFT:
+            \[ S_{XX}(e^{j\omega}) = \sum_{k=-\infty}^{\infty} R_{XX}[k]\, e^{-j\omega k} \]
+            The PSD is real, non-negative, and \(2\pi\)-periodic. Its integral gives the total power: \(\sigma_X^2 = E\{|X[n]|^2\} = \frac{1}{2\pi}\int_{-\pi}^{\pi} S_{XX}(e^{j\omega})\, d\omega\).</p>
+            <p>When a WSS process \(X[n]\) is passed through an LTI system with frequency response \(H(e^{j\omega})\), the output \(Y[n]\) is also WSS with:
+            \[ S_{YY}(e^{j\omega}) = |H(e^{j\omega})|^2\, S_{XX}(e^{j\omega}) \]
+            This is the fundamental result connecting LTI systems and random processes. Output power = \(\frac{1}{2\pi}\int |H|^2 S_{XX}\, d\omega\).</p>
+            <p>Two processes \(X[n]\) and \(Y[n]\) are <span class="term">jointly WSS</span> if the cross-correlation \(R_{XY}[k] = E\{X[n+k]Y^*[n]\}\) depends only on lag \(k\). They are <span class="term">uncorrelated</span> if \(R_{XY}[k] = \mu_X \mu_Y^*\) for all \(k\). A <span class="term">white noise</span> process has PSD \(S_{XX}(e^{j\omega}) = \sigma^2\) (flat — equal power at all frequencies) and autocorrelation \(R_{XX}[k] = \sigma^2 \delta[k]\).</p>
+            <p><span class="term">Spectral estimation</span> is the problem of estimating the PSD from a finite observed record \(\{x[0], x[1], \ldots, x[N-1]\}\). Non-parametric methods:</p>
+            <ul>
+            <li><span class="term">Periodogram:</span> \(\hat{S}(e^{j\omega}) = \frac{1}{N}|X_N(e^{j\omega})|^2\) where \(X_N\) is the \(N\)-point DFT. The periodogram is an inconsistent estimator — its variance does not decrease as \(N \to \infty\).</li>
+            <li><span class="term">Bartlett method:</span> average \(K\) non-overlapping periodograms, each from a segment of length \(L = N/K\). Reduces variance by \(K\) at the cost of frequency resolution \((\Delta f = f_s/L)\).</li>
+            <li><span class="term">Welch method:</span> extends Bartlett with overlapping (50%) windowed segments. Reduces bias from spectral leakage and further reduces variance. The standard method in practice (implemented as <code>pwelch()</code> in MATLAB).</li>
+            </ul>
+            <p>Parametric methods assume the process is generated by an autoregressive (AR), moving average (MA), or ARMA model and estimate model parameters from data — yielding higher-resolution spectral estimates from short records. The <span class="term">Yule-Walker equations</span> relate AR model parameters to the autocorrelation sequence, enabling maximum entropy spectral estimation.</p></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Key Takeaways</p>
+          <div class="subsection-body"><ul><li>WSS requires constant mean and autocorrelation depending only on lag \(k\) — both conditions must hold to apply PSD analysis</li><li>PSD through LTI: \(S_{YY} = |H|^2 S_{XX}\) — this is the fundamental result; it is why filters shape the spectrum of noise</li><li>The periodogram is biased and inconsistent — always use Welch\'s method (averaged, windowed periodograms) for reliable spectral estimates</li><li>White noise has flat PSD \(\sigma^2\) and \(R_{XX}[k] = \sigma^2\delta[k]\) — uncorrelated samples at every lag; the baseline noise model in DSP</li><li>Resolution–variance tradeoff in spectral estimation is fundamental: more averaging reduces variance but coarsens frequency resolution</li></ul></div>
+        </div>
+        <div class="subsection">
+          <p class="subsection-label">Real-World Applications</p>
+          <div class="subsection-body"><p>PSD analysis is used in every field that processes random signals. Radar and sonar use the PSD to detect targets buried in clutter noise. Speech recognition systems analyze the power spectrum (via MFCC features built on Welch-estimated spectra) to identify phonemes. Seismologists use spectral analysis to characterize earthquakes and detect nuclear tests. EEG/ECoG neuroscience research uses Welch PSD estimation to study brain rhythms (alpha, beta, gamma bands). Algorithmic trading systems use autocorrelation and spectral methods to detect periodicities in financial time series. The Kalman filter — covered in this course — is the time-domain counterpart of Wiener filtering for non-stationary processes.</p></div>
+        </div>
+        <div class="vocab-section">
+          <p class="vocab-label">Vocabulary</p>
+          <div class="vocab-grid"><div class="vocab-item"><div class="vocab-term">Random Process</div><div class="vocab-def">Indexed family of random variables \(\{X[n]\}\); characterized statistically rather than by exact values</div></div><div class="vocab-item"><div class="vocab-term">WSS</div><div class="vocab-def">Wide-Sense Stationary: constant mean and autocorrelation depending only on lag \(k = n_1 - n_2\)</div></div><div class="vocab-item"><div class="vocab-term">Autocorrelation</div><div class="vocab-def">\(R_{XX}[k] = E\{X[n+k]X^*[n]\}\); measures statistical dependence between samples separated by lag \(k\)</div></div><div class="vocab-item"><div class="vocab-term">Power Spectral Density</div><div class="vocab-def">\(S_{XX}(e^{j\omega}) = \mathcal{F}\{R_{XX}[k]\}\); real, non-negative; integral over \([-\pi,\pi]\) gives total power</div></div><div class="vocab-item"><div class="vocab-term">White Noise</div><div class="vocab-def">Process with flat PSD \(S_{XX} = \sigma^2\) and \(R_{XX}[k] = \sigma^2\delta[k]\); uncorrelated at all nonzero lags</div></div><div class="vocab-item"><div class="vocab-term">Periodogram</div><div class="vocab-def">\(\hat{S} = |X_N|^2/N\); biased and inconsistent estimator — variance does not decrease with \(N\)</div></div><div class="vocab-item"><div class="vocab-term">Welch Method</div><div class="vocab-def">Averaged overlapping windowed periodograms; reduces variance and leakage; standard PSD estimator in practice</div></div><div class="vocab-item"><div class="vocab-term">Yule-Walker</div><div class="vocab-def">Linear equations relating AR model coefficients to the autocorrelation sequence; basis for parametric spectral estimation</div></div></div>
+        </div>
+        <div class="entry-tags"><span class="tag">Random Processes</span><span class="tag">WSS</span><span class="tag">PSD</span><span class="tag">Autocorrelation</span><span class="tag">White Noise</span><span class="tag">Periodogram</span><span class="tag">Welch Method</span><span class="tag">Spectral Estimation</span></div>
+      </div></div></div>
     </div>
 
   </main>
@@ -238,6 +1303,16 @@
     <span>Justin Han · Portfolio</span>
     <span id="yr"></span>
   </footer>
-  <script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+
+  <script>
+    document.querySelectorAll('.entry-header').forEach(h => {
+      h.addEventListener('click', () => h.closest('.entry-block').classList.toggle('open'));
+    });
+    document.getElementById('expand-all').addEventListener('click', () =>
+      document.querySelectorAll('.entry-block').forEach(b => b.classList.add('open')));
+    document.getElementById('collapse-all').addEventListener('click', () =>
+      document.querySelectorAll('.entry-block').forEach(b => b.classList.remove('open')));
+    document.getElementById('yr').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
